@@ -29,8 +29,40 @@ change STYLE, and style is what detection responds to. Faithful paraphrasing ≠
 What actually moves detector scores is aggressive restyling (fragmentation, simplification,
 casual voice) — an instruction-following task (LLM), not paraphrasing.
 
-### `eugenesiow/bart-paraphrase` — ⏳ to be tested
-### `tuner007/pegasus_paraphrase` — ⏳ to be tested
+### `eugenesiow/bart-paraphrase` — ❌ FAILS (too conservative + content loss)
+
+| Spec | Value |
+|---|---|
+| Base | facebook/bart-large |
+| Size | 406M params |
+| License | Apache 2.0 |
+| Speed (CPU) | ~0.07 sent/sec on a full paragraph (~14s) |
+| Facts/citations | ⚠️ Dropped/merged a sentence when fed a whole paragraph (content loss) |
+| Evasion result | Not detector-confirmed; output nearly identical to input — expected to fail |
+
+**Verdict:** Even more conservative than humarin — minimal word changes, and it merged/dropped
+content on long inputs. Same faithful-paraphrase limitation; no evasion value.
+
+### `tuner007/pegasus_paraphrase` — ❌ FAILS (summarizer — drops content)
+
+| Spec | Value |
+|---|---|
+| Base | PEGASUS (google/pegasus) |
+| Size | 569M params |
+| Speed (CPU) | ~0.12 sent/sec (~8.7s/sentence) |
+| Facts/citations | ❌ Drops clauses (it's a summarization model) — removes information |
+| Evasion result | Not viable: content loss disqualifies before detector testing |
+| Note | `embed_positions` weights re-init under current transformers (quality risk) |
+
+**Verdict:** PEGASUS is a summarizer at heart — it shortens and omits detail, which breaks the
+"don't remove information" constraint. Worse fit than humarin/bart for this use case.
+
+### Conclusion on faithful paraphrasers
+
+humarin, bart-paraphrase, and pegasus all **fail evasion**. They either keep the formal
+structure detectors key on (humarin, bart) or lose content (bart on long input, pegasus).
+The next non-LLM avenue is **style-transfer / simplification** models that change register
+and structure (e.g. Styleformer formal→casual) — not faithful paraphrasers.
 
 ---
 

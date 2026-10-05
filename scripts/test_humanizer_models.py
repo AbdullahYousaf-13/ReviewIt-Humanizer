@@ -80,18 +80,48 @@ def check_preservation(original, rewritten):
     return issues
 
 
+# Abbreviations whose trailing period must NOT end a sentence.
+_ABBREVIATIONS = [
+    "et al.", "e.g.", "i.e.", "etc.", "cf.", "vs.", "Fig.", "fig.", "Eq.", "eq.",
+    "No.", "pp.", "p.", "Dr.", "Prof.", "Mr.", "Mrs.", "Ms.", "St.", "approx.",
+    "Inc.", "Ltd.", "Co.", "al.",
+]
+
+
+def split_sentences(text):
+    """Split a line/paragraph into sentences, guarding decimals, citations, abbreviations."""
+    text = text.strip()
+    if not text:
+        return []
+    # Protect abbreviation periods and decimal points with a placeholder.
+    protected = text
+    for abbr in _ABBREVIATIONS:
+        protected = protected.replace(abbr, abbr.replace(".", "<DOT>"))
+    # decimals like 0.91 -> 0<DOT>91
+    protected = re.sub(r"(?<=\d)\.(?=\d)", "<DOT>", protected)
+    # Split after . ! ? (optionally followed by a quote/bracket) then whitespace + capital/quote.
+    parts = re.split(r'(?<=[.!?])["\')\]]?\s+(?=[A-Z"\'(])', protected)
+    return [p.replace("<DOT>", ".").strip() for p in parts if p.strip()]
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("input", nargs="?", help="text file, one sentence per line")
+    ap.add_argument("input", nargs="?", help="text file (paragraphs OK; auto-split into sentences)")
     ap.add_argument("--model", default="humarin/chatgpt_paraphraser_on_T5_base")
     ap.add_argument("--variants", type=int, default=1, help="paraphrase candidates per sentence")
+    ap.add_argument("--no-split", action="store_true", help="treat each line as one unit (skip sentence-splitting)")
     args = ap.parse_args()
 
     if args.input:
         with open(args.input, "r", encoding="utf-8") as f:
-            sentences = [ln.strip() for ln in f if ln.strip()]
+            raw_lines = [ln.strip() for ln in f if ln.strip()]
     else:
-        sentences = SAMPLE_SENTENCES
+        raw_lines = SAMPLE_SENTENCES
+
+    if args.no_split:
+        sentences = raw_lines
+    else:
+        sentences = [s for line in raw_lines for s in split_sentences(line)]
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"Model : {args.model}")

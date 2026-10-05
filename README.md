@@ -36,8 +36,11 @@ the Microsoft VC++ Redistributable (required by PyTorch).
 ```powershell
 .\.venv\Scripts\python.exe scripts\test_humanizer_models.py data\Input\baseline_original.txt
 .\.venv\Scripts\python.exe scripts\test_humanizer_models.py data\Input\baseline_original.txt --model eugenesiow/bart-paraphrase
+.\.venv\Scripts\python.exe scripts\test_humanizer_models.py data\Input\baseline_original.txt --model tuner007/pegasus_paraphrase
 ```
-Input = one sentence per line. Output is saved for pasting into the detectors.
+Input can be paragraphs — the script **auto-splits into sentences** (guards decimals,
+citations, and abbreviations). Use `--no-split` to treat each line as one unit. Output is
+saved to `outputs/local_model_output.txt` for pasting into the detectors.
 
 **LLM pipeline (Groq):**
 ```powershell
@@ -48,8 +51,12 @@ Requires `GROQ_API_KEY` in the environment.
 ## Status
 
 - **LLM (Qwen via Groq):** best result so far (aggressive restyle evades detectors).
-- **Local paraphrasers (humarin T5, bart):** preserve facts perfectly but **fail evasion**
-  (conservative synonym swaps — ZeroGPT 100% AI → 100% AI). See `docs/MODELS.md`.
+- **Local faithful paraphrasers — all FAIL evasion** (see `docs/MODELS.md`):
+  - `humarin T5` — conservative synonym swaps, ZeroGPT 100% → 100%.
+  - `bart-paraphrase` — even more conservative; drops/merges content on long input.
+  - `pegasus_paraphrase` — summarizer, removes information (breaks fact constraint).
+- **Next non-LLM avenue:** style-transfer / simplification models (e.g. Styleformer
+  formal→casual) that change register & structure, not just synonyms. Not yet tested.
 
 ## How to test evasion (valid method)
 
