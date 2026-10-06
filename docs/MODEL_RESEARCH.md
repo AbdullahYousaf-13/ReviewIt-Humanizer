@@ -1,0 +1,134 @@
+# Model Research (Non-LLM) — ReviewIt Humanizer
+
+> **Scope:** Non-LLM models for sentence-level paraphrasing / style transfer / AI-detection
+> evasion — seq2seq paraphrasers, style-transfer, simplification, and dedicated evasion
+> models. For the general-purpose instruction LLMs tried in the pipeline (Qwen, GPT-OSS,
+> Llama via Groq), see [LLM_RESEARCH.md](LLM_RESEARCH.md).
+
+---
+
+## A. Tested locally
+
+Run via `scripts/test_humanizer_models.py` on CPU in the project `.venv`. Small seq2seq
+paraphrasers that run offline (no API, no rate limits). **Detector results are from ZeroGPT**
+(the easiest of the three targets — GPTZero/Copyleaks are stricter).
+
+### `humarin/chatgpt_paraphraser_on_T5_base` — ❌ FAILS EVASION
+
+| Spec | Value |
+|---|---|
+| Base | google-t5/t5-base |
+| Size | 223M params |
+| License | OpenRAIL |
+| Training data | Quora + SQuAD 2.0 + CNN news paraphrase pairs |
+| Speed (CPU) | ~0.45 sent/sec short; ~10s on a full paragraph |
+| Facts/citations | ✅ Preserved perfectly (23.4%, 0.91, citations intact) |
+| **Evasion** | ❌ **ZeroGPT 100% AI → 100% AI (confirmed)** |
+| Link | https://huggingface.co/humarin/chatgpt_paraphraser_on_T5_base |
+
+Conservative synonym swaps only ("transformative"→"paradigm", "simulate"→"imitate").
+Structure/length/register untouched — exactly what detectors read.
+
+### `eugenesiow/bart-paraphrase` — ❌ FAILS EVASION
+
+| Spec | Value |
+|---|---|
+| Base | facebook/bart-large |
+| Size | 406M params |
+| License | Apache 2.0 |
+| Speed (CPU) | ~0.17 sent/sec sentence-by-sentence (~6s/sentence) |
+| Facts/citations | ✅ Preserved when fed one sentence per line (auto-split fixes the earlier content-loss) |
+| **Evasion** | ❌ **ZeroGPT 100% AI → 100% AI (confirmed)** |
+| Link | https://huggingface.co/eugenesiow/bart-paraphrase |
+
+Even more conservative than humarin — 2 of 3 sentences returned **verbatim**. Safe for facts,
+useless for evasion. (On whole-paragraph input it also truncates/drops content; feed
+one sentence per line.)
+
+### `tuner007/pegasus_paraphrase` — ❌ FAILS (summarizer — drops content)
+
+| Spec | Value |
+|---|---|
+| Base | PEGASUS (google/pegasus) |
+| Size | 569M params |
+| Speed (CPU) | ~0.12 sent/sec (~8.7s/sentence) |
+| Facts/citations | ❌ Drops clauses (summarization model) — removes information |
+| **Evasion** | Not viable — content loss disqualifies it before detector testing |
+| Note | `embed_positions` weights re-init under current transformers (quality risk) |
+| Link | https://huggingface.co/tuner007/pegasus_paraphrase |
+
+### Conclusion on faithful paraphrasers
+
+**humarin, bart, and pegasus all fail.** They keep the formal structure detectors key on
+(humarin, bart) or lose content (bart on long input, pegasus). Faithful paraphrasing ≠
+evasion. What moves detector scores is changing **register and structure** — the domain of
+style-transfer / simplification models (Section B), not paraphrasers.
+
+---
+
+## B. Non-LLM candidates — NOT yet tested (the forward path)
+
+These change register/structure rather than preserving it, so they have a real mechanism for
+evasion. Still CPU-runnable seq2seq.
+
+### `Styleformer` (formal → casual style transfer) — ⏳ NEXT TO TEST
+
+| Spec | Value |
+|---|---|
+| Author | prithivida (Prithiviraj Damodaran) |
+| Base | T5-based |
+| Task | Formal ↔ casual, active ↔ passive style transfer |
+| Why | Casual restyle directly attacks the "formal AI prose" signal (matches BRIEF.md findings) |
+| Links | GitHub: https://github.com/PrithivirajDamodaran/Styleformer · HF (reverse dir): https://huggingface.co/prithivida/informal_to_formal_styletransfer |
+
+*Note: need the formal→casual direction; verify exact HF model id before running.*
+
+### `Nubletz/bart-text-simplification` — ⏳ candidate
+
+| Spec | Value |
+|---|---|
+| Base | facebook/bart-large-cnn, fine-tuned on ASSET + TurkCorpus |
+| Task | Sentence simplification (shorter, simpler structure) |
+| Risk | Simplification may drop nuance/detail — watch fact preservation |
+| Link | https://huggingface.co/Nubletz/bart-text-simplification |
+
+**Expectation (from research):** Even purpose-built non-LLM humanizers only *partially* evade.
+[*Transforming Chatbot Text: A Seq2Seq Approach* (arXiv 2506.12843)](https://arxiv.org/pdf/2506.12843)
+fine-tuned T5-small/BART on GPT→human pairs and cut detector accuracy by **~19%**, but the
+output was *"insufficiently human-like to evade retrained classifiers."*
+
+---
+
+## C. Large dedicated paraphraser (researched — ruled out)
+
+Strong evasion in its original paper, but doesn't fit the constraints (CPU-only; 11B).
+
+> **Note:** The RL-based evasion models **AuthorMist** and **StealthRL** used to be listed
+> here but were moved to [LLM_RESEARCH.md](LLM_RESEARCH.md) — they are **LLMs** (Qwen 3B/4B
+> decoder-only), not seq2seq models. DIPPER stays here as a large seq2seq paraphraser.
+
+### DIPPER — `kalpeshk2011/dipper-paraphraser-xxl`
+
+| Spec | Value |
+|---|---|
+| Base | T5-XXL (seq2seq), fine-tuned on 6.3M paraphrase pairs |
+| Size | **11B params** |
+| Evasion (2023) | Dropped DetectGPT 70.3% → 4.6% |
+| Caveat | 2025 TH-Bench: now **poor vs modern model-based detectors** (sometimes raises AUC) |
+| Fit | ❌ 11B — impractical on CPU; designed for paragraphs-with-context, not isolated sentences |
+| Links | Paper: https://arxiv.org/pdf/2303.13408 · HF: https://huggingface.co/kalpeshk2011/dipper-paraphraser-xxl |
+
+---
+
+## Overall status
+
+| Model | Class | Fits constraints? | Evasion |
+|---|---|---|---|
+| humarin T5 | Faithful paraphraser | ✅ CPU, facts | ❌ 100% AI |
+| bart-paraphrase | Faithful paraphraser | ✅ CPU, facts | ❌ 100% AI |
+| pegasus | Summarizer | ⚠️ loses content | ❌ disqualified |
+| Styleformer | Style transfer | ✅ CPU (to verify) | ⏳ untested — next |
+| bart-text-simplification | Simplification | ✅ CPU | ⏳ untested |
+| DIPPER | Large paraphraser | ❌ 11B | ⚠️ stale vs modern detectors |
+
+> LLM-based evasion models (AuthorMist, StealthRL) are in [LLM_RESEARCH.md](LLM_RESEARCH.md).

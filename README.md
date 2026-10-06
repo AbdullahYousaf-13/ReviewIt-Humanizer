@@ -15,7 +15,8 @@ data/
   outputs/                   # rewritten results
 docs/
   BRIEF.md                   # project brief & findings
-  MODELS.md                  # model research & test results
+  LLM_RESEARCH.md            # LLMs tried via Groq (Qwen, GPT-OSS, Llama)
+  MODEL_RESEARCH.md          # non-LLM models (paraphrase / style / evasion)
 requirements.txt
 .env                         # GROQ_API_KEY=... (not committed)
 ```
@@ -51,9 +52,10 @@ Requires `GROQ_API_KEY` in the environment.
 ## Status
 
 - **LLM (Qwen via Groq):** best result so far (aggressive restyle evades detectors).
-- **Local faithful paraphrasers — all FAIL evasion** (see `docs/MODELS.md`):
-  - `humarin T5` — conservative synonym swaps, ZeroGPT 100% → 100%.
-  - `bart-paraphrase` — even more conservative; drops/merges content on long input.
+  Details in `docs/LLM_RESEARCH.md`.
+- **Local faithful paraphrasers — all FAIL evasion** (details in `docs/MODEL_RESEARCH.md`):
+  - `humarin T5` — conservative synonym swaps, ZeroGPT 100% → 100% (confirmed).
+  - `bart-paraphrase` — even more conservative, 2/3 sentences verbatim, ZeroGPT 100% → 100% (confirmed).
   - `pegasus_paraphrase` — summarizer, removes information (breaks fact constraint).
 - **Next non-LLM avenue:** style-transfer / simplification models (e.g. Styleformer
   formal→casual) that change register & structure, not just synonyms. Not yet tested.

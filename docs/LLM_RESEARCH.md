@@ -1,74 +1,17 @@
-# Models Research — ReviewIt Humanizer
+# LLM Research — ReviewIt Humanizer
 
-## Local Paraphrase Models (Non-LLM) — Tested Locally
+> **Scope:** Large Language Models (decoder-only, instruction-following). Two groups:
+> **(1)** general-purpose LLMs tried in the pipeline via the **Groq API**, and
+> **(2)** dedicated detection-evasion LLMs (fine-tuned, self-hosted) researched but not used.
+> For non-LLM paraphrase / style-transfer / simplification models, see
+> [MODEL_RESEARCH.md](MODEL_RESEARCH.md).
 
-> Run via `test_humanizer_models.py` on CPU in the project `.venv`. These are small
-> seq2seq paraphrasers that run offline (no API, no rate limits).
-
-### `humarin/chatgpt_paraphraser_on_T5_base` — ❌ FAILS EVASION
-
-| Spec | Value |
-|---|---|
-| Category | Seq2seq paraphraser (NOT an LLM) |
-| Base | google-t5/t5-base |
-| Size | 223M params |
-| License | OpenRAIL |
-| Training data | Quora + SQuAD 2.0 + CNN news paraphrase pairs |
-| Speed (CPU) | ~0.45 sent/sec on short sentences; ~10s on a full paragraph |
-| Facts/citations | ✅ Preserved perfectly (numbers 23.4%, 0.91 and citations intact) |
-| **Evasion result** | ❌ **ZeroGPT 100% AI → 100% AI (no movement)** |
-
-**Verdict:** Preserves meaning faithfully but does only conservative synonym swaps
-("transformative"→"paradigm", "simulate"→"imitate"). Sentence structure, length, and
-register are untouched — which is exactly what detectors key on. Failed on ZeroGPT, the
-*easiest* of the three targets; will not do better on GPTZero/Copyleaks.
-
-**Key insight:** This whole CLASS of model (humarin, bart-paraphrase, pegasus) is trained
-on paraphrase-identification datasets to make minimal faithful edits. None were trained to
-change STYLE, and style is what detection responds to. Faithful paraphrasing ≠ evasion.
-What actually moves detector scores is aggressive restyling (fragmentation, simplification,
-casual voice) — an instruction-following task (LLM), not paraphrasing.
-
-### `eugenesiow/bart-paraphrase` — ❌ FAILS (too conservative + content loss)
-
-| Spec | Value |
-|---|---|
-| Base | facebook/bart-large |
-| Size | 406M params |
-| License | Apache 2.0 |
-| Speed (CPU) | ~0.07 sent/sec on a full paragraph (~14s) |
-| Facts/citations | ⚠️ Dropped/merged a sentence when fed a whole paragraph (content loss) |
-| Evasion result | Not detector-confirmed; output nearly identical to input — expected to fail |
-
-**Verdict:** Even more conservative than humarin — minimal word changes, and it merged/dropped
-content on long inputs. Same faithful-paraphrase limitation; no evasion value.
-
-### `tuner007/pegasus_paraphrase` — ❌ FAILS (summarizer — drops content)
-
-| Spec | Value |
-|---|---|
-| Base | PEGASUS (google/pegasus) |
-| Size | 569M params |
-| Speed (CPU) | ~0.12 sent/sec (~8.7s/sentence) |
-| Facts/citations | ❌ Drops clauses (it's a summarization model) — removes information |
-| Evasion result | Not viable: content loss disqualifies before detector testing |
-| Note | `embed_positions` weights re-init under current transformers (quality risk) |
-
-**Verdict:** PEGASUS is a summarizer at heart — it shortens and omits detail, which breaks the
-"don't remove information" constraint. Worse fit than humarin/bart for this use case.
-
-### Conclusion on faithful paraphrasers
-
-humarin, bart-paraphrase, and pegasus all **fail evasion**. They either keep the formal
-structure detectors key on (humarin, bart) or lose content (bart on long input, pegasus).
-The next non-LLM avenue is **style-transfer / simplification** models that change register
-and structure (e.g. Styleformer formal→casual) — not faithful paraphrasers.
+All models here are **LLMs**. Not every model on the Groq account is an LLM (Whisper = STT,
+Orpheus = TTS, Prompt Guard = safety classifier).
 
 ---
 
-## Models Tried in This Project
-
-> All models used for humanization are **LLMs (Large Language Models)** — text-in, text-out models capable of following instructions and rewriting content. Not all models on the Groq account are LLMs (Whisper = speech-to-text, Orpheus = text-to-speech, Prompt Guard = safety classifier).
+# Group 1 — General-purpose LLMs (Groq API)
 
 ---
 
@@ -218,7 +161,7 @@ and structure (e.g. Styleformer formal→casual) — not faithful paraphrasers.
 
 ---
 
-## Overall Ranking
+## Overall Ranking (LLMs)
 
 | Rank | Model | Status | Why |
 |---|---|---|---|
@@ -276,10 +219,41 @@ Models returned by `client.models.list()` on this account:
 
 ---
 
-## Key Findings
+## Key Findings (LLMs)
 
 - **Hidden OTPM limit:** Groq applies a 1,000 OTPM per-org limit not shown in docs — confirmed by measurement on `qwen/qwen3.8-27b`
 - **GPT models are worst for detection evasion:** GPTZero achieves 99.3% accuracy on GPT-family output
 - **Open source models (Llama, Qwen) are less detectable** because detectors were trained primarily on GPT/ChatGPT output
 - **Reasoning models are a trap:** Both `openai/gpt-oss-20b` models burn tokens on internal thinking, need `max_tokens=4096+`, and are slow
 - **Dev tier upgrade currently unavailable** on Groq due to high demand (as of Oct 2025)
+- **LLM restyling is the only approach that has actually moved detector scores** in this
+  project — faithful non-LLM paraphrasers do not (see [MODEL_RESEARCH.md](MODEL_RESEARCH.md))
+
+---
+
+# Group 2 — Dedicated detection-evasion LLMs (researched, not used)
+
+> Specialized LLMs fine-tuned (via reinforcement learning) specifically to evade AI-text
+> detectors. Same architecture family as Group 1 (Qwen, decoder-only), but task-specialized
+> and **self-hosted** rather than API. Both **ruled out** for this project: they are LLMs
+> (which we moved away from) and are impractical on a CPU-only machine.
+
+### AuthorMist
+
+| Spec | Value |
+|---|---|
+| Base | **Qwen2.5-3B-Instruct** (decoder-only LLM) |
+| Training | RL (GRPO), one model per detector |
+| Evasion | GPTZero 4%→92%, Sapling 2%→98%, Originality 0%→94% ASR; semantic sim >0.94 |
+| Fit | ❌ LLM; **weights/code not released** (paper only); not tested on Copyleaks |
+| Link | https://arxiv.org/html/2503.08716 |
+
+### StealthRL — `suraj-ranganath/StealthRL`
+
+| Spec | Value |
+|---|---|
+| Base | **Qwen3-4B-Instruct-2507** (decoder-only LLM) + LoRA (adapter-only release, MIT) |
+| Trained vs | RoBERTa + Fast-DetectGPT; eval'd on RoBERTa/Fast-DetectGPT/Binoculars/MAGE |
+| Evasion | Mean AUROC 0.79 → 0.43; TPR@1%FPR ≈ 0.024 |
+| Fit | ❌ 4B LLM (CPU-impractical; needs GPU or paid `tinker` cloud). **Never tested vs ZeroGPT/Copyleaks/GPTZero** |
+| Links | GitHub: https://github.com/suraj-ranganath/StealthRL · HF: https://huggingface.co/suraj-ranganath/StealthRL |
