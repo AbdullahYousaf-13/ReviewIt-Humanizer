@@ -19,10 +19,6 @@ __pycache__/
 *.bin
 *.pt
 
-# Generated outputs
-outputs/
-data/outputs/
-
 # OS / editor junk
 .DS_Store
 Thumbs.db
