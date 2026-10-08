@@ -8,7 +8,7 @@
 
 ## 1. Overview
 
-Both models were assessed as sentence-level humanizers. A single AI-flagged sentence is rewritten, reinserted into its original (largely human-written) paragraph, and the reassembled text is submitted to AI-content detectors. Detectors used: **ZeroGPT** and **Copyleaks**.
+Both models were assessed as sentence-level humanizers. A single AI-flagged sentence is rewritten, reinserted into its original (largely human-written) paragraph, and the reassembled text is submitted to AI-content detectors. Detectors used: **ZeroGPT**, **Copyleaks**, and **GPTZero**.
 
 The two models represent fundamentally different approaches:
 
@@ -60,5 +60,5 @@ Each model was tested with the same procedure: rewrite the flagged sentence, rei
 ## 5. Notes and caveats
 
 - Gemini's parameter count is not published; Google, like other providers of frontier commercial models, does not disclose it.
-- Detector testing covered ZeroGPT and Copyleaks (the latter at sensitivity level 2 of 3). GPTZero has not yet been tested.
+- Detector testing covered ZeroGPT, Copyleaks, and GPTZero; all returned a pass. GPTZero coverage is currently a single sample.
 - Results reflect the product's intended use — rewriting a small number of flagged sentences within otherwise human-written text — not whole-document rewriting.
