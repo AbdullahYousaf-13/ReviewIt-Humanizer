@@ -184,14 +184,18 @@ aggressiveness. Measure evasion **and** fidelity together — evasion is worthle
 4. **Evasion scoring:** run outputs through **ZeroGPT, GPTZero, Copyleaks** at two granularities —
    single sentence (noisy; report but don't over-trust) and **reassembled paragraph/document**
    (the number that matters).
-5. **Fidelity scoring:** automated check that every recorded number and citation survives
-   verbatim; embedding similarity (≥0.9); manual meaning check on a sample.
+5. **Fidelity scoring:** automated check that every number and citation survives verbatim **and
+   that none are added** (catches hallucinated references), with number formats normalized
+   (`27%`↔`27 percent`, `1,482`↔`1482`); optional embedding similarity / manual meaning check.
 6. **Report:** per model × prompt — % AI (each detector, doc level), citation-loss rate,
    number-loss rate, latency, cost. **Winner = lowest doc-level AI score subject to zero
    citation/number loss.**
 
-Implementation note: extend the existing `scripts/` harness (already does sentence-split +
-ZeroGPT) with a prompt-variant loop and the fidelity checker — no new tool needed.
+Implementation: **`scripts/test_humanizer_api_llms.py`** — multi-provider (Gemini / DeepSeek /
+Perplexity / Groq), prompt-variant loop (A/B/C), and the fidelity checker above. Input = one
+sentence per line (or built-in samples); output = one combined file per prompt at
+`data/<model>/<prompt>.txt` with numbered INPUT/OUTPUT sections. Detector scoring stays manual
+and separate (paste the OUTPUT paragraph into ZeroGPT/GPTZero/Copyleaks).
 
 ---
 
@@ -210,8 +214,8 @@ Rules:
 - Break it into 2–3 short sentences of uneven length (some 4–6 words, some 12–15) — vary the rhythm.
 - You may start with "And" or "But."
 - Never use: however, moreover, furthermore, thus, hence, consequently, thereby, nevertheless.
-- Keep every number, statistic, and in-text citation (e.g. Smith et al., 2020) EXACTLY as written
-  — do not add, remove, or reword any citation or figure.
+- Keep every number, statistic, and in-text citation EXACTLY as written — do not add, remove, or
+  reword any citation or figure, and NEVER add a citation that was not already present.
 - Add no new information. Output only the rewrite.
 ```
 
@@ -221,10 +225,55 @@ detectors key on.
 
 > The **fact-lock clause is the critical addition** vs. the current prompt — it lets aggression
 > rise (which is what moves detector scores) without breaking the hard constraints.
+>
+> ⚠️ **Do NOT put a concrete example citation in the prompt** (e.g. "Smith et al., 2020"). Models
+> copy it into the output as a real reference — see the fabricated-citation bug below.
 
 ---
 
-## Sources (verified 2026-10-07)
+## Empirical results & lessons (2026-10-08)
+
+First real runs of the harness (Gemini Flash via the casual-restyle prompt), humanizing **only the
+flagged sentence(s)** and reinserting them into the source paragraph — the actual pipeline, not an
+all-AI block. Detectors: **ZeroGPT** and **Copyleaks** (Copyleaks sensitivity 2/3).
+
+| Text | Before | After (humanized + reinserted) |
+|---|---|---|
+| Paragraph with 1 flagged AI sentence | — | **ZeroGPT 0% · Copyleaks 0%** (both "human") |
+| BERT abstract with 2 flagged AI sentences | **Copyleaks 100% AI** | **Copyleaks 0%** ("No AI Content Found") |
+| 8 built-in sample sentences (all-AI block) | ZeroGPT 32% | **ZeroGPT 0%** |
+| 10 test sentences (all-AI block) | ZeroGPT 100% | ZeroGPT **38.7%** (improved, not passing) |
+
+**Takeaways:**
+- **The real workflow works — on Copyleaks too, not just ZeroGPT.** Rewriting only the flagged
+  sentences took a 100%-AI BERT abstract to 0% on Copyleaks, with every numeric result (GLUE 80.5%,
+  SQuAD F1 93.2 / 83.1, etc.) preserved — they live in the untouched human sentences.
+- **Strongest on sparse flagged sentences in mostly-human text** (the real case). An all-AI block
+  only dropped to 38.7%: one humanized sentence among human text passes, but a wall of humanized
+  sentences still carries residual AI signal.
+- Not yet tested on **GPTZero**; small n; ZeroGPT/Copyleaks only.
+
+### ⚠️ Bug found and fixed: fabricated citations
+
+In 3/3 fact-free rewrites the model inserted **`(Smith et al., 2020)` — a citation that was never in
+the original**. Root cause: `Smith et al., 2020` was the *example* citation written into the prompt
+("e.g. Smith et al., 2020"); the model copied the example out as a real reference. In a research
+paper this is a fabricated reference — academically fatal, and the detector score doesn't care
+(a citation may even read as *more* human), so it passes silently.
+
+**Fixes applied (`scripts/test_humanizer_api_llms.py`):**
+1. Removed the concrete example from all prompts (A/B/C); added an explicit rule: *never add a
+   citation, reference, author, or year not already in the sentence.*
+2. Tightened the fidelity checker to flag **added** numbers/citations (hallucinations), not just
+   missing ones, and to normalize number formats to avoid false flags. The old checker only caught
+   dropped facts, so it was blind to this bug.
+
+**Lesson for prompt design:** never put a realistic-looking fake citation or number in a prompt as
+an example — models copy it into outputs.
+
+---
+
+## Sources (verified 2026-10-07; empirical tests 2026-10-08)
 
 - Gemini models — https://ai.google.dev/gemini-api/docs/models (updated 2026-10-06)
 - Gemini pricing — https://ai.google.dev/gemini-api/docs/pricing
