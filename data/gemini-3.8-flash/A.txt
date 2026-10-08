@@ -1,0 +1,10 @@
+# 1
+INPUT:
+Historically speaking, this conventional methodology has persisted as a foundational pillar within the pharmaceutical industry, navigating the complex regulatory landscapes of drug development with steadfast reliability. By leveraging cutting-edge machine learning algorithms, artificial intelligence serves as a transformative catalyst capable of exponentially accelerating trial timelines while simultaneously maximizing operational efficiency and optimizing clinical success rates. Nevertheless, organizations frequently encounter significant hurdles stemming from a deficiency in specialized technical competencies and advanced technological infrastructures required to fully harness the immense analytical power inherent within these expansive datasets. When seamlessly integrated with a robust digital ecosystem, sophisticated artificial intelligence algorithms can efficiently streamline the meticulous processes of data cleansing, aggregation, coding, and long-term preservation.
+OUTPUT:
+Drug companies have used this traditional method for a long time. It reliably guides medicine development through complex government rules. Artificial intelligence uses advanced computer programs to speed up clinical trials. It also helps trials run much better and improves their success rates. Still, organizations often run into big problems. 
+They lack the technical skills and advanced systems they need. 
+Because of this, they cannot fully use the great power inside these large datasets. Smart computer programs can work smoothly with strong digital systems. 
+They make it easy to clean, combine, and code data. 
+They also help store that data safely for a long time.
+
