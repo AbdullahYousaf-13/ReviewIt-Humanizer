@@ -84,8 +84,9 @@ PROMPTS = {
         "- Replace complex/academic words with the simplest everyday synonym.\n"
         "- Break it into shorter sentences (8-15 words).\n"
         f"- Do NOT use formal connectors: {BANNED}.\n"
-        "- Keep all facts and every in-text citation (e.g. Smith et al., 2020) exactly.\n"
-        "- Add no new information.\n"
+        "- Keep all facts and every in-text citation exactly as written.\n"
+        "- NEVER add a citation, reference, author name, or year that is not already "
+        "in the sentence. Add no other new information.\n"
         "Return ONLY the rewrite.\n\nSentence:\n{s}",
     ),
     "B": (
@@ -97,8 +98,9 @@ PROMPTS = {
         "- vary the rhythm.\n"
         "- You may start with \"And\" or \"But\".\n"
         f"- Never use: {BANNED}.\n"
-        "- Keep every number, statistic, and in-text citation (e.g. Smith et al., 2020) "
-        "EXACTLY as written - do not add, remove, or reword any citation or figure.\n"
+        "- Keep every number, statistic, and in-text citation EXACTLY as written - "
+        "do not add, remove, or reword any citation or figure.\n"
+        "- NEVER introduce a citation or reference that was not already in the sentence.\n"
         "- Add no new information. Output only the rewrite.\n\nSentence:\n{s}",
     ),
     "C": (
@@ -108,8 +110,8 @@ PROMPTS = {
         "- Deliberate burstiness: mix short fragments with one longer clause.\n"
         "- Everyday words only; no academic register.\n"
         f"- Never use: {BANNED}.\n"
-        "- Keep every number, statistic, and in-text citation (e.g. Smith et al., 2020) "
-        "EXACTLY as written. Add no new information.\n"
+        "- Keep every number, statistic, and in-text citation EXACTLY as written. "
+        "NEVER add a citation or reference that was not already there. Add no new information.\n"
         "Output only the rewrite.\n\nSentence:\n{s}",
     ),
 }
@@ -140,17 +142,34 @@ CITE_RE = re.compile(
 )
 
 
+def _norm_numbers(text):
+    """Normalize number formats so '27 percent'=='27%' and '1,482'=='1482'."""
+    t = text.lower().replace("percent", "%")
+    t = re.sub(r"(\d)\s*%", r"\1%", t)        # "27 %" -> "27%"
+    t = re.sub(r"(?<=\d),(?=\d)", "", t)       # "1,482" -> "1482"
+    return t
+
+
 def extract_facts(text):
-    return set(NUM_RE.findall(text)), set(CITE_RE.findall(text))
+    nums = set(NUM_RE.findall(_norm_numbers(text)))
+    cites = set(c.strip() for c in CITE_RE.findall(text))
+    return nums, cites
 
 
 def fidelity_check(original, rewrite):
-    """Return (ok, missing_numbers, missing_citations)."""
+    """Return (ok, missing_nums, added_nums, missing_cites, added_cites).
+
+    Catches BOTH dropped facts (missing) and hallucinated ones (added). An added
+    citation is a fabricated reference - the key failure mode for research papers.
+    """
     o_nums, o_cites = extract_facts(original)
     r_nums, r_cites = extract_facts(rewrite)
     missing_nums = sorted(o_nums - r_nums)
+    added_nums = sorted(r_nums - o_nums)
     missing_cites = sorted(o_cites - r_cites)
-    return (not missing_nums and not missing_cites), missing_nums, missing_cites
+    added_cites = sorted(r_cites - o_cites)
+    ok = not (missing_nums or added_nums or missing_cites or added_cites)
+    return ok, missing_nums, added_nums, missing_cites, added_cites
 
 
 # --- Provider clients --------------------------------------------------------
@@ -308,7 +327,7 @@ def main():
             if out["error"]:
                 print(f"  {v}: ERROR {out['error'][:90]}")
                 continue
-            ok, miss_n, miss_c = fidelity_check(sent, out["text"])
+            ok, miss_n, add_n, miss_c, add_c = fidelity_check(sent, out["text"])
             totals["calls"] += 1
             totals["thinking_tokens"] += out["thinking_tokens"] or 0
             totals["output_tokens"] += out["output_tokens"] or 0
@@ -318,15 +337,19 @@ def main():
             flag = "OK " if ok else "FACT-LOSS"
             print(f"  {v}: [{flag}] think={out['thinking_tokens']} out={out['output_tokens']} "
                   f"{out['latency_s']}s -> {out['text'][:70]}")
-            if not ok:
-                if miss_n:
-                    print(f"       missing numbers: {miss_n}")
-                if miss_c:
-                    print(f"       missing citations: {miss_c}")
+            if miss_n:
+                print(f"       missing numbers: {miss_n}")
+            if add_n:
+                print(f"       ADDED numbers (hallucination?): {add_n}")
+            if miss_c:
+                print(f"       missing citations: {miss_c}")
+            if add_c:
+                print(f"       ADDED citations (fabricated reference!): {add_c}")
             results.append({
                 "provider": provider, "model": model, "sentence_index": i,
                 "prompt": v, "original": sent, "rewrite": out["text"],
-                "fidelity_ok": ok, "missing_numbers": miss_n, "missing_citations": miss_c,
+                "fidelity_ok": ok, "missing_numbers": miss_n, "added_numbers": add_n,
+                "missing_citations": miss_c, "added_citations": add_c,
                 **{k: out[k] for k in ("latency_s", "prompt_tokens",
                                        "thinking_tokens", "output_tokens")},
             })
