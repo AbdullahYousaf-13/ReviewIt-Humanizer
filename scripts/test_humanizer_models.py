@@ -1,20 +1,36 @@
 """
-Local HF paraphrase-model test harness (separate from the LLM/Groq pipeline).
+Test harness: local Hugging Face paraphrase MODELS for sentence-level humanization.
+Mirrors scripts/test_humanizer_api_llms.py, but uses offline seq2seq models instead of
+prompted API LLMs. See docs/MODEL_RESEARCH.md.
 
-Tests sentence-level paraphrase models that run locally — no API, no rate limits.
-Measures: speed (sentences/sec), and fact/citation preservation, and prints
-side-by-side output so you can paste results into ZeroGPT / Copyleaks / GPTZero.
+Models (offline, no API; run on CPU):
+  bart      eugenesiow/bart-paraphrase                 (BART-large, ~406M)
+  pegasus   tuner007/pegasus_paraphrase                (PEGASUS, ~569M)
+  humarin   humarin/chatgpt_paraphraser_on_T5_base     (T5-base, ~223M)
+
+NOTE: these are NOT prompted — they are fixed paraphrasers. You feed a sentence, they return a
+paraphrase; behaviour is baked in at training time (no A/B/C prompt variants).
+
+What it does:
+  - Runs a set of AI-flagged sentences (or your own, one per line) through the chosen model,
+    one sentence at a time.
+  - FIDELITY check: every number and in-text citation in the original must survive verbatim,
+    and none may be added (same checker as the API harness).
+  - Saves to data/<model>/output.txt: numbered INPUT/OUTPUT sections, with each sentence on its
+    OWN LINE (not merged into a paragraph), so INPUT and OUTPUT lines line up 1:1.
+
+It does NOT call any AI detector — paste the OUTPUT sentences into ZeroGPT/GPTZero/Copyleaks.
 
 Usage:
-    python test_local_models.py                      # run on built-in sample sentences
-    python test_local_models.py sentences.txt        # one sentence per line
-    python test_local_models.py --model humarin/chatgpt_paraphraser_on_T5_base
-    python test_local_models.py --variants 3          # show N paraphrase candidates
+    python scripts/test_humanizer_models.py                      # bart, built-in samples
+    python scripts/test_humanizer_models.py pegasus              # pegasus, built-in samples
+    python scripts/test_humanizer_models.py bart my_sents.txt    # one sentence per line
+    python scripts/test_humanizer_models.py <any/hf-model-id> my_sents.txt
 
-First run downloads the model (~1 GB for humarin T5-base) to the HF cache.
+First run downloads the model weights to the Hugging Face cache.
 """
 
-import argparse
+import os
 import re
 import sys
 import time
@@ -22,169 +38,179 @@ import time
 import torch
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 
-# --- Built-in research-paper-style sentences (10-40 words, with numbers + citations) ---
+# --- Model registry ----------------------------------------------------------
+MODELS = {
+    "bart": "eugenesiow/bart-paraphrase",
+    "pegasus": "tuner007/pegasus_paraphrase",
+    "humarin": "humarin/chatgpt_paraphraser_on_T5_base",
+}
+DEFAULT_MODEL = "bart"
+
+# --- Built-in test set (same as the API harness, for comparability) ----------
 SAMPLE_SENTENCES = [
-    "The implementation of deep neural networks enables the automated classification of medical images with remarkable accuracy.",
-    "Prior work demonstrated a 23.4% improvement in diagnostic precision when convolutional architectures were employed (Smith et al., 2020).",
-    "Furthermore, the integration of these computational methodologies facilitates the identification of pathological anomalies that conventional procedures fail to detect.",
-    "Our model achieved an F1 score of 0.91 on the test set, outperforming the baseline reported by Chen and Kumar (2019).",
-    "It is noteworthy that the aforementioned advancements have the potential to substantially reduce the probability of human diagnostic error.",
+    "The implementation of deep neural networks demonstrated a classification accuracy of 94.3% on the held-out test set.",
+    "Furthermore, the proposed methodology significantly outperformed baseline approaches (p < 0.001), as reported by Chen et al. (2021).",
+    "It is noteworthy that the aforementioned intervention reduced patient mortality by approximately 27% over a 12-month period.",
+    "The utilization of transfer learning facilitated a substantial reduction in training time, consistent with prior findings (Smith & Jones, 2019).",
+    "These results suggest that the integration of multimodal data sources enhances predictive performance across heterogeneous populations.",
+    "The experimental cohort comprised 1,482 participants recruited from three independent clinical sites between 2018 and 2020.",
+    "Consequently, the model achieved an F1-score of 0.87, thereby exceeding the previous state-of-the-art benchmark [14].",
+    "The observed correlation between the two variables was statistically significant (r = 0.62, p = 0.004).",
 ]
 
-# citation patterns: (Smith et al., 2020), (Chen and Kumar, 2019), [12], etc.
-CITATION_RE = re.compile(r"\([A-Z][A-Za-z]+(?:\s+(?:et al\.|and|&)\s+[A-Z][A-Za-z]+)?,?\s*\d{4}[a-z]?\)|\[\d+\]")
-# numbers (ints, decimals, percentages)
-NUMBER_RE = re.compile(r"\b\d+(?:\.\d+)?%?\b")
+# --- Fidelity checking (identical to the API harness) ------------------------
+NUM_RE = re.compile(r"\b\d[\d,]*\.?\d*%?\b")
+CITE_RE = re.compile(
+    r"\[\d+\]"
+    r"|[A-Z][A-Za-z]+(?:\s+(?:et al\.?|&\s*[A-Z][A-Za-z]+|and\s+[A-Z][A-Za-z]+))?\s*\(\d{4}[a-z]?\)"
+    r"|\([^()]*?\b\d{4}[a-z]?\b[^()]*?\)"
+)
 
 
-def paraphrase(text, model, tokenizer, device, num_return_sequences=1,
+def _norm_numbers(text):
+    t = text.lower().replace("percent", "%")
+    t = re.sub(r"(\d)\s*%", r"\1%", t)
+    t = re.sub(r"(?<=\d),(?=\d)", "", t)
+    return t
+
+
+def extract_facts(text):
+    nums = set(NUM_RE.findall(_norm_numbers(text)))
+    cites = set(c.strip() for c in CITE_RE.findall(text))
+    return nums, cites
+
+
+def fidelity_check(original, rewrite):
+    """Return (ok, missing_nums, added_nums, missing_cites, added_cites)."""
+    o_nums, o_cites = extract_facts(original)
+    r_nums, r_cites = extract_facts(rewrite)
+    missing_nums = sorted(o_nums - r_nums)
+    added_nums = sorted(r_nums - o_nums)
+    missing_cites = sorted(o_cites - r_cites)
+    added_cites = sorted(r_cites - o_cites)
+    ok = not (missing_nums or added_nums or missing_cites or added_cites)
+    return ok, missing_nums, added_nums, missing_cites, added_cites
+
+
+# --- Model inference ---------------------------------------------------------
+def paraphrase(text, model, tokenizer, device, prefix="",
                num_beams=5, repetition_penalty=10.0,
-               no_repeat_ngram_size=2, max_length=128, prefix=""):
-    # Only T5-style models (humarin) need the "paraphrase: " prefix.
+               no_repeat_ngram_size=2, max_length=128):
     input_ids = tokenizer(
-        f"{prefix}{text}",
-        return_tensors="pt",
-        padding="longest",
-        max_length=max_length,
-        truncation=True,
+        f"{prefix}{text}", return_tensors="pt", padding="longest",
+        max_length=max_length, truncation=True,
     ).input_ids.to(device)
-
-    # Plain beam search (transformers 5.x moved diverse/group beam search to a
-    # remote-code repo). num_beams must be >= num_return_sequences.
-    num_beams = max(num_beams, num_return_sequences)
     outputs = model.generate(
-        input_ids,
-        num_return_sequences=num_return_sequences,
-        num_beams=num_beams,
+        input_ids, num_return_sequences=1, num_beams=num_beams,
         repetition_penalty=repetition_penalty,
-        no_repeat_ngram_size=no_repeat_ngram_size,
-        max_length=max_length,
+        no_repeat_ngram_size=no_repeat_ngram_size, max_length=max_length,
     )
-    return tokenizer.batch_decode(outputs, skip_special_tokens=True)
+    return tokenizer.batch_decode(outputs, skip_special_tokens=True)[0].strip()
 
 
-def check_preservation(original, rewritten):
-    """Flag citations/numbers that were dropped or altered."""
-    orig_cites = set(CITATION_RE.findall(original))
-    new_cites = set(CITATION_RE.findall(rewritten))
-    orig_nums = set(NUMBER_RE.findall(original))
-    new_nums = set(NUMBER_RE.findall(rewritten))
+# --- CLI / main --------------------------------------------------------------
+def parse_args():
+    args = sys.argv[1:]
+    model_key = None
+    if args and (args[0] in MODELS or "/" in args[0]):   # alias or full HF id
+        model_key = args.pop(0)
+    elif args and not os.path.exists(args[0]):
+        print(f"'{args[0]}' is not a known model or an existing file.\n"
+              f"Models: {', '.join(MODELS)} (or a full HF model id)")
+        sys.exit(1)
+    model_key = model_key or DEFAULT_MODEL
+    sentences_file = args[0] if args else None
 
-    issues = []
-    missing_cites = orig_cites - new_cites
-    if missing_cites:
-        issues.append(f"CITATION lost/changed: {sorted(missing_cites)}")
-    missing_nums = orig_nums - new_nums
-    if missing_nums:
-        issues.append(f"NUMBER lost/changed: {sorted(missing_nums)}")
-    return issues
-
-
-# Abbreviations whose trailing period must NOT end a sentence.
-_ABBREVIATIONS = [
-    "et al.", "e.g.", "i.e.", "etc.", "cf.", "vs.", "Fig.", "fig.", "Eq.", "eq.",
-    "No.", "pp.", "p.", "Dr.", "Prof.", "Mr.", "Mrs.", "Ms.", "St.", "approx.",
-    "Inc.", "Ltd.", "Co.", "al.",
-]
+    if model_key in MODELS:
+        model_id, alias = MODELS[model_key], model_key
+    else:                                                 # full HF id passed
+        model_id, alias = model_key, model_key.split("/")[-1]
+    return model_id, alias, sentences_file
 
 
-def split_sentences(text):
-    """Split a line/paragraph into sentences, guarding decimals, citations, abbreviations."""
-    text = text.strip()
-    if not text:
-        return []
-    # Protect abbreviation periods and decimal points with a placeholder.
-    protected = text
-    for abbr in _ABBREVIATIONS:
-        protected = protected.replace(abbr, abbr.replace(".", "<DOT>"))
-    # decimals like 0.91 -> 0<DOT>91
-    protected = re.sub(r"(?<=\d)\.(?=\d)", "<DOT>", protected)
-    # Split after . ! ? (optionally followed by a quote/bracket) then whitespace + capital/quote.
-    parts = re.split(r'(?<=[.!?])["\')\]]?\s+(?=[A-Z"\'(])', protected)
-    return [p.replace("<DOT>", ".").strip() for p in parts if p.strip()]
+def load_sentences(sentences_file):
+    if sentences_file:
+        with open(sentences_file, "r", encoding="utf-8") as f:
+            lines = [ln.strip() for ln in f if ln.strip()]
+        print(f"Loaded {len(lines)} sentences from {sentences_file}")
+        return lines
+    print(f"Using {len(SAMPLE_SENTENCES)} built-in sample sentences")
+    return SAMPLE_SENTENCES
+
+
+def next_section(path):
+    if not os.path.exists(path):
+        return 1
+    with open(path, "r", encoding="utf-8") as f:
+        nums = [int(m.group(1)) for m in re.finditer(r"(?m)^# (\d+)\s*$", f.read())]
+    return (max(nums) + 1) if nums else 1
 
 
 def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("input", nargs="?", help="text file (paragraphs OK; auto-split into sentences)")
-    ap.add_argument("--model", default="humarin/chatgpt_paraphraser_on_T5_base")
-    ap.add_argument("--variants", type=int, default=1, help="paraphrase candidates per sentence")
-    ap.add_argument("--no-split", action="store_true", help="treat each line as one unit (skip sentence-splitting)")
-    args = ap.parse_args()
-
-    if args.input:
-        with open(args.input, "r", encoding="utf-8") as f:
-            raw_lines = [ln.strip() for ln in f if ln.strip()]
-    else:
-        raw_lines = SAMPLE_SENTENCES
-
-    if args.no_split:
-        sentences = raw_lines
-    else:
-        sentences = [s for line in raw_lines for s in split_sentences(line)]
+    model_id, alias, sentences_file = parse_args()
+    sentences = load_sentences(sentences_file)
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    print(f"Model : {args.model}")
-    print(f"Device: {device}")
-    print(f"Loading model (first run downloads weights)...\n")
-
+    print(f"Model: {model_id}  (alias: {alias}) | device: {device}")
+    print("Loading model (first run downloads weights)...")
     t0 = time.time()
-    tokenizer = AutoTokenizer.from_pretrained(args.model)
-    model = AutoModelForSeq2SeqLM.from_pretrained(args.model).to(device)
+    tokenizer = AutoTokenizer.from_pretrained(model_id)
+    model = AutoModelForSeq2SeqLM.from_pretrained(model_id).to(device)
     model.eval()
-    load_time = time.time() - t0
     n_params = sum(p.numel() for p in model.parameters())
-    print(f"Loaded in {load_time:.1f}s | {n_params/1e6:.0f}M params")
+    prefix = "paraphrase: " if "t5" in model_id.lower() else ""   # only T5 needs the prefix
+    print(f"Loaded in {time.time() - t0:.1f}s | {n_params / 1e6:.0f}M params | prefix={prefix!r}\n")
 
-    # T5-based models (humarin) require the "paraphrase: " task prefix; BART/PEGASUS do not.
-    prefix = "paraphrase: " if "t5" in args.model.lower() else ""
-    print(f"Prefix : {prefix!r}\n")
+    with torch.no_grad():   # warm-up (first generate includes graph overhead)
+        paraphrase(sentences[0], model, tokenizer, device, prefix=prefix)
 
-    # warm-up (first generate() call includes graph/compile overhead)
-    with torch.no_grad():
-        paraphrase(sentences[0], model, tokenizer, device, num_return_sequences=1, prefix=prefix)
-
-    total_gen_time = 0.0
-    out_lines = []
-    any_issues = False
+    outputs = []
+    totals = {"n": 0, "fidelity_fail": 0, "gen_s": 0.0}
 
     for i, sent in enumerate(sentences, 1):
         with torch.no_grad():
             t = time.time()
-            variants = paraphrase(sent, model, tokenizer, device,
-                                  num_return_sequences=args.variants, prefix=prefix)
+            rewrite = paraphrase(sent, model, tokenizer, device, prefix=prefix)
             dt = time.time() - t
-        total_gen_time += dt
-
-        print(f"[{i}/{len(sentences)}]  ({dt*1000:.0f} ms)")
+        ok, miss_n, add_n, miss_c, add_c = fidelity_check(sent, rewrite)
+        totals["n"] += 1
+        totals["gen_s"] += dt
+        if not ok:
+            totals["fidelity_fail"] += 1
+        flag = "OK " if ok else "FACT-LOSS"
+        print(f"[{i}/{len(sentences)}] [{flag}] {dt * 1000:.0f}ms")
         print(f"  ORIG: {sent}")
-        for j, v in enumerate(variants, 1):
-            tag = f"  OUT{j}:" if args.variants > 1 else "  OUT :"
-            print(f"{tag} {v}")
-            issues = check_preservation(sent, v)
-            if issues:
-                any_issues = True
-                for issue in issues:
-                    print(f"        !! {issue}")
-        print()
+        print(f"  OUT : {rewrite}")
+        if miss_n:
+            print(f"        missing numbers: {miss_n}")
+        if add_n:
+            print(f"        ADDED numbers (hallucination?): {add_n}")
+        if miss_c:
+            print(f"        missing citations: {miss_c}")
+        if add_c:
+            print(f"        ADDED citations (fabricated reference!): {add_c}")
+        outputs.append(rewrite)
 
-        out_lines.append(variants[0])
+    # --- Save: data/<model>/output.txt, numbered sections, one sentence per line ---
+    model_dir = os.path.normpath(os.path.join(
+        os.path.dirname(__file__), "..", "data", alias))
+    os.makedirs(model_dir, exist_ok=True)
+    path = os.path.join(model_dir, "output.txt")
+    n = next_section(path)
+    with open(path, "a", encoding="utf-8") as f:
+        f.write(f"# {n}\nINPUT:\n" + "\n".join(sentences)
+                + "\nOUTPUT:\n" + "\n".join(outputs) + "\n\n")
 
-    sps = len(sentences) / total_gen_time if total_gen_time else 0
-    print("=" * 60)
-    print(f"Sentences      : {len(sentences)}")
-    print(f"Total gen time : {total_gen_time:.2f}s  (excludes load + warm-up)")
-    print(f"Throughput     : {sps:.2f} sentences/sec  ({total_gen_time/len(sentences)*1000:.0f} ms/sentence)")
-    print(f"Fact/cite flags: {'SOME ISSUES — see !! above' if any_issues else 'none detected'}")
-
-    import os
-    root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    out_dir = os.path.join(root, "outputs")
-    os.makedirs(out_dir, exist_ok=True)
-    out_path = os.path.join(out_dir, "local_model_output.txt")
-    with open(out_path, "w", encoding="utf-8") as f:
-        f.write("\n".join(out_lines))
-    print(f"\nRewritten sentences saved to {out_path} (paste into detectors to test evasion)")
+    # --- Summary ---
+    c = totals["n"]
+    print("\n--- SUMMARY ---")
+    print(f"Model: {model_id}")
+    print(f"Sentences: {c}")
+    if c:
+        print(f"Fidelity failures (fact/citation loss): {totals['fidelity_fail']}/{c}")
+        print(f"Throughput: {c / totals['gen_s']:.2f} sent/sec ({totals['gen_s'] / c * 1000:.0f} ms/sentence)")
+    print(f"\nAppended as section #{n} to: {path}")
+    print("Next: paste the OUTPUT sentences into your ZeroGPT/GPTZero/Copyleaks step.")
 
 
 if __name__ == "__main__":
