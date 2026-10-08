@@ -8,7 +8,7 @@
 
 ## 1. Overview
 
-Both models were assessed as sentence-level humanizers. A single AI-flagged sentence is rewritten, reinserted into its original (largely human-written) paragraph, and the reassembled text is submitted to AI-content detectors. Detectors used: **ZeroGPT** and **Copyleaks** (Copyleaks at sensitivity level 2 of 3).
+Both models were assessed as sentence-level humanizers. A single AI-flagged sentence is rewritten, reinserted into its original (largely human-written) paragraph, and the reassembled text is submitted to AI-content detectors. Detectors used: **ZeroGPT** and **Copyleaks**.
 
 The two models represent fundamentally different approaches:
 
