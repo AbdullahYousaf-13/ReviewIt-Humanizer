@@ -15,7 +15,7 @@ What it does:
   - FIDELITY check: every number and in-text citation in the original must survive
     verbatim in the rewrite (flags any that don't).
   - Saves one combined file per prompt at data/<model>/<prompt>.txt; each run appends a
-    numbered section (# 1, # 2, ...) with that run's INPUT and OUTPUT paragraphs.
+    numbered section (# 1, # 2, ...) with INPUT and OUTPUT sentences, one per line (not merged).
 
 It does NOT call any AI detector — feed the saved rewrites into your existing
 ZeroGPT/GPTZero/Copyleaks step. Evasion scoring is deliberately kept separate.
@@ -355,11 +355,9 @@ def main():
             })
         time.sleep(1)  # gentle on free-tier RPM; raise if you hit 429s
 
-    # --- Save ---
-    #   data/<model>/inputs/input_<prompt>_<n>.txt
-    #   data/<model>/outputs/output_<prompt>_<n>.txt
-    # Both files are paragraph form (sentences joined in order). <n> is a run counter
-    # that continues from the highest existing index in the model's outputs folder.
+    # --- Save: data/<model>/<prompt>.txt, numbered sections, one sentence per line ---
+    # INPUT lists each source sentence on its own line; OUTPUT lists each rewrite on its own
+    # line (NOT merged into a paragraph), so they line up for reinserting.
     model_dir = os.path.normpath(os.path.join(
         os.path.dirname(__file__), "..", "data", model.replace("/", "-")))
     os.makedirs(model_dir, exist_ok=True)
@@ -372,7 +370,6 @@ def main():
             nums = [int(m.group(1)) for m in re.finditer(r"(?m)^# (\d+)\s*$", f.read())]
         return (max(nums) + 1) if nums else 1
 
-    input_paragraph = " ".join(sentences)
     run_outputs = []
     for v in variants:
         rewrites = [r["rewrite"] for r in sorted(
@@ -380,12 +377,12 @@ def main():
             key=lambda r: r["sentence_index"]) if r["rewrite"]]
         if not rewrites:
             continue
-        output_paragraph = " ".join(rewrites)
         path = os.path.join(model_dir, f"{v}.txt")          # one combined file per prompt
         n = next_section(path)
         with open(path, "a", encoding="utf-8") as f:        # append a numbered section
-            f.write(f"# {n}\nINPUT:\n{input_paragraph}\nOUTPUT:\n{output_paragraph}\n\n")
-        run_outputs.append((v, n, path, output_paragraph))
+            f.write(f"# {n}\nINPUT:\n" + "\n".join(sentences)
+                    + "\nOUTPUT:\n" + "\n".join(rewrites) + "\n\n")
+        run_outputs.append((v, n, path, rewrites))
 
     # --- Summary ---
     c = totals["calls"]
@@ -397,12 +394,12 @@ def main():
         print(f"Avg thinking tokens/call: {totals['thinking_tokens'] / c:.0f}")
         print(f"Avg output tokens/call:   {totals['output_tokens'] / c:.0f}")
         print(f"Avg latency/call:         {totals['latency_s'] / c:.2f}s")
-    for v, n_idx, out_path, output_paragraph in run_outputs:
-        print(f"\n--- OUTPUT PARAGRAPH (prompt {v}, section #{n_idx}) ---")
-        print(output_paragraph)
+    for v, n_idx, out_path, rewrites in run_outputs:
+        print(f"\n--- OUTPUT (prompt {v}, section #{n_idx}) ---")
+        print("\n".join(rewrites))
         print(f"appended as section #{n_idx} to: {out_path}")
 
-    print("\nNext: paste output.txt into your ZeroGPT/GPTZero/Copyleaks step.")
+    print("\nNext: paste the OUTPUT sentences into your ZeroGPT/GPTZero/Copyleaks step.")
 
 
 if __name__ == "__main__":
