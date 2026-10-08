@@ -3,7 +3,7 @@ Test harness: commercial / general-purpose API LLMs for sentence-level humanizat
 See docs/COMMERCIAL_LLM_RESEARCH.md for the full plan.
 
 Providers supported (all API, prompted — no fine-tuning):
-  gemini      gemini-3.8-flash         (google-genai SDK)   key: GEMINI_API_KEY
+  gemini      gemini-3.5-flash-lite    (google-genai SDK)   key: GEMINI_API_KEY
   deepseek    deepseek-flash           (OpenAI-compatible)  key: DEEPSEEK_API_KEY
   perplexity  sonar                    (OpenAI-compatible)  key: PERPLEXITY_API_KEY
   groq        qwen/qwen3.8-27b         (OpenAI-compatible)  key: GROQ_API_KEY   (current baseline)
@@ -48,7 +48,7 @@ load_dotenv()
 PROVIDERS = {
     "gemini": {
         "kind": "gemini",
-        "default_model": "gemini-3.8-flash",
+        "default_model": "gemini-3.5-flash-lite",  # fast/free; 3.8-flash is reasoning-heavy (~48s/call)
         "key_env": "GEMINI_API_KEY",
     },
     "deepseek": {
