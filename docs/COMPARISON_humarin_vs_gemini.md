@@ -1,61 +1,64 @@
-# Model Comparison — humarin T5 Paraphraser vs Gemini 3.5 Flash-Lite
+# Model Comparison: humarin T5 Paraphraser vs. Gemini 3.5 Flash-Lite
 
-**Project:** ReviewIt Humanizer (rewrite AI-flagged sentences in research papers to pass AI detectors without changing facts, citations, or meaning).
-**Both models tested** at the product's real granularity: rewrite only the flagged sentences, reinsert into the paper, and score the reassembled text on ZeroGPT and Copyleaks.
-**Date:** 2026-10-08.
+**Project:** ReviewIt Humanizer — rewriting AI-flagged sentences in research papers so they pass AI-content detectors without altering facts, citations, or meaning.
+**Scope:** A head-to-head comparison of the two models evaluated to date for this task.
+**Date:** 8 October 2026
 
 ---
 
-## 1. At a glance
+## 1. Overview
 
-| | **humarin/chatgpt_paraphraser_on_T5_base** | **gemini-3.5-flash-lite** |
+Both models were assessed as sentence-level humanizers. A single AI-flagged sentence is rewritten, reinserted into its original (largely human-written) paragraph, and the reassembled text is submitted to AI-content detectors. Detectors used: **ZeroGPT** and **Copyleaks** (Copyleaks at sensitivity level 2 of 3).
+
+The two models represent fundamentally different approaches:
+
+- **humarin/chatgpt_paraphraser_on_T5_base** — a small, open-weight paraphrasing model run locally.
+- **Gemini 3.5 Flash-Lite** — a commercial large language model accessed through Google's API and steered by prompt instructions.
+
+---
+
+## 2. Model profiles
+
+| Attribute | humarin T5 Paraphraser | Gemini 3.5 Flash-Lite |
 |---|---|---|
-| Type | T5 seq2seq paraphraser (**not an LLM**) | Instruction-following **LLM** (multimodal, reasoning-capable) |
-| Parameters | ~223M (open weights) | Not disclosed (proprietary) |
-| Developer | humarin (community) | Google |
-| How it's used | Fixed transform — feed a sentence, get a paraphrase; **no prompting** | **Prompted** — you instruct the behaviour and the constraints |
-| Where it runs | Locally, CPU, **offline** | Google API (cloud) |
-| Cost | **Free** (open model) | **Free tier** ($0, rate-limited); paid $0.30 in / $2.50 out per 1M tokens |
-| Speed | ~0.45 sentences/sec on CPU | ~3 s per sentence via API |
-| Data privacy | Fully local — nothing leaves the machine | Sent to Google; free tier may be used to improve products, paid tier not |
-| Link | https://huggingface.co/humarin/chatgpt_paraphraser_on_T5_base | https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash-lite |
+| Model type | T5 sequence-to-sequence paraphraser (not an LLM) | Instruction-following large language model (multimodal) |
+| Parameters | ~223 million (open weights) | Not disclosed (proprietary) |
+| Developer | Community (humarin) | Google |
+| Operation | Fixed transformation; accepts a sentence and returns a paraphrase; no prompting | Prompt-driven; behaviour and constraints are set in the instruction |
+| Deployment | Local, CPU, fully offline | Google Cloud API |
+| Cost | Free (open model) | Free tier available (rate-limited); paid tier $0.30 per 1M input tokens, $2.50 per 1M output tokens |
+| Throughput | ~0.45 sentences/second (CPU) | ~3 seconds per sentence (API) |
+| Data handling | Nothing leaves the local machine | Text is sent to Google; free-tier inputs may be used for product improvement, paid-tier inputs are not |
+| Reference | huggingface.co/humarin/chatgpt_paraphraser_on_T5_base | ai.google.dev/gemini-api/docs/models/gemini-3.5-flash-lite |
 
 ---
 
-## 2. Test results
+## 3. Test results
 
-Both were tested with the same method — humanize the flagged sentence(s), reinsert into the mostly-human paragraph, and run the result through the detectors.
+Each model was tested with the same procedure: rewrite the flagged sentence, reinsert it into the source paragraph, and score the reassembled text on the detectors.
 
-| Criterion | humarin | gemini-3.5-flash-lite |
+| Criterion | humarin T5 Paraphraser | Gemini 3.5 Flash-Lite |
 |---|---|---|
-| Evasion (sentence-level reinsertion) | ✅ Copyleaks 0% | ✅ ZeroGPT 0% · Copyleaks 0% |
-| Evasion (whole text, on its own) | ❌ ZeroGPT 100% → 100% | Not the use case; prompts restyle effectively in context |
-| Fact / number / citation preservation | Generally preserved, **but uncontrollable** | Preserved **and enforceable** (prompt rule + automated check) |
-| Observed failure | Drifted a claim: "maximizing operational efficiency" → "driving down operational costs" | Fabricated a citation (prompt-example leak) — **found and fixed**; checker now blocks added citations |
-| Control over output | None — fixed behaviour, cannot be instructed | Full — can be told "keep every citation, change no number" |
-| Restyling ability | Synonym swaps only; keeps formal structure | True casual restyle (the thing that moves detector scores) |
+| Detection evasion (sentence reinserted into paragraph) | Passed — ZeroGPT 0%, Copyleaks 0% | Passed — ZeroGPT 0%, Copyleaks 0% |
+| Fact, number, and citation preservation | Generally preserved, but cannot be enforced | Preserved, and enforceable via prompt rules and an automated check |
+| Observed issue during testing | Altered meaning: "maximizing operational efficiency" became "driving down operational costs" | Inserted a citation not present in the source (traced to an example in the prompt); corrected, and the automated check now blocks added citations |
+| Control over output | None; behaviour is fixed and cannot be instructed | Full; can be instructed to keep every citation and change no figure |
+| Restyling capability | Synonym substitution only; retains the original formal structure | Genuine casual restyle, which is what reduces detector scores |
 
-**Key observation:** at the product's granularity, **both reach 0%** — so evasion alone does not separate them. The deciding factor is **fidelity control**.
-
----
-
-## 3. Core difference
-
-- **humarin** is a small, fixed paraphraser. It is fast, free, private, and faithful in the simple cases — but it **cannot be steered**. It only swaps synonyms (so on its own it does not evade detectors), and when it does change wording it occasionally **alters meaning** with no way to prevent it. For research papers, an unenforceable fidelity risk is a serious problem.
-
-- **gemini-3.5-flash-lite** is an instruction-following LLM. It can be **commanded** to restyle aggressively *and* to leave every fact and citation untouched, and that constraint can be **verified automatically** (the harness flags any missing or added number/citation). It costs API calls and sends text to Google, but it is the only one of the two that gives **controllable, checkable fidelity** together with real restyling.
+**Key observation:** At the sentence-reinsertion granularity used in production, both models reduced detector scores to 0%. Evasion alone therefore does not distinguish them. The distinguishing factor is **control over fidelity** — the ability to guarantee and verify that facts and citations are preserved.
 
 ---
 
-## 4. Recommendation
+## 4. Analysis
 
-| Priority | Better choice |
-|---|---|
-| Fidelity control + reliable restyling (the project's hard requirement) | **gemini-3.5-flash-lite** |
-| Zero cost, fully offline, maximum data privacy | **humarin** |
+**humarin T5 Paraphraser** is fast, free, and private, and preserves content in straightforward cases. It is, however, a fixed model that cannot be steered: it performs synonym substitution only and retains the original sentence structure, and when it does change wording it can alter meaning with no mechanism to prevent it. For research papers, a fidelity risk that cannot be enforced is a material concern.
 
-For a research-paper humanizer where **fact and citation preservation is non-negotiable**, **gemini-3.5-flash-lite is the better fit**: it both restyles (so it genuinely humanizes) and lets us enforce and verify the "do not touch the facts" rule. humarin remains useful where offline/free/private operation outweighs the lack of control, but it cannot guarantee faithfulness and cannot restyle on its own.
+**Gemini 3.5 Flash-Lite** is an instruction-following model. It can be directed to restyle text while leaving every fact and citation unchanged, and that constraint can be verified automatically by the project's fidelity check, which flags any number or citation that is dropped or added. It incurs a per-call API cost and sends text to Google, but it is the only one of the two that combines genuine restyling with controllable, verifiable fidelity.
 
 ---
 
-*Notes:* Gemini parameter count is not published by Google (all frontier commercial LLMs keep this closed). Detector tests were run on ZeroGPT and Copyleaks (Copyleaks at sensitivity 2/3); not yet validated on GPTZero.
+## 5. Notes and caveats
+
+- Gemini's parameter count is not published; Google, like other providers of frontier commercial models, does not disclose it.
+- Detector testing covered ZeroGPT and Copyleaks (the latter at sensitivity level 2 of 3). GPTZero has not yet been tested.
+- Results reflect the product's intended use — rewriting a small number of flagged sentences within otherwise human-written text — not whole-document rewriting.
