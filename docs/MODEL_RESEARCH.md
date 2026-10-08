@@ -96,25 +96,26 @@ is LLM prompting.
 These change register/structure rather than preserving it, so they have a real mechanism for
 evasion. Still CPU-runnable seq2seq.
 
-### `Styleformer` (formal → casual style transfer) — ⏳ NEXT TO TEST
+### `Styleformer` (formal → casual style transfer) — ⏳ PARKED
 
 | Spec | Value |
 |---|---|
 | Author | prithivida (Prithiviraj Damodaran) |
-| Base | T5-based |
-| Task | Formal ↔ casual, active ↔ passive style transfer |
-| Why | Casual restyle directly attacks the "formal AI prose" signal (matches BRIEF.md findings) |
-| Links | GitHub: https://github.com/PrithivirajDamodaran/Styleformer · HF (reverse dir): https://huggingface.co/prithivida/informal_to_formal_styletransfer |
+| Base | **T5-based seq2seq (a model, NOT an LLM)** — same class as humarin |
+| Task | Formal ↔ casual, active ↔ passive style transfer (no prompting) |
+| Formal→casual model | ✅ `prithivida/formal_to_informal_styletransfer` (verified exists; via the `styleformer` lib, `Styleformer(style=1)`) |
+| Why it fits | Casual restyle directly attacks the "formal AI prose" signal (matches BRIEF.md) |
+| Why parked | Trained on **everyday/social text** (slang, "hehe..", lowercase) — likely too informal for academic prose and may mangle technical terms/citations |
+| Links | GitHub: https://github.com/PrithivirajDamodaran/Styleformer |
 
-*Note: need the formal→casual direction; verify exact HF model id before running.*
-
-### `Nubletz/bart-text-simplification` — ⏳ candidate
+### `Nubletz/bart-text-simplification` — ⏳ NEXT TO TEST (id verified)
 
 | Spec | Value |
 |---|---|
 | Base | facebook/bart-large-cnn, fine-tuned on ASSET + TurkCorpus |
 | Task | Sentence simplification (shorter, simpler structure) |
-| Risk | Simplification may drop nuance/detail — watch fact preservation |
+| Risk | Simplification may drop nuance/detail — watch fact preservation (same failure mode as PEGASUS) |
+| Run | No code change needed — pass the full id to the harness: `python scripts/test_humanizer_models.py Nubletz/bart-text-simplification <file>` → saves to `data/bart-text-simplification/output.txt` |
 | Link | https://huggingface.co/Nubletz/bart-text-simplification |
 
 **Expectation (from research):** Even purpose-built non-LLM humanizers only *partially* evade.
@@ -156,9 +157,9 @@ paraphrasers still score ~100% AI. **Fidelity** is the real differentiator.
 | humarin T5 | Faithful paraphraser | ⚠️ CPU; **drifts** (no control — "efficiency"→"costs") | ✅ **0% (Copyleaks)** |
 | pegasus | Summarizer | ❌ **deletes content** (dropped list items) | ✅ **0% (Copyleaks)** |
 | bart-paraphrase | Faithful paraphraser | ✅ CPU, faithful | ❌ none — returns input ~verbatim |
-| Styleformer | Style transfer | ✅ CPU (to verify) | ⏳ untested |
-| bart-text-simplification | Simplification | ✅ CPU | ⏳ untested |
-| DIPPER | Large paraphraser | ❌ 11B | ⚠️ stale vs modern detectors |
+| Styleformer (T5, not an LLM) | Style transfer | ✅ CPU | ⏳ parked — trained on social text (too informal) |
+| bart-text-simplification | Simplification | ⚠️ may drop detail | ⏳ **next to test** (id verified) |
+| DIPPER | Large paraphraser | ❌ 11B | ❌ ruled out — CPU can't run 11B; stale vs modern detectors |
 
 > humarin and PEGASUS **do evade** at sentence-level reinsertion (0% Copyleaks) — but that's true of
 > almost any rewrite in context, so the deciding factor is fidelity, where both fail to be
