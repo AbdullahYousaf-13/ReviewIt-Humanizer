@@ -105,7 +105,8 @@ def paraphrase(text, model, tokenizer, device, prefix="",
         repetition_penalty=repetition_penalty,
         no_repeat_ngram_size=no_repeat_ngram_size, max_length=max_length,
     )
-    return tokenizer.batch_decode(outputs, skip_special_tokens=True)[0].strip()
+    text = tokenizer.batch_decode(outputs, skip_special_tokens=True)[0]
+    return re.sub(r"\s+", " ", text).strip()   # one response = one line (flatten internal breaks)
 
 
 # --- CLI / main --------------------------------------------------------------

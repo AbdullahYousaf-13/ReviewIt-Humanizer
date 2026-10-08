@@ -372,7 +372,9 @@ def main():
 
     run_outputs = []
     for v in variants:
-        rewrites = [r["rewrite"] for r in sorted(
+        # One response per line: flatten any internal newlines so a multi-sentence
+        # response stays on its own single line (keeps OUTPUT lines 1:1 with INPUT).
+        rewrites = [re.sub(r"\s+", " ", r["rewrite"]).strip() for r in sorted(
             (r for r in results if r["prompt"] == v),
             key=lambda r: r["sentence_index"]) if r["rewrite"]]
         if not rewrites:
