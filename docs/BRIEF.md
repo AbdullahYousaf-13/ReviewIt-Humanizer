@@ -79,6 +79,29 @@ Tested the real pipeline: humanize **only** the flagged sentence(s) and reinsert
 
 ---
 
+## Key reframe — evasion is the easy part; fidelity is the hard part (2026-10-08)
+
+At the product's **real granularity** (rewrite only the flagged sentences, reinsert into the
+mostly-human paper), the reassembled paper reliably passes detection — **ZeroGPT and Copyleaks hit
+0% with LLMs, humarin, and even PEGASUS.** So the **detector score no longer discriminates between
+methods.** The deciding metric is **fidelity**: keep every fact, number, citation, and the exact
+meaning.
+
+Local paraphrasers re-tested at sentence level (see [MODEL_RESEARCH.md](MODEL_RESEARCH.md)):
+
+| Model | Reinsert → detector | Fidelity |
+|---|---|---|
+| LLM (Gemini, prompted) | ✅ 0% | ✅ best — can **enforce** "keep facts/citations" + auto-check |
+| humarin | ✅ 0% | ⚠️ no control — drifted "efficiency" → "costs" |
+| PEGASUS | ✅ 0% | ❌ deletes content (dropped list items) |
+| BART | — (copies) | ✅ faithful but no change |
+
+**Conclusion:** evasion at sentence level is solved; the product's hard problem is **controllable
+fidelity** — and only LLM prompting lets you *command and verify* "don't touch the facts." The
+paraphraser models can't be constrained, so they silently break a fact sooner or later.
+
+---
+
 ## What Actually Works for Evasion
 
 - Replace complex/academic words with simple everyday synonyms.

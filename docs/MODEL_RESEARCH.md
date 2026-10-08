@@ -10,8 +10,29 @@
 ## A. Tested locally
 
 Run via `scripts/test_humanizer_models.py` on CPU in the project `.venv`. Small seq2seq
-paraphrasers that run offline (no API, no rate limits). **Detector results are from ZeroGPT**
-(the easiest of the three targets — GPTZero/Copyleaks are stricter).
+paraphrasers that run offline (no API, no rate limits). The per-model "FAILS EVASION" verdicts
+below are the **on-their-own / whole-text** ZeroGPT results. For the **product's real
+granularity** — rewrite only the flagged sentences and reinsert into the mostly-human paper —
+see the sentence-level re-test next.
+
+### ⭐ Sentence-level re-test (2026-10-08, new harness) — evasion is the easy part
+
+Tested the actual product pipeline: humanize only the flagged sentence(s), reinsert, score the
+reassembled paragraph on **Copyleaks** (strict, sensitivity 2/3).
+
+| Model | Reinsert → detector | Fidelity (the real differentiator) |
+|---|---|---|
+| **humarin** | ✅ Copyleaks 0% | ⚠️ paraphrases but **no control** — drifted "maximizing operational efficiency" → "driving down operational costs" |
+| **PEGASUS** | ✅ Copyleaks 0% | ❌ **deletes content** — dropped 3 of 4 list items ("aggregation, coding, long-term preservation") |
+| **BART** | — (returns input ~verbatim) | ✅ faithful but no change → pointless |
+
+**Key reframe:** at the product's sentence-level granularity (rewrite flagged sentences, reinsert),
+the reassembled paper reliably passes detection with *any* of these — so the **detector score no
+longer discriminates between methods.** Evasion is the easy part. The deciding metric is
+**fidelity**: keep every fact, number, citation, and the exact meaning. The paraphrasers can't be
+*constrained* (no prompts), so they drift (humarin) or delete (PEGASUS). Only the LLM-prompting
+path lets you enforce "don't touch facts/citations" and auto-check it
+(see [LLM_RESEARCH.md](LLM_RESEARCH.md) and COMMERCIAL_LLM_RESEARCH.md).
 
 ### `humarin/chatgpt_paraphraser_on_T5_base` — ❌ FAILS EVASION
 
@@ -59,10 +80,14 @@ one sentence per line.)
 
 ### Conclusion on faithful paraphrasers
 
-**humarin, bart, and pegasus all fail.** They keep the formal structure detectors key on
-(humarin, bart) or lose content (bart on long input, pegasus). Faithful paraphrasing ≠
-evasion. What moves detector scores is changing **register and structure** — the domain of
-style-transfer / simplification models (Section B), not paraphrasers.
+**On their own, humarin, bart, and pegasus all fail evasion** — they keep the formal structure
+detectors key on (humarin, bart) or lose content (bart on long input, pegasus). But at the
+product's **sentence-level reinsertion** granularity they all clear detection (see the re-test
+above), which makes **fidelity — not evasion — the selection criterion.** On fidelity they rank
+humarin > pegasus > bart, yet **none is reliable**: there's no way to *enforce* fact/citation
+preservation, so humarin drifted a claim and pegasus deleted content. Faithful paraphrasing ≠
+controllable humanization. The only method that both restyles and lets you lock facts/citations
+is LLM prompting.
 
 ---
 
