@@ -22,7 +22,7 @@ None is reliable: paraphrasers can't be *constrained* to preserve facts (no prom
 | Model | Class | Status |
 |---|---|---|
 | Styleformer `prithivida/formal_to_informal_styletransfer` | T5 style transfer (a **model**, not an LLM) | ⏳ parked — trained on social text (too informal; may mangle terms/citations) |
-| `Nubletz/bart-text-simplification` | BART simplification (ASSET+TurkCorpus) | ⏳ next to test (id verified). `python scripts/test_humanizer_models.py Nubletz/bart-text-simplification <file>`. Risk: drops detail like PEGASUS. |
+| `Nubletz/bart-text-simplification` | BART simplification (ASSET+TurkCorpus) | ❌ **broken** — tokenizer vs config token-id mismatch (tokenizer bos=2/eos=3/pad=0 vs config bos=0/decoder_start=2) → output decodes to empty under every decoding setting. Unusable as uploaded. |
 | DIPPER `kalpeshk2011/dipper-paraphraser-xxl` | T5-XXL 11B paraphraser | ❌ ruled out — 11B, can't run on CPU; stale vs modern detectors (2025 TH-Bench) |
 
 > Dedicated evasion models (MASH, GradEscape, …) → [EVASION_MODELS_RESEARCH.md](EVASION_MODELS_RESEARCH.md). RL evasion LLMs (AuthorMist, StealthRL) → [LLM_RESEARCH.md](LLM_RESEARCH.md).
