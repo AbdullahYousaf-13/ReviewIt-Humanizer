@@ -147,13 +147,21 @@ Strong evasion in its original paper, but doesn't fit the constraints (CPU-only;
 
 ## Overall status
 
-| Model | Class | Fits constraints? | Evasion |
+**Evasion** below = **sentence-level reinsertion** (the product scenario: rewrite only the flagged
+sentences, reinsert, score the paragraph on Copyleaks). On their own / whole-text, the faithful
+paraphrasers still score ~100% AI. **Fidelity** is the real differentiator.
+
+| Model | Class | Fidelity | Evasion (reinsert) |
 |---|---|---|---|
-| humarin T5 | Faithful paraphraser | ✅ CPU, facts | ❌ 100% AI |
-| bart-paraphrase | Faithful paraphraser | ✅ CPU, facts | ❌ 100% AI |
-| pegasus | Summarizer | ⚠️ loses content | ❌ disqualified |
-| Styleformer | Style transfer | ✅ CPU (to verify) | ⏳ untested — next |
+| humarin T5 | Faithful paraphraser | ⚠️ CPU; **drifts** (no control — "efficiency"→"costs") | ✅ **0% (Copyleaks)** |
+| pegasus | Summarizer | ❌ **deletes content** (dropped list items) | ✅ **0% (Copyleaks)** |
+| bart-paraphrase | Faithful paraphraser | ✅ CPU, faithful | ❌ none — returns input ~verbatim |
+| Styleformer | Style transfer | ✅ CPU (to verify) | ⏳ untested |
 | bart-text-simplification | Simplification | ✅ CPU | ⏳ untested |
 | DIPPER | Large paraphraser | ❌ 11B | ⚠️ stale vs modern detectors |
 
-> LLM-based evasion models (AuthorMist, StealthRL) are in [LLM_RESEARCH.md](LLM_RESEARCH.md).
+> humarin and PEGASUS **do evade** at sentence-level reinsertion (0% Copyleaks) — but that's true of
+> almost any rewrite in context, so the deciding factor is fidelity, where both fail to be
+> *controllable* (humarin drifts meaning, PEGASUS deletes content). BART changes nothing, so it
+> doesn't evade even in context. LLM-based evasion models (AuthorMist, StealthRL) are in
+> [LLM_RESEARCH.md](LLM_RESEARCH.md).
