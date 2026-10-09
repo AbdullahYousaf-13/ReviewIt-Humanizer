@@ -22,7 +22,7 @@ What it does:
 It does NOT call any AI detector — paste the OUTPUT sentences into ZeroGPT/GPTZero/Copyleaks.
 
 Usage:
-    python scripts/test_humanizer_models.py                      # bart, built-in samples
+    python scripts/test_humanizer_models.py                      # humarin (default), built-in samples
     python scripts/test_humanizer_models.py pegasus              # pegasus, built-in samples
     python scripts/test_humanizer_models.py bart my_sents.txt    # one sentence per line
     python scripts/test_humanizer_models.py <any/hf-model-id> my_sents.txt
@@ -44,7 +44,7 @@ MODELS = {
     "pegasus": "tuner007/pegasus_paraphrase",
     "humarin": "humarin/chatgpt_paraphraser_on_T5_base",
 }
-DEFAULT_MODEL = "bart"
+DEFAULT_MODEL = "humarin"
 
 # --- Built-in test set (same as the API harness, for comparability) ----------
 SAMPLE_SENTENCES = [
