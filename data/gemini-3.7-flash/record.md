@@ -7,7 +7,6 @@ AI-sentence type legend: **[fluff]** / **[number]** / **[citation]** — the fid
 ---
 
 # Set 1
-
 ## 1. Original paragraphs
 Artificial intelligence is revolutionizing — and strengthening — modern healthcare through technologies that can predict, grasp, learn, and act, whether it's employed to identify new relationships between genetic codes or to control surgery-assisting robots. It can detect minor patterns that humans would completely overlook. This study explores and discusses the various modern applications of AI in the health sector.
 
@@ -33,15 +32,21 @@ Particularly, the study focuses on three most emerging areas of AI-powered healt
 The findings also indicate that AI-assisted clinical trials are capable of handling massive volumes of data and producing highly accurate results. In addition, artificial intelligence is helping to improve patient care in many important ways, as it enables medical companies to build advanced systems that support patients throughout every stage of their treatment journey (Thompson et al., 2021). Patients' medical data is also analyzed by clinical intelligence, which provides insights to assist them improve their quality of life.
 
 ## 5. Humanized sentences (gemini-3.7-flash)
-_pending — Stage 2 (after harness run)_
+- P1: "Artificial intelligence is playing a bigger role in healthcare today. It provides many powerful new tools. These tools are helping to change how we receive medical care."
+- P2: "Artificial intelligence has greatly improved how we find new medicines. Recent studies show that it can speed up this work by 73%. This makes the process much faster than older ways of doing it. It also saves a lot more money."
+- P3: "Artificial intelligence is also helping improve patient care in many big ways. It lets medical companies build smart systems to help people. These tools support patients through every step of their treatment (Thompson et al., 2021)."
 
 ## 6. Paragraphs with humanized sentences (gemini-3.7-flash)
-_pending — Stage 2_
+Artificial intelligence is revolutionizing — and strengthening — modern healthcare through technologies that can predict, grasp, learn, and act, whether it's employed to identify new relationships between genetic codes or to control surgery-assisting robots. Artificial intelligence is playing a bigger role in healthcare today. It provides many powerful new tools. These tools are helping to change how we receive medical care. This study explores and discusses the various modern applications of AI in the health sector.
+
+Particularly, the study focuses on three most emerging areas of AI-powered healthcare: AI-led drug discovery, clinical trials, and patient care. The findings suggest that pharmaceutical firms have benefited from AI in healthcare by speeding up their drug discovery process and automating target identification. Artificial intelligence has greatly improved how we find new medicines. Recent studies show that it can speed up this work by 73%. This makes the process much faster than older ways of doing it. It also saves a lot more money.
+
+The findings also indicate that AI-assisted clinical trials are capable of handling massive volumes of data and producing highly accurate results. Artificial intelligence is also helping improve patient care in many big ways. It lets medical companies build smart systems to help people. These tools support patients through every step of their treatment (Thompson et al., 2021). Patients' medical data is also analyzed by clinical intelligence, which provides insights to assist them improve their quality of life.
+
 
 ---
 
 # Set 2
-
 ## 1. Original paragraphs
 The healthcare industry is in the midst of a transformation. The causes of this revolution are rising total health-care cost and a growing lack of health-care experts. As a result, the healthcare industry is looking to implement new information technology-based solutions and processes that can cut costs and give solutions to these rising difficulties.
 
@@ -61,15 +66,18 @@ The healthcare industry is in the midst of a transformation. The causes of this 
 Healthcare systems around the world face huge issues, including a lack of access, high costs, waste, and an older population. Pandemics like the coronavirus (COVID-19) put a strain on healthcare systems, resulting in a lack of protective equipment, insufficient or erroneous diagnostic tests, overworked physicians, and a lack of information exchange, to mention a few consequences (Greenberg et al., 2020) (Pavli et al., 2021). More crucially, a healthcare catastrophe like COVID-19 or the development of the human immunodeficiency virus (HIV) in the 1980s exposes the stark reality of our health-care systems' flaws. As healthcare crises exacerbate current difficulties, we can reinvent and actualize systems of care and backoffice health systems, such as: Inequitable healthcare access, that there are not enough on-demand healthcare services, high costs, a lack of price transparency (Maphumulo & Bhengu, 2019). In fact, recent studies have shown that nearly 68% of healthcare organizations around the world continue to face significant difficulties when it comes to adopting new digital technologies and modern solutions. Burnout among healthcare practitioners is a result of physicians' incapacity to keep up with the latest breakthroughs in medicine due to the large amount of data to be assimilated.
 
 ## 5. Humanized sentences (gemini-3.7-flash)
-_pending — Stage 2 (after harness run)_
+- P1: "Healthcare needs to start using new tech tools to tackle these growing problems. This will help them give patients much better care overall."
+- P2: "Recent studies show that nearly 68% of healthcare groups worldwide still have problems. They struggle to start using new digital tools and modern solutions."
 
 ## 6. Paragraphs with humanized sentences (gemini-3.7-flash)
-_pending — Stage 2_
+The healthcare industry is in the midst of a transformation. The causes of this revolution are rising total health-care cost and a growing lack of health-care experts. Healthcare needs to start using new tech tools to tackle these growing problems. This will help them give patients much better care overall.
+
+Healthcare systems around the world face huge issues, including a lack of access, high costs, waste, and an older population. Pandemics like the coronavirus (COVID-19) put a strain on healthcare systems, resulting in a lack of protective equipment, insufficient or erroneous diagnostic tests, overworked physicians, and a lack of information exchange, to mention a few consequences (Greenberg et al., 2020) (Pavli et al., 2021). More crucially, a healthcare catastrophe like COVID-19 or the development of the human immunodeficiency virus (HIV) in the 1980s exposes the stark reality of our health-care systems' flaws. As healthcare crises exacerbate current difficulties, we can reinvent and actualize systems of care and backoffice health systems, such as: Inequitable healthcare access, that there are not enough on-demand healthcare services, high costs, a lack of price transparency (Maphumulo & Bhengu, 2019). Recent studies show that nearly 68% of healthcare groups worldwide still have problems. They struggle to start using new digital tools and modern solutions. Burnout among healthcare practitioners is a result of physicians' incapacity to keep up with the latest breakthroughs in medicine due to the large amount of data to be assimilated.
+
 
 ---
 
 # Set 3
-
 ## 1. Original paragraphs
 Each doctor's accomplishments and failures must be learned via experience before becoming part of the standard of care and best practices. Doctors gain knowledge from other doctors, research studies, medication and device businesses that promote goods, and their own triumphs and mistakes with their own patients. Each doctor's error are be identified and corrected, often at the expense of their patients (McNeill & Walton, 2002). This form of learning represents human nature, and physicians are not immune to our brains' and learning systems' hard-wiring.
 
@@ -95,15 +103,21 @@ The issue is that the provider's prejudice and limits are a result of this anecd
 Health professionals use the expertise of large numbers of clinical studies, the lessons of large numbers of patient treatment routes, and the cumulative experience of thousands of clinicians because they didn't have it at their fingertips (Shaheen, 2021a). Moreover, studies have found that using these advanced technologies can help reduce bias in medical decision-making by around 42%, which represents a significant step toward providing fairer and more reliable care for all patients. Clinicians are vulnerable to cognitive and cultural biases as humans, but by offering a technological balancer in the knowledge base of providers, we can reduce, if not eradicate, the effects of such biases in AI (Woo, 2019).
 
 ## 5. Humanized sentences (gemini-3.7-flash)
-_pending — Stage 2 (after harness run)_
+- P1: "Overall, we must understand that this kind of learning is normal for humans. Like everyone else, doctors are shaped by how the mind processes information. How we remember things over time also plays a key role."
+- P2: "Studies show that artificial intelligence helps doctors make fewer mistakes (Alvarez & Chen, 2018). These advanced computer tools also make medical choices more accurate. They work well in many different health care settings (Alvarez & Chen, 2018)."
+- P3: "Studies show that these new tools help doctors make fairer choices. They cut bias in medical decisions by about 42%. This is a big step toward giving everyone better and fairer care."
 
 ## 6. Paragraphs with humanized sentences (gemini-3.7-flash)
-_pending — Stage 2_
+Each doctor's accomplishments and failures must be learned via experience before becoming part of the standard of care and best practices. Doctors gain knowledge from other doctors, research studies, medication and device businesses that promote goods, and their own triumphs and mistakes with their own patients. Each doctor's error are be identified and corrected, often at the expense of their patients (McNeill & Walton, 2002). Overall, we must understand that this kind of learning is normal for humans. Like everyone else, doctors are shaped by how the mind processes information. How we remember things over time also plays a key role.
+
+The issue is that the provider's prejudice and limits are a result of this anecdotal experience (Ross et al., 2009). In reality, based on their own personal observation, some physicians may mistakenly deceive themselves into believing that a diagnosis is correct or that a therapy is effective, despite the fact that it is counter to evidence backed by studies or the results of thousands of patients (McNeill & Walton, 2002) (Shaheen, 2021a). Studies show that artificial intelligence helps doctors make fewer mistakes (Alvarez & Chen, 2018). These advanced computer tools also make medical choices more accurate. They work well in many different health care settings (Alvarez & Chen, 2018). To optimize reimbursement, clinicians must see as many patients as possible in the present medical environment. This leaves clinicians with little time to focus on secondary patient care chores, let alone stay current on medical breakthroughs. Doctors, on the other hand, now have immediate access to the insights and best practices of hundreds of cohorts, and they don't have to wait for best practices to be formalized into national standards of care (Ting et al., 2018). We can modify this calculus even more and act at a faster scale using AI than a particular physician or institution could (Holzinger et al., 2017).
+
+Health professionals use the expertise of large numbers of clinical studies, the lessons of large numbers of patient treatment routes, and the cumulative experience of thousands of clinicians because they didn't have it at their fingertips (Shaheen, 2021a). Studies show that these new tools help doctors make fairer choices. They cut bias in medical decisions by about 42%. This is a big step toward giving everyone better and fairer care. Clinicians are vulnerable to cognitive and cultural biases as humans, but by offering a technological balancer in the knowledge base of providers, we can reduce, if not eradicate, the effects of such biases in AI (Woo, 2019).
+
 
 ---
 
 # Set 4
-
 ## 1. Original paragraphs
 AI technology in healthcare has helped pharmaceutical companies speed up their drug discovery process. It, on the other hand, automates the identification of targets. In addition, by analyzing off-target compounds, AI in healthcare 2021 aids in drug repurposing (Díaz et al., 2019). As a result, in the AI and healthcare industries, AI drug discovery streamlines the process and reduces repeated work. (Chan et al., 2019).
 
@@ -129,15 +143,21 @@ Several remedies discovered by the leading biopharmaceutical companies are avail
 If proponents of these strategies are correct, AI and machine learning will bring in a new era of drug development that is faster, cheaper, and more effective. Nevertheless, most experts agree that the combination of artificial intelligence and automation will play a key role in shaping the future of drug discovery and development in the years to come (Roberts & Nguyen, 2020). Scientists face both obstacles and opportunities as a result of this transformation, particularly when the approaches are coupled with automation. (Chan et al., 2019).
 
 ## 5. Humanized sentences (gemini-3.7-flash)
-_pending — Stage 2 (after harness run)_
+- P1: "These changes are a major step forward. Artificial intelligence continues to change the drug industry. It makes the whole process faster, smarter, and more efficient than ever."
+- P2: "Recent reports show that about 87% of top drug companies now use similar AI tools. They also form AI partnerships. This shows that the technology has become very important across the whole industry."
+- P3: "Most experts agree on this point (Roberts & Nguyen, 2020). Artificial intelligence and automation will work together. They will help shape the future of making new drugs. These tools will play a big role for years to come."
 
 ## 6. Paragraphs with humanized sentences (gemini-3.7-flash)
-_pending — Stage 2_
+AI technology in healthcare has helped pharmaceutical companies speed up their drug discovery process. These changes are a major step forward. Artificial intelligence continues to change the drug industry. It makes the whole process faster, smarter, and more efficient than ever. In addition, by analyzing off-target compounds, AI in healthcare 2021 aids in drug repurposing (Díaz et al., 2019). As a result, in the AI and healthcare industries, AI drug discovery streamlines the process and reduces repeated work. (Chan et al., 2019).
+
+Several remedies discovered by the leading biopharmaceutical companies are available. Pfizer is utilizing IBM Watson, a machine learning-based system, to help it find immuno-oncology treatments (P. Agrawal, 2018). Sanofi has agreed to employ Exscientia's artificial-intelligence (AI) platform to seek for metabolic-disease medications, while Roche subsidiary Genentech is relying on an Artificial intelligence system from GNS Healthcare in Cambridge, Massachusetts, to aid in its search for cancer treatments. Recent reports show that about 87% of top drug companies now use similar AI tools. They also form AI partnerships. This shows that the technology has become very important across the whole industry.
+
+If proponents of these strategies are correct, AI and machine learning will bring in a new era of drug development that is faster, cheaper, and more effective. Most experts agree on this point (Roberts & Nguyen, 2020). Artificial intelligence and automation will work together. They will help shape the future of making new drugs. These tools will play a big role for years to come. Scientists face both obstacles and opportunities as a result of this transformation, particularly when the approaches are coupled with automation. (Chan et al., 2019).
+
 
 ---
 
 # Set 5
-
 ## 1. Original paragraphs
 A clinical trial is a procedure in which freshly manufactured treatments are given to people to test how well they work. This has taken a significant amount of time and money. The success rate, however, is quite low.
 
@@ -157,15 +177,18 @@ A clinical trial is a procedure in which freshly manufactured treatments are giv
 As a result, clinical trial automation has proven to be a benefit for AI and the healthcare business. Furthermore, Artificial Intelligence and healthcare assist in the elimination of time-consuming data monitoring procedures. Overall, it is clear that these modern technologies are transforming the healthcare industry in many important ways, as artificial intelligence continues to improve efficiency and open up new possibilities in clinical research. The following are some of the most popular Artificial Intelligence in healthcare applications for clinical trials.
 
 ## 5. Humanized sentences (gemini-3.7-flash)
-_pending — Stage 2 (after harness run)_
+- P1: "Studies show that less than 12% of clinical trials actually succeed. This clearly shows that the traditional trial process is too slow. Over the years, these tests have also become very wasteful and expensive."
+- P2: "These modern tools are clearly changing healthcare in many big ways. Artificial intelligence continues to make work faster and easier. It is also creating new options for medical research."
 
 ## 6. Paragraphs with humanized sentences (gemini-3.7-flash)
-_pending — Stage 2_
+A clinical trial is a procedure in which freshly manufactured treatments are given to people to test how well they work. This has taken a significant amount of time and money. Studies show that less than 12% of clinical trials actually succeed. This clearly shows that the traditional trial process is too slow. Over the years, these tests have also become very wasteful and expensive.
+
+As a result, clinical trial automation has proven to be a benefit for AI and the healthcare business. Furthermore, Artificial Intelligence and healthcare assist in the elimination of time-consuming data monitoring procedures. These modern tools are clearly changing healthcare in many big ways. Artificial intelligence continues to make work faster and easier. It is also creating new options for medical research. The following are some of the most popular Artificial Intelligence in healthcare applications for clinical trials.
+
 
 ---
 
 # Set 6
-
 ## 1. Original paragraphs
 Traditional 'linear and sequential' clinical trials are still the gold standard for ensuring the efficacy and safety of new drugs. The lengthy, tried-and-true method of distinct and defined stages of randomised controlled trials (RCTs) was developed primarily for evaluating massmarket pharmaceuticals and has remained mostly unchanged in recent decades. Artificial intelligence has the potential to shorten clinical trial cycle durations while also enhancing productivity and clinical development outcomes. This is the third in a series of reports on AI's impact on the biopharma value chain (Lee, 2021) (Angus, 2020).
 
@@ -191,15 +214,21 @@ Biopharma businesses have been able to obtain increasing volumes of scientific a
 Moreover, artificial intelligence can play an important role in managing clinical trial data, as it helps to clean, organize, and store large amounts of information quickly and accurately throughout the entire research process (Harrer et al., 2019). Furthermore, improved electronic data capture (EDC) may reduce the impact of human error in data collection while also allowing for smooth system integration (Mayorga-Ruiz et al., 2019).
 
 ## 5. Humanized sentences (gemini-3.7-flash)
-_pending — Stage 2 (after harness run)_
+- P1: "Artificial intelligence could completely change how we run clinical trials. It can make the testing process much faster and easier. This technology also leads to better results for all new drugs."
+- P2: "Recent estimates show that up to 80% of this helpful real-world data goes unused. This mostly happens because many groups lack the advanced tools to study it well. They also do not yet have the technical skills they need."
+- P3: "Artificial intelligence can help handle data from medical tests. It cleans, sorts, and stores big piles of information quickly and correctly. It does this work through the whole study (Harrer et al., 2019)."
 
 ## 6. Paragraphs with humanized sentences (gemini-3.7-flash)
-_pending — Stage 2_
+Traditional 'linear and sequential' clinical trials are still the gold standard for ensuring the efficacy and safety of new drugs. The lengthy, tried-and-true method of distinct and defined stages of randomised controlled trials (RCTs) was developed primarily for evaluating massmarket pharmaceuticals and has remained mostly unchanged in recent decades. Artificial intelligence could completely change how we run clinical trials. It can make the testing process much faster and easier. This technology also leads to better results for all new drugs. This is the third in a series of reports on AI's impact on the biopharma value chain (Lee, 2021) (Angus, 2020).
+
+Biopharma businesses have been able to obtain increasing volumes of scientific and research information from a multitude of sources in recent years, which is referred to as real-world data (RWD). Recent estimates show that up to 80% of this helpful real-world data goes unused. This mostly happens because many groups lack the advanced tools to study it well. They also do not yet have the technical skills they need. Applying predictive AI models and advanced analytics to unlock RWD can help researchers better understand diseases, find relevant patients and important investigators, and enable revolutionary clinical study designs (Woo, 2019).
+
+Artificial intelligence can help handle data from medical tests. It cleans, sorts, and stores big piles of information quickly and correctly. It does this work through the whole study (Harrer et al., 2019). Furthermore, improved electronic data capture (EDC) may reduce the impact of human error in data collection while also allowing for smooth system integration (Mayorga-Ruiz et al., 2019).
+
 
 ---
 
 # Set 7
-
 ## 1. Original paragraphs
 Researchers from several domains are racing to support the reaction to COVID-19 in an exceptional effort of scientific collaboration. Making a worldwide effect with AI tools would necessitate scalable data, model, and code sharing strategies, as well as application adaptation to local settings and cross-border collaboration (Luengo-Oroz et al., 2020). Data is required for AI applications. At the three application sizes, there are presently dozens of data-sharing efforts centered on COVID-19, spanning the worldwide, national, and local levels. Genetic sequences, genomic analyses, protein structures, patients clinical information, medical imagery, event data, epidemiological information, movement data, social media comments, news stories, and scientific literature are just a few of the resources available. Hyper-fragmentation of data-sharing activities is a problem since it could lead to advancements that are limited to specific projects and communities. The creation and diffusion of new applications could be accelerated by establishing scalable techniques for data, model, and code sharing. Global, open, comprehensive, comparable, and verifiable data-sharing activities will be useful at this stage in connecting and promoting cooperation between various communities and geographies (Lip et al., 2020) (Luengo-Oroz et al., 2020).
 
@@ -213,15 +242,15 @@ Researchers from several domains are racing to support the reaction to COVID-19 
 Researchers from several domains are racing to support the reaction to COVID-19 in an exceptional effort of scientific collaboration. Making a worldwide effect with AI tools would necessitate scalable data, model, and code sharing strategies, as well as application adaptation to local settings and cross-border collaboration (Luengo-Oroz et al., 2020). It is important to note that data plays a crucial role in the development of artificial intelligence applications, as these systems rely heavily on large amounts of high-quality information in order to learn, improve, and produce accurate and meaningful results. At the three application sizes, there are presently dozens of data-sharing efforts centered on COVID-19, spanning the worldwide, national, and local levels. Genetic sequences, genomic analyses, protein structures, patients clinical information, medical imagery, event data, epidemiological information, movement data, social media comments, news stories, and scientific literature are just a few of the resources available. Hyper-fragmentation of data-sharing activities is a problem since it could lead to advancements that are limited to specific projects and communities. The creation and diffusion of new applications could be accelerated by establishing scalable techniques for data, model, and code sharing. Global, open, comprehensive, comparable, and verifiable data-sharing activities will be useful at this stage in connecting and promoting cooperation between various communities and geographies (Lip et al., 2020) (Luengo-Oroz et al., 2020).
 
 ## 5. Humanized sentences (gemini-3.7-flash)
-_pending — Stage 2 (after harness run)_
+- P1: "Data is very important for building artificial intelligence tools. These systems need a lot of good information to learn and improve. This data helps them produce correct and useful results."
 
 ## 6. Paragraphs with humanized sentences (gemini-3.7-flash)
-_pending — Stage 2_
+Researchers from several domains are racing to support the reaction to COVID-19 in an exceptional effort of scientific collaboration. Making a worldwide effect with AI tools would necessitate scalable data, model, and code sharing strategies, as well as application adaptation to local settings and cross-border collaboration (Luengo-Oroz et al., 2020). Data is very important for building artificial intelligence tools. These systems need a lot of good information to learn and improve. This data helps them produce correct and useful results. At the three application sizes, there are presently dozens of data-sharing efforts centered on COVID-19, spanning the worldwide, national, and local levels. Genetic sequences, genomic analyses, protein structures, patients clinical information, medical imagery, event data, epidemiological information, movement data, social media comments, news stories, and scientific literature are just a few of the resources available. Hyper-fragmentation of data-sharing activities is a problem since it could lead to advancements that are limited to specific projects and communities. The creation and diffusion of new applications could be accelerated by establishing scalable techniques for data, model, and code sharing. Global, open, comprehensive, comparable, and verifiable data-sharing activities will be useful at this stage in connecting and promoting cooperation between various communities and geographies (Lip et al., 2020) (Luengo-Oroz et al., 2020).
+
 
 ---
 
 # Set 8
-
 ## 1. Original paragraphs
 Open science, aided by multi-stakeholder AI collaborations that operate across international borders, can speed up information distribution and capacity building in national health systems (Shaheen, 2021b). The Epidemic Intelligence from Open Sources (EIOS) network, for example, uses open source data to enable early detection, verification, and assessment of public health hazards and threats (Sucharitha & Chary, 2021). The network of practice for health care intelligence comprises governments, international organizations, and research institutes that collaborate to assess and share information concerning outbreak occurrences in real time under the principle of collaboration rather than competition in early detection. Global standards and database interoperability may facilitate unified reaction and decision-making at the global, national, and local levels, according to epidemiologists. Understanding the epidemiologic characteristics and risk features of various demographics as the pandemic progresses will necessitate taking into account health system resource capacity, public health measures, environmental factors, and COVID-19's societal consequences (Sucharitha & Chary, 2021).
 
@@ -241,15 +270,18 @@ Open science, aided by multi-stakeholder AI collaborations that operate across i
 Aside from data sharing, there are currently few projects that exchange trained AI models for any of the suggested uses. Constraints imposed by unique computational, design, and infrastructural needs; a shortage of documenting; verification and interpretability issues; and legal concerns about confidentiality and intellectual property are among the obstacles to be overcome. In addition, sharing pre-trained and approved artificial intelligence models across different organizations could play an important role in helping these solutions adapt more quickly and effectively to new situations and environments (Shaheen, 2021b). Models used to diagnose illness from pictures, forecast patient results, filter misinformation and misinformation depending on propagating patterns through social media, and distill knowledge graphs from massive collections of scholarly papers are instances of algorithms that could be broadly useful (Luengo-Oroz et al., 2020) (Shaheen, 2021a) (Harrer et al., 2019).
 
 ## 5. Humanized sentences (gemini-3.7-flash)
-_pending — Stage 2 (after harness run)_
+- P1: "Experts say countries must share data and work together more. This could help spot and fight disease outbreaks up to 60% faster. That would make a big difference during future health emergencies."
+- P2: "Groups can share ready-made and approved artificial intelligence models with each other (Shaheen, 2021b). This sharing helps the tools adjust faster and better to new settings (Shaheen, 2021b)."
 
 ## 6. Paragraphs with humanized sentences (gemini-3.7-flash)
-_pending — Stage 2_
+Open science, aided by multi-stakeholder AI collaborations that operate across international borders, can speed up information distribution and capacity building in national health systems (Shaheen, 2021b). The Epidemic Intelligence from Open Sources (EIOS) network, for example, uses open source data to enable early detection, verification, and assessment of public health hazards and threats (Sucharitha & Chary, 2021). The network of practice for health care intelligence comprises governments, international organizations, and research institutes that collaborate to assess and share information concerning outbreak occurrences in real time under the principle of collaboration rather than competition in early detection. Experts say countries must share data and work together more. This could help spot and fight disease outbreaks up to 60% faster. That would make a big difference during future health emergencies. Understanding the epidemiologic characteristics and risk features of various demographics as the pandemic progresses will necessitate taking into account health system resource capacity, public health measures, environmental factors, and COVID-19's societal consequences (Sucharitha & Chary, 2021).
+
+Aside from data sharing, there are currently few projects that exchange trained AI models for any of the suggested uses. Constraints imposed by unique computational, design, and infrastructural needs; a shortage of documenting; verification and interpretability issues; and legal concerns about confidentiality and intellectual property are among the obstacles to be overcome. Groups can share ready-made and approved artificial intelligence models with each other (Shaheen, 2021b). This sharing helps the tools adjust faster and better to new settings (Shaheen, 2021b). Models used to diagnose illness from pictures, forecast patient results, filter misinformation and misinformation depending on propagating patterns through social media, and distill knowledge graphs from massive collections of scholarly papers are instances of algorithms that could be broadly useful (Luengo-Oroz et al., 2020) (Shaheen, 2021a) (Harrer et al., 2019).
+
 
 ---
 
 # Set 9
-
 ## 1. Original paragraphs
 Patient outcomes are influenced by artificial intelligence in healthcare. Medical AI firms create a system that aids the patient at every level. Clinical intelligence also analyzes patients' medical data and delivers insights to help them enhance their quality of life. The following are a few significant clinical intelligence systems that improve patient care.
 
@@ -269,15 +301,18 @@ Patient outcomes are influenced by artificial intelligence in healthcare. Medica
 The following is a potential technique for identifying high-risk moms and reducing maternal mortality and problems after childbirth: a) Predicting whether expectant mothers are at significant risk of difficulties during delivery using electronic health data and artificial intelligence (AI). 2) Using digital technology to increase patient entry to both regular and high-acuity care (i.e., more sophisticated and frequent care) throughout their pregnancy. In fact, studies have shown that using artificial intelligence to identify high-risk pregnancies can help reduce serious complications during childbirth by as much as 30%, which could save many lives and greatly improve outcomes for mothers and their babies.
 
 ## 5. Humanized sentences (gemini-3.7-flash)
-_pending — Stage 2 (after harness run)_
+- P1: "Artificial intelligence clearly helps patients get better results today. It allows healthcare workers to study medical details quickly. Then, they can give each patient better, more personal care."
+- P2: "Studies show that artificial intelligence can spot risky pregnancies early. This tool can cut bad childbirth problems by up to 30%. It could save many lives. It also helps mothers and babies stay much healthier."
 
 ## 6. Paragraphs with humanized sentences (gemini-3.7-flash)
-_pending — Stage 2_
+Patient outcomes are influenced by artificial intelligence in healthcare. Medical AI firms create a system that aids the patient at every level. Artificial intelligence clearly helps patients get better results today. It allows healthcare workers to study medical details quickly. Then, they can give each patient better, more personal care. The following are a few significant clinical intelligence systems that improve patient care.
+
+The following is a potential technique for identifying high-risk moms and reducing maternal mortality and problems after childbirth: a) Predicting whether expectant mothers are at significant risk of difficulties during delivery using electronic health data and artificial intelligence (AI). 2) Using digital technology to increase patient entry to both regular and high-acuity care (i.e., more sophisticated and frequent care) throughout their pregnancy. Studies show that artificial intelligence can spot risky pregnancies early. This tool can cut bad childbirth problems by up to 30%. It could save many lives. It also helps mothers and babies stay much healthier.
+
 
 ---
 
 # Set 10
-
 ## 1. Original paragraphs
 In addition to medical personnel, certain medical robots assist patients. Exoskeleton robots, for example, can assist paralyzed patients in walking again and becoming self-sufficient (Shi et al., 2019). A smart prosthesis is another example of technology in action. These bionic limbs attach sensors that render them more responsive and accurate than natural body parts, with the option of covering them in bionic skin and connecting them to the user's muscles. Robots can help with rehabilitation and surgery. Cyberdyne's Hybrid Assistive Limb (HAL) exoskeleton, for example, is designed to help patients rehabilitate from conditions that lead to lower limb disorders, such as spinal cord injuries and strokes, by using sensors placed on the skin to efficiently detect electrical signals in the patient's body and responding with movement at the joint (Cruciger et al., 2016).
 
@@ -297,13 +332,16 @@ In addition to medical personnel, certain medical robots assist patients. Exoske
 From genome sequencing to creating a tailored health status from the data in our fitness/activity trackers, today's healthcare consumer has grown increasingly involved in their personal medical treatment. In addition, by bringing together large amounts of health data from many different sources, artificial intelligence is able to create a more complete and accurate picture of each person's overall health and medical condition (Johnson et al., 2020). Data-driven medicine has the potential to improve not just the precision and agility of genetic disease detection, but also to open the door to individualized medical treatments (Hummel & Braun, 2020).
 
 ## 5. Humanized sentences (gemini-3.7-flash)
-_pending — Stage 2 (after harness run)_
+- P1: "Robots are becoming much more helpful in medicine today. They now help with many different tasks. These tasks include surgery and physical therapy. They also help care for patients and help them get better."
+- P2: "Artificial intelligence gathers a lot of health data from many different places. This helps it show a better picture of each person's overall health (Johnson et al., 2020)."
 
 ## 6. Paragraphs with humanized sentences (gemini-3.7-flash)
-_pending — Stage 2_
+In addition to medical personnel, certain medical robots assist patients. Exoskeleton robots, for example, can assist paralyzed patients in walking again and becoming self-sufficient (Shi et al., 2019). A smart prosthesis is another example of technology in action. These bionic limbs attach sensors that render them more responsive and accurate than natural body parts, with the option of covering them in bionic skin and connecting them to the user's muscles. Robots are becoming much more helpful in medicine today. They now help with many different tasks. These tasks include surgery and physical therapy. They also help care for patients and help them get better. Cyberdyne's Hybrid Assistive Limb (HAL) exoskeleton, for example, is designed to help patients rehabilitate from conditions that lead to lower limb disorders, such as spinal cord injuries and strokes, by using sensors placed on the skin to efficiently detect electrical signals in the patient's body and responding with movement at the joint (Cruciger et al., 2016).
+
+From genome sequencing to creating a tailored health status from the data in our fitness/activity trackers, today's healthcare consumer has grown increasingly involved in their personal medical treatment. Artificial intelligence gathers a lot of health data from many different places. This helps it show a better picture of each person's overall health (Johnson et al., 2020). Data-driven medicine has the potential to improve not just the precision and agility of genetic disease detection, but also to open the door to individualized medical treatments (Hummel & Braun, 2020).
+
 
 # Set 11
-
 ## 1. Original paragraphs
 One notable advantage is that, unlike traditional stethoscopes, the readings may be taken even in noisy environments, allowing for more accurate diagnosis. The records can be obtained by anybody and telemetered to the doctor because there is no need for training to use the digital instrument (Prabu, 2021). This also lowers their chance of contracting COVID-19 and makes it easier to provide better medical care in inaccessible areas and for chronically ill patients. Artificial intelligence (AI) and machine learning have made it possible for computers to discover illness patterns and abnormalities from massive amounts of clinical data. Blood flowing through regular arteries is different from blood that flows around a blood clot in the blood vessels, thus the same idea applies here (J. Agrawal, 2018).
 
@@ -329,15 +367,21 @@ Artificial intelligence (AI) is progressively being used to healthcare, as it be
 Despite such significant improvements, AI usage in healthcare remains very much in early stages. In addition, ongoing research continues to expand the capabilities of this technology, and experts believe it will lead to even greater advancements across many different industries in the years to come (Prabu, 2021). AI and machine learning have a lot to contribute in the critical healthcare sector, which is undergoing one of the swiftest digital transformations at the moment, and amenities have the possibility to substantially improve quality of life for patients.
 
 ## 5. Humanized sentences (gemini-3.7-flash)
-_pending — Stage 2 (after harness run)_
+- P1: "Recent research shows that artificial intelligence can spot some diseases and health issues. It is correct more than 90% of the time. It often finds patterns in medical data that humans would easily miss."
+- P2: "Artificial intelligence can clearly bring many great benefits to healthcare. It can support medical staff in many ways. It also helps improve patient care and daily operations."
+- P3: "Also, new research keeps making this technology better. Experts believe it will bring even bigger changes to many industries soon (Prabu, 2021)."
 
 ## 6. Paragraphs with humanized sentences (gemini-3.7-flash)
-_pending — Stage 2_
+One notable advantage is that, unlike traditional stethoscopes, the readings may be taken even in noisy environments, allowing for more accurate diagnosis. The records can be obtained by anybody and telemetered to the doctor because there is no need for training to use the digital instrument (Prabu, 2021). This also lowers their chance of contracting COVID-19 and makes it easier to provide better medical care in inaccessible areas and for chronically ill patients. Recent research shows that artificial intelligence can spot some diseases and health issues. It is correct more than 90% of the time. It often finds patterns in medical data that humans would easily miss. Blood flowing through regular arteries is different from blood that flows around a blood clot in the blood vessels, thus the same idea applies here (J. Agrawal, 2018).
+
+Artificial intelligence (AI) is progressively being used to healthcare, as it becomes more prevalent in modern enterprise and everyday life. Artificial intelligence has the potential to help healthcare providers in a variety of ways, including patient treatment and administrative tasks. Artificial intelligence can clearly bring many great benefits to healthcare. It can support medical staff in many ways. It also helps improve patient care and daily operations. While some publications on artificial intelligence in health claim that AI can perform just as well as or better than humans at specific processes, such as diagnosing sickness, it will be a long time before AI in healthcare replaces people for a wide range of medical jobs.
+
+Despite such significant improvements, AI usage in healthcare remains very much in early stages. Also, new research keeps making this technology better. Experts believe it will bring even bigger changes to many industries soon (Prabu, 2021). AI and machine learning have a lot to contribute in the critical healthcare sector, which is undergoing one of the swiftest digital transformations at the moment, and amenities have the possibility to substantially improve quality of life for patients.
+
 
 ---
 
 # Set 12
-
 ## 1. Original paragraphs
 This study explores Arab university faculty's views on fully AI-generated assignments and research papers submitted by students, what reasons they give for their stance and how they react in this case. Surveys with a sample of 45 Arab instructors revealed that 98% do not accept AI-generated assignments and research papers from students at all. They gave numerous reasons for their position. If students submit AI-generated assignments or research papers, they would ask them to re-write them. The study recommends raising students' awareness of university policies regarding AI-generated content and introducing faculty and students to AI plagiarism detection tools. Faculty views and recommendations are reported in detail.
 
@@ -363,15 +407,21 @@ Latest advancements in artificial intelligence (AI) have resulted in significant
 Overall, there are many different reasons why students choose to rely on artificial intelligence to complete their academic work, and understanding these reasons is an important step toward addressing the challenges they create (Williams, 2022).
 
 ## 5. Humanized sentences (gemini-3.7-flash)
-_pending — Stage 2 (after harness run)_
+- P1: "This topic matters a lot more now. Artificial intelligence tools are growing very fast. They raise big questions about student honesty and academic integrity. People also wonder what this means for the future of education."
+- P2: "Recent surveys show that over 60% of university students use artificial intelligence tools. They use this technology to help with their schoolwork. This shows how quickly these tools became part of modern education."
+- P3: "Students use artificial intelligence for schoolwork for many reasons (Williams, 2022). We must understand these reasons to fix the problems they cause."
 
 ## 6. Paragraphs with humanized sentences (gemini-3.7-flash)
-_pending — Stage 2_
+This study explores Arab university faculty's views on fully AI-generated assignments and research papers submitted by students, what reasons they give for their stance and how they react in this case. Surveys with a sample of 45 Arab instructors revealed that 98% do not accept AI-generated assignments and research papers from students at all. This topic matters a lot more now. Artificial intelligence tools are growing very fast. They raise big questions about student honesty and academic integrity. People also wonder what this means for the future of education. If students submit AI-generated assignments or research papers, they would ask them to re-write them. The study recommends raising students' awareness of university policies regarding AI-generated content and introducing faculty and students to AI plagiarism detection tools. Faculty views and recommendations are reported in detail.
+
+Latest advancements in artificial intelligence (AI) have resulted in significant strides in AI assistants, AI tools and AI chatbots' capabilities and what they can perform in different domains such as healthcare, automated vehicles, game playing, generating art, music and poetry, fraud detection, analyzing user preferences of products, music, and videos, Natural Language Processing, language translation, summarization and paraphrase. In addition, AI models can generate written content, including research papers, using sophisticated algorithms to produce text based on input prompts. Recent surveys show that over 60% of university students use artificial intelligence tools. They use this technology to help with their schoolwork. This shows how quickly these tools became part of modern education. Examples of AI Tools and AI writing assistants used in research and writing are ChatGPT, PDFgear Copilot, Zotero, SciTE, Consensus, SciSpace, Wordvice AI, Research Rabbit, Rytr, Word Tune, Numerous AI, Rationale and others.
+
+Students use artificial intelligence for schoolwork for many reasons (Williams, 2022). We must understand these reasons to fix the problems they cause.
+
 
 ---
 
 # Set 13
-
 ## 1. Original paragraphs
 While AI-generated content can be helpful to students, it raises ethical questions as academic integrity requires students to engage with the course material, conduct research, practice research and writing skills and contribute their own thoughts, insights, and experiences. A literature review showed that research on the use of AI in students' research and assignments, and the issue of acceptability, integrity, and responsibility of AI-generated content has not received much attention from researchers around the world.
 
@@ -397,15 +447,21 @@ In fact, the number of studies focusing on the use of artificial intelligence in
 In addition, a large amount of recent research has focused specifically on ChatGPT and how it is being used in educational settings, examining both the opportunities it offers and the many challenges it presents for students and teachers alike (Firat, 2023).
 
 ## 5. Humanized sentences (gemini-3.7-flash)
-_pending — Stage 2 (after harness run)_
+- P1: "Researchers have not paid enough attention to this topic yet. We clearly need more studies on this subject. This will help us understand how AI content affects education."
+- P2: "Studies on artificial intelligence in education have grown quickly in recent years. In fact, these studies have increased by more than 200% since 2020. This jump shows how much interest the topic has received from researchers."
+- P3: "Many recent studies look closely at how people use ChatGPT in schools (Firat, 2023). They examine the good things it offers to both students and teachers (Firat, 2023). These studies also show the many problems it causes for them (Firat, 2023)."
 
 ## 6. Paragraphs with humanized sentences (gemini-3.7-flash)
-_pending — Stage 2_
+While AI-generated content can be helpful to students, it raises ethical questions as academic integrity requires students to engage with the course material, conduct research, practice research and writing skills and contribute their own thoughts, insights, and experiences. Researchers have not paid enough attention to this topic yet. We clearly need more studies on this subject. This will help us understand how AI content affects education.
+
+Studies on artificial intelligence in education have grown quickly in recent years. In fact, these studies have increased by more than 200% since 2020. This jump shows how much interest the topic has received from researchers.
+
+Many recent studies look closely at how people use ChatGPT in schools (Firat, 2023). They examine the good things it offers to both students and teachers (Firat, 2023). These studies also show the many problems it causes for them (Firat, 2023).
+
 
 ---
 
 # Set 14
-
 ## 1. Original paragraphs
 The literature review revealed lack of studies in Saudi Arabia and other Arab countries on how university faculty view AI-generated assignments and research submitted by students. Therefore, this study aims to fill a gap in this area by exploring how Arab university instructors view the submission of fully generated assignments/research papers by AI tools and AI assistants such as GhatGPT by college students, what reasons they give for their acceptance or rejection of AI-generated assignments/research paper and how they react to the submission of AI-generated text. It also aims to answer some questions such as: Which AI-generated content is acceptable to them? How do they detect AI-generated content? Are there significant differences attitudes and reactions towards AI-generated content submitted by the students between male and female faculty, faculty working in different Arab countries and are different Arab universities and teaching different areas of specialization.
 
@@ -425,15 +481,18 @@ It is important to note that there is currently a significant gap in the existin
 Overall, this study is important because it helps to shed light on how faculty members understand and respond to AI-generated content, offering valuable insights that can guide future academic policies and practices (Al-Jarf, 2023).
 
 ## 5. Humanized sentences (gemini-3.7-flash)
-_pending — Stage 2 (after harness run)_
+- P1: "Right now, there is a big gap in the research. Very few studies look at university professors in Arab countries. We do not know what they think about AI-generated student work. This includes assignments and research papers that students turn in."
+- P2: "This study is important because it shows how teachers view AI-written work (Al-Jarf, 2023). It also looks at how they react to this content (Al-Jarf, 2023). These useful facts can help guide future school rules and practices (Al-Jarf, 2023)."
 
 ## 6. Paragraphs with humanized sentences (gemini-3.7-flash)
-_pending — Stage 2_
+Right now, there is a big gap in the research. Very few studies look at university professors in Arab countries. We do not know what they think about AI-generated student work. This includes assignments and research papers that students turn in. Therefore, this study aims to fill a gap in this area by exploring how Arab university instructors view the submission of fully generated assignments/research papers by AI tools and AI assistants such as GhatGPT by college students, what reasons they give for their acceptance or rejection of AI-generated assignments/research paper and how they react to the submission of AI-generated text. It also aims to answer some questions such as: Which AI-generated content is acceptable to them? How do they detect AI-generated content? Are there significant differences attitudes and reactions towards AI-generated content submitted by the students between male and female faculty, faculty working in different Arab countries and are different Arab universities and teaching different areas of specialization.
+
+This study is important because it shows how teachers view AI-written work (Al-Jarf, 2023). It also looks at how they react to this content (Al-Jarf, 2023). These useful facts can help guide future school rules and practices (Al-Jarf, 2023).
+
 
 ---
 
 # Set 15
-
 ## 1. Original paragraphs
 Since AI-generated content is leading a paradigm shift in content creation and knowledge representation, some researchers highlighted the need for addressing its ethical, privacy, security, and legal challenges (Wang, Pan, Yan, Su & Luan, 2023). ChatGPT and similar AI content-generation tools, in particular, raise numerous questions for researchers, educational practitioners and policymakers (Tate, Doroudi, Ritchie, Xu & Warschauer, 2023). Exploration of the ethical implications of AI for education, the development of strategies for managing privacy concerns, and the investigation of how educational institutions can best prepare for the integration of AI technologies are urgently needed.
 
@@ -459,15 +518,21 @@ Meyer, Urbanowicz, Martin, O'Connor, Li, Peng and Moore (2023) added that we mus
 In addition, it is becoming increasingly clear that continued research in this area is essential, as a deeper understanding of both the opportunities and the challenges of artificial intelligence will be key to successfully integrating it into higher education (Tate et al., 2023). Future research should continue to explore the potential applications and impacts of AI in education, and the development of effective frameworks for integrating AI in curricula, instruction and assessments (Firat, 2023).
 
 ## 5. Humanized sentences (gemini-3.7-flash)
-_pending — Stage 2 (after harness run)_
+- P1: "A recent survey found that nearly 75% of teachers worry about artificial intelligence. They have serious concerns about ethics and privacy with these tools. Teachers believe we must fix these problems right away. This will help make sure schools use the technology safely."
+- P2: "We must deal with many challenges to get the best from artificial intelligence in education. We also need to create clear and responsible plans. These plans will help us use it fairly and well."
+- P3: "We clearly need more research in this area. Learning about the good and bad sides of artificial intelligence is key. This will help us bring it into colleges successfully (Tate et al., 2023)."
 
 ## 6. Paragraphs with humanized sentences (gemini-3.7-flash)
-_pending — Stage 2_
+Since AI-generated content is leading a paradigm shift in content creation and knowledge representation, some researchers highlighted the need for addressing its ethical, privacy, security, and legal challenges (Wang, Pan, Yan, Su & Luan, 2023). ChatGPT and similar AI content-generation tools, in particular, raise numerous questions for researchers, educational practitioners and policymakers (Tate, Doroudi, Ritchie, Xu & Warschauer, 2023). A recent survey found that nearly 75% of teachers worry about artificial intelligence. They have serious concerns about ethics and privacy with these tools. Teachers believe we must fix these problems right away. This will help make sure schools use the technology safely.
+
+Meyer, Urbanowicz, Martin, O'Connor, Li, Peng and Moore (2023) added that we must find ways for using Language Learning Models and chatbots in academia effectively, and the possibility that they may produce plagiarized text, that we must quantify their bias and that users must be cautious of their poor accuracy. We must deal with many challenges to get the best from artificial intelligence in education. We also need to create clear and responsible plans. These plans will help us use it fairly and well.
+
+We clearly need more research in this area. Learning about the good and bad sides of artificial intelligence is key. This will help us bring it into colleges successfully (Tate et al., 2023). Future research should continue to explore the potential applications and impacts of AI in education, and the development of effective frameworks for integrating AI in curricula, instruction and assessments (Firat, 2023).
+
 
 ---
 
 # Set 16
-
 ## 1. Original paragraphs
 Chatbots perform tasks like providing user support, answering customer questions, and resolving technical issues. They automate repetitive processes and interactions in a workflow. Examples of Chatbots used in education are course inquiries, student support, student engagement and student feedback chatbots.
 
@@ -493,15 +558,21 @@ In fact, the use of AI-powered tools in education has increased dramatically in 
 AI Assistants are interactive software agents that perform tasks or services for users based on commands, text and voice. In addition, AI assistants are generally considered more advanced than basic AI tools, as they are able to understand context, hold two-way conversations, and provide personalized responses that are tailored to the needs of each individual user (Smith & Lee, 2022). Examples of AI Assistants used in education are personalized learning assistants, automated lesson planning, automated grading, and predictive analytics.
 
 ## 5. Humanized sentences (gemini-3.7-flash)
-_pending — Stage 2 (after harness run)_
+- P1: "Chatbots have also become very popular in many different fields. They can handle a lot of repetitive tasks quickly and easily. This helps save both time and effort for organizations and their users."
+- P2: "Schools and universities are using AI tools much more in recent years. Some reports show that their use has grown by over 50%. This is because schools want new ways to improve learning and efficiency."
+- P3: "Also, people usually see AI assistants as more advanced than basic AI tools. They can understand context and have two-way chats. They also give personal answers to fit each user's needs (Smith & Lee, 2022)."
 
 ## 6. Paragraphs with humanized sentences (gemini-3.7-flash)
-_pending — Stage 2_
+Chatbots perform tasks like providing user support, answering customer questions, and resolving technical issues. Chatbots have also become very popular in many different fields. They can handle a lot of repetitive tasks quickly and easily. This helps save both time and effort for organizations and their users. Examples of Chatbots used in education are course inquiries, student support, student engagement and student feedback chatbots.
+
+Schools and universities are using AI tools much more in recent years. Some reports show that their use has grown by over 50%. This is because schools want new ways to improve learning and efficiency. Examples of AI tools used in education are admission management platforms, enrollment management and forecasting tools, emotional support, dropout prediction tools, and resource planning systems.
+
+AI Assistants are interactive software agents that perform tasks or services for users based on commands, text and voice. Also, people usually see AI assistants as more advanced than basic AI tools. They can understand context and have two-way chats. They also give personal answers to fit each user's needs (Smith & Lee, 2022). Examples of AI Assistants used in education are personalized learning assistants, automated lesson planning, automated grading, and predictive analytics.
+
 
 ---
 
 # Set 17
-
 ## 1. Original paragraphs
 Results of the AI-generated content surveys showed that 98% of Arab college faculty in the sample do not approve of and do not accept the submission of AI-generated assignments or research papers by the students at all. Only one instructor in the sample accepts AI-generated assignments and research papers from her students provided that they have revised the content, corrected errors and weaknesses, checked the validity of the references and made sure each reference does exist because AI provides false information and fake references. She added that she discusses the assignment and/or research paper with each student to make sure she understands the content and can defend it. Other than that, she does not accept AI-generated content. She encourages her students to use AI but does not accept copying and pasting.
 
@@ -527,15 +598,21 @@ No significant differences were found between male and female instructors in dif
 Participating instructors gave numerous reasons for rejecting AI-generated assignments and/or research papers submitted by graduate and undergraduate students as they consider plagiarism, cheating, and dishonesty and consider such assignments as just copy-paste. Being AI generated, the submitted assignment/research paper does not reflect the student's actual ability, skills, ideas and views. They added that graduate and undergraduate students are in the process of acquiring writing and research skill and that the aim of an assignment or research paper is to make sure that the students are learning, thinking, and practicing those skills and that autonomous learning is emphasized. If students copy and paste an AI-generated text, this means that they did not learn anything and did not achieve the learning goals. When they use AI, they do not try and do not exert any effort. In addition, many educators are concerned that relying too heavily on artificial intelligence can prevent students from developing essential critical thinking skills, as they no longer engage deeply with the material or form their own ideas (Menczer et al., 2023). They do not practice any thinking skills. They become cognitively "lazy".
 
 ## 5. Humanized sentences (gemini-3.7-flash)
-_pending — Stage 2 (after harness run)_
+- P1: "Most teachers are very worried about content made by AI. They believe it hurts honesty in school. They also think it stops students from truly learning and building skills."
+- P2: "The survey showed that 95% of the teachers agreed on this issue. Their gender, country, or subject did not change their answers. This shows that these worries are very common."
+- P3: "Also, many teachers worry about students using artificial intelligence too much. It can stop them from building vital thinking skills. Students no longer look deeply at their work or make up their own ideas (Menczer et al., 2023)."
 
 ## 6. Paragraphs with humanized sentences (gemini-3.7-flash)
-_pending — Stage 2_
+Results of the AI-generated content surveys showed that 98% of Arab college faculty in the sample do not approve of and do not accept the submission of AI-generated assignments or research papers by the students at all. Only one instructor in the sample accepts AI-generated assignments and research papers from her students provided that they have revised the content, corrected errors and weaknesses, checked the validity of the references and made sure each reference does exist because AI provides false information and fake references. Most teachers are very worried about content made by AI. They believe it hurts honesty in school. They also think it stops students from truly learning and building skills. Other than that, she does not accept AI-generated content. She encourages her students to use AI but does not accept copying and pasting.
+
+No significant differences were found between male and female instructors in different Arab countries, different Arab universities and those teaching different areas of specialization in their attitude towards AI-generated texts submitted by their graduate and/or undergraduate students. The survey showed that 95% of the teachers agreed on this issue. Their gender, country, or subject did not change their answers. This shows that these worries are very common.
+
+Participating instructors gave numerous reasons for rejecting AI-generated assignments and/or research papers submitted by graduate and undergraduate students as they consider plagiarism, cheating, and dishonesty and consider such assignments as just copy-paste. Being AI generated, the submitted assignment/research paper does not reflect the student's actual ability, skills, ideas and views. They added that graduate and undergraduate students are in the process of acquiring writing and research skill and that the aim of an assignment or research paper is to make sure that the students are learning, thinking, and practicing those skills and that autonomous learning is emphasized. If students copy and paste an AI-generated text, this means that they did not learn anything and did not achieve the learning goals. When they use AI, they do not try and do not exert any effort. Also, many teachers worry about students using artificial intelligence too much. It can stop them from building vital thinking skills. Students no longer look deeply at their work or make up their own ideas (Menczer et al., 2023). They do not practice any thinking skills. They become cognitively "lazy".
+
 
 ---
 
 # Set 18
-
 ## 1. Original paragraphs
 The false information mentioned by the instructors in this study is consistent with Menczer, Crandall, Ahn and Kapadia's (2023) views which indicated that we currently have little awareness of the volume of inauthentic behaviour supported by AI. They added that Generative AI tools such as ChatGPT make it easier to create large volumes of false (but convincing) social media profiles and content. An inauthentic influence campaign can tailor narratives to a particular community. For example, through health misinformation, a foreign adversary can make a whole population in a particular region more vulnerable to a future pandemic. Xames and Shefa (2023) revealed the challenges and concerns exposed by ChatGPT that require immediate attention such as AI authorship, nonexistent references, threats of international inequalities and unintentional plagiarism.
 
@@ -561,15 +638,21 @@ In addition, researchers have raised important concerns that the increasing use 
 Some participating faculty in the current study indicated that they do not ban the use of AI in research or learning altogether. In fact, around 40% of the faculty members surveyed said that they allow their students to use artificial intelligence for certain tasks, such as summarizing texts, improving language, or correcting errors, as long as it is used responsibly and with proper guidance. Others allow their students to use AI in translation, revising, editing, comparing AI translation with their own and producing the work in a better way in terms of formatting and editing, in improving and polishing the language of their written text, in drafting and correcting errors, i.e. proofreading. They allow the students to incorporate paragraphs from AI in their research paper or assignment, provided that they are documented, i.e., the students mention the AI Tool or AI Assistant used, date, and time. Others allow the students to use AI in searching for and verifying information, in understanding an unfamiliar topic and exploring ideas related to it; in analyzing data, finding the research gap in a particular area, understanding the meaning of technical terms, getting answers to complex questions, and solving problems.
 
 ## 5. Humanized sentences (gemini-3.7-flash)
-_pending — Stage 2 (after harness run)_
+- P1: "People are using artificial intelligence much more often today. This technology makes it very easy to create fake or misleading content. It also lets people make a lot of this false material quickly. Because of this, people worry about trust and accuracy in the digital world. They also worry about how fast false information can spread online."
+- P2: "Researchers also worry about the growing use of artificial intelligence in schools. Students might start to depend on technology too much (Firat, 2023). Over time, their thinking skills and brainpower could slowly drop (Firat, 2023)."
+- P3: "About 40% of the teachers surveyed allow students to use artificial intelligence. They permit it for tasks like summarizing texts, improving language, or fixing mistakes. Students must use these tools responsibly and with proper guidance."
 
 ## 6. Paragraphs with humanized sentences (gemini-3.7-flash)
-_pending — Stage 2_
+The false information mentioned by the instructors in this study is consistent with Menczer, Crandall, Ahn and Kapadia's (2023) views which indicated that we currently have little awareness of the volume of inauthentic behaviour supported by AI. They added that Generative AI tools such as ChatGPT make it easier to create large volumes of false (but convincing) social media profiles and content. People are using artificial intelligence much more often today. This technology makes it very easy to create fake or misleading content. It also lets people make a lot of this false material quickly. Because of this, people worry about trust and accuracy in the digital world. They also worry about how fast false information can spread online. For example, through health misinformation, a foreign adversary can make a whole population in a particular region more vulnerable to a future pandemic. Xames and Shefa (2023) revealed the challenges and concerns exposed by ChatGPT that require immediate attention such as AI authorship, nonexistent references, threats of international inequalities and unintentional plagiarism.
+
+Researchers also worry about the growing use of artificial intelligence in schools. Students might start to depend on technology too much (Firat, 2023). Over time, their thinking skills and brainpower could slowly drop (Firat, 2023).
+
+Some participating faculty in the current study indicated that they do not ban the use of AI in research or learning altogether. About 40% of the teachers surveyed allow students to use artificial intelligence. They permit it for tasks like summarizing texts, improving language, or fixing mistakes. Students must use these tools responsibly and with proper guidance. Others allow their students to use AI in translation, revising, editing, comparing AI translation with their own and producing the work in a better way in terms of formatting and editing, in improving and polishing the language of their written text, in drafting and correcting errors, i.e. proofreading. They allow the students to incorporate paragraphs from AI in their research paper or assignment, provided that they are documented, i.e., the students mention the AI Tool or AI Assistant used, date, and time. Others allow the students to use AI in searching for and verifying information, in understanding an unfamiliar topic and exploring ideas related to it; in analyzing data, finding the research gap in a particular area, understanding the meaning of technical terms, getting answers to complex questions, and solving problems.
+
 
 ---
 
 # Set 19
-
 ## 1. Original paragraphs
 A computer science instructor stated that the students can use AI as a search engine to search for information provided that the students filter the information, check it and verify it.
 
@@ -595,15 +678,21 @@ In a study by Malinka, Peresíni, Firc, Hujnák, and Janus (2023), ChatGPT was u
 To detect AI-generated content, some instructors in the sample use Blackboard's SafeAssign and give marks according to the type and amount of plagiarism. Some use aiphrasefinder.com to spot ChatGPT words and phrases. Others use AI-plagiarism detectors such as ChatGPT Zero, Originality AI, Semrush, Copyleaks, Duplichecker, Quillbot, and Scribbr. A computer science instructor detects AI-generated texts by spotting typos, absence of personal experiences or emotions, inaccurate citations, references that do not exist, repetitive use of words or phrases, and the overuse of words and complex sentences. She uses aiphrasefinder.com for detecting ChatGPT words and phrases. Moreover, a linguistics instructor designed a scoring rubric for evaluating students' assignments and research papers in her Research Methodology course. In fact, studies have shown that current AI-detection tools are only about 80% accurate, which means that instructors cannot rely on them completely and must also use their own judgment when reviewing students' work for signs of AI-generated content.
 
 ## 5. Humanized sentences (gemini-3.7-flash)
-_pending — Stage 2 (after harness run)_
+- P1: "Artificial intelligence can be very helpful for students when they use it responsibly. It helps them find and collect information very quickly. But students must still take the time to check the results carefully."
+- P2: "These results show that students widely use AI tools like ChatGPT. They use them for school and personal life (Parker et al., 2023). Many students also feel these tools help their learning (Parker et al., 2023)."
+- P3: "Studies show that today's AI detectors are only about 80% accurate. Because of this, teachers cannot fully trust these tools. They also need to use their own judgment to check student work."
 
 ## 6. Paragraphs with humanized sentences (gemini-3.7-flash)
-_pending — Stage 2_
+Artificial intelligence can be very helpful for students when they use it responsibly. It helps them find and collect information very quickly. But students must still take the time to check the results carefully.
+
+In a study by Malinka, Peresíni, Firc, Hujnák, and Janus (2023), ChatGPT was used for completing exams, programming assignments, and term papers and evaluated multiple levels of the AI tool misuse, ranging from simply copying its outputs to utilizing it as a consultant. They concluded that ChatGPT can be easily used to cheat and that it can be used in discussing problems encountered while doing a homework-assignment or in speeding up the learning process. In Parker, Carter, Karakas, Loper and Sokkar's (2023) study, undergraduate students quickly integrated ChatGPT and 65% utilized it for academic tasks, whereas 48% used it for non-academic purposes. These results show that students widely use AI tools like ChatGPT. They use them for school and personal life (Parker et al., 2023). Many students also feel these tools help their learning (Parker et al., 2023).
+
+To detect AI-generated content, some instructors in the sample use Blackboard's SafeAssign and give marks according to the type and amount of plagiarism. Some use aiphrasefinder.com to spot ChatGPT words and phrases. Others use AI-plagiarism detectors such as ChatGPT Zero, Originality AI, Semrush, Copyleaks, Duplichecker, Quillbot, and Scribbr. A computer science instructor detects AI-generated texts by spotting typos, absence of personal experiences or emotions, inaccurate citations, references that do not exist, repetitive use of words or phrases, and the overuse of words and complex sentences. She uses aiphrasefinder.com for detecting ChatGPT words and phrases. Moreover, a linguistics instructor designed a scoring rubric for evaluating students' assignments and research papers in her Research Methodology course. Studies show that today's AI detectors are only about 80% accurate. Because of this, teachers cannot fully trust these tools. They also need to use their own judgment to check student work.
+
 
 ---
 
 # Set 20
-
 ## 1. Original paragraphs
 Nevertheless, some instructors indicated that AI Plagiarism Checkers should be used with caution as they are not 100% reliable. In some cases, the students submit an authentic human text, and the AI plagiarism detector claims that it is AI-generated. In this case and if the student is accused of AI-plagiarism, she would complain to the administration.
 
@@ -629,7 +718,14 @@ The lack of reliability of AI plagiarism checkers mentioned by some participants
 Data analysis showed that if a student submits AI-generated assignments or research papers, 75% of the faculty in the sample require him/her to re-write the assignment. Few require that students to declare if they have used AI in their submitted assignments or research papers, in what and where. In fact, only a small number of instructors, around 15%, said that they take the time to explain to their students how artificial intelligence can be used appropriately in research in order to avoid plagiarism and maintain academic integrity. One instructor asks her students to paraphrase the AI-generated content in their own words.
 
 ## 5. Humanized sentences (gemini-3.7-flash)
-_pending — Stage 2 (after harness run)_
+- P1: "AI plagiarism checkers are not completely reliable. You should always use them with caution. Sometimes they make mistakes. They can wrongly label real human writing as AI content."
+- P2: "These findings show that we must be careful with AI-detection tools (Perkins et al., 2024). Relying on them too much can lead to unfair judgments about students' work."
+- P3: "Only about 15% of teachers said they explain how to use AI properly in research. They do this to help students avoid cheating and keep their work honest."
 
 ## 6. Paragraphs with humanized sentences (gemini-3.7-flash)
-_pending — Stage 2_
+Nevertheless, some instructors indicated that AI Plagiarism Checkers should be used with caution as they are not 100% reliable. In some cases, the students submit an authentic human text, and the AI plagiarism detector claims that it is AI-generated. AI plagiarism checkers are not completely reliable. You should always use them with caution. Sometimes they make mistakes. They can wrongly label real human writing as AI content.
+
+The lack of reliability of AI plagiarism checkers mentioned by some participants in the current study is supported by findings of a study by Perkins, Roe, Postma, McGaughran and Hickerson (2024) in which the researchers used the Turnitin AI tool to detect GPT4-generated text in students' submissions. They found that the AI detection tool identified 91% of the experimental submissions as containing AI-generated content, but only 54.8% of the content was identified as AI-generated by the instructors, underscoring the challenges of detecting AI content when advanced prompting techniques were used. When instructors marked the experimental submissions, only 54.5% were reported as an academic misconduct. These findings show that we must be careful with AI-detection tools (Perkins et al., 2024). Relying on them too much can lead to unfair judgments about students' work.
+
+Data analysis showed that if a student submits AI-generated assignments or research papers, 75% of the faculty in the sample require him/her to re-write the assignment. Few require that students to declare if they have used AI in their submitted assignments or research papers, in what and where. Only about 15% of teachers said they explain how to use AI properly in research. They do this to help students avoid cheating and keep their work honest. One instructor asks her students to paraphrase the AI-generated content in their own words.
+
