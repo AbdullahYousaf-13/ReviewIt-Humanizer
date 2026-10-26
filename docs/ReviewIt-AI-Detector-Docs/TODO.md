@@ -20,7 +20,7 @@ Branch: `abdullah/humanizer-new-engine` (ReviewIt, from `origin/main`)
 - [ ] Draft improved prompt variants
 - [ ] Compare variants on the 20-sentence set (fidelity + ZeroGPT/Copyleaks/GPTZero)
 - [ ] Verify Gemini model name/options before using them
-- [ ] Put the winning prompt into `_tier_gemini` and re-test
+- [ ] Put the winning prompt into `_run_gemini` and re-test
 
 ## 3. Branch
 - [x] Create `abdullah/humanizer-new-engine` from main
