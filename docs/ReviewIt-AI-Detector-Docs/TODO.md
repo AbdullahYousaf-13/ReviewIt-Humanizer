@@ -26,5 +26,14 @@ Branch: `abdullah/humanizer-new-engine` (ReviewIt, from `origin/main`)
 - [ ] Compare old vs new prompt on the 20-sentence set (fidelity + BERT score) — **waiting: the Gemini key is the free tier, no live calls for now**. Script: scratchpad `compare_prompts.py` (not committed)
 - [ ] Manual ZeroGPT / Copyleaks check of the new prompt on reinserted paragraphs
 
+## 2b. Supervisor fixes (2026-10-26)
+- [x] Log the time of every run (total + per engine)
+- [x] No model names on the page: "Recommended", "Option 2", "Option 3" (rule-based, when it wins, is also "Recommended")
+- [x] Original sentence on top in the rewrite box, struck through with a spiky line, removed words in red; new words in green in each rewrite
+- [x] Humarin, T5 and rule-based run only for the default style (academic); other styles: Gemini only, sentence kept with a neutral reason if Gemini gives nothing
+- [x] Guard: "raises concerns/questions/issues" no longer counts as an upward word (it rejected good rewrites as "claim reversed")
+- [x] A failed run is no longer shown as "Humanized" in the page (the sentence can be tried again)
+- [ ] Compare old vs new prompt on the 20 sentences (now possible: paid key)
+
 ## 3. Branch
 - [x] Create `abdullah/humanizer-new-engine` from main
