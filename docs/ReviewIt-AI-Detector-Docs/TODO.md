@@ -16,11 +16,15 @@ Branch: `abdullah/humanizer-new-engine` (ReviewIt, from `origin/main`)
 - [x] Frontend: main result shown, other two as selectable options (colleague allowed FE edits for this change)
 
 ## 2. Enhance the Gemini prompt
-- [ ] Review the current prompt against the research docs
-- [ ] Draft improved prompt variants
-- [ ] Compare variants on the 20-sentence set (fidelity + ZeroGPT/Copyleaks/GPTZero)
-- [ ] Verify Gemini model name/options before using them
-- [ ] Put the winning prompt into `_run_gemini` and re-test
+- [x] Review the current prompt against the research docs (example citations in the prompt, sentence splitting, no settings)
+- [x] Write one new prompt in `pipeline/gemini_prompt.py` (one call, 3 rewrites; no example facts/citations; keep each citation once; no added details; change structure; keep the paper's voice)
+- [x] Remove the second-pass prompt/call (one prompt, one call)
+- [x] Verify Gemini options against the installed SDK (google-genai 2.30.0): `system_instruction`, `temperature`, `thinking_config.thinking_level`
+- [x] Set system instruction, temperature 1.0, thinking level low (env: `GEMINI_TEMPERATURE`, `GEMINI_THINK`)
+- [x] Guard: reject a repeated or added citation
+- [x] Tests for the prompt, the call settings and the guard
+- [ ] Compare old vs new prompt on the 20-sentence set (fidelity + BERT score) — **waiting: the Gemini key is the free tier, no live calls for now**. Script: scratchpad `compare_prompts.py` (not committed)
+- [ ] Manual ZeroGPT / Copyleaks check of the new prompt on reinserted paragraphs
 
 ## 3. Branch
 - [x] Create `abdullah/humanizer-new-engine` from main
