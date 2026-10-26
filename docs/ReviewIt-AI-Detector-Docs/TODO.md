@@ -13,7 +13,7 @@ Branch: `abdullah/humanizer-new-engine` (ReviewIt, from `origin/main`)
 - [x] Update `service.py` response
 - [x] Update `API_FLOW.md` (new key)
 - [x] Add/adjust tests (fake Gemini)
-- [ ] Tell the colleague about the new key (no edits under `ReviewIt/frontend`)
+- [x] Frontend: main result shown, other two as selectable options (colleague allowed FE edits for this change)
 
 ## 2. Enhance the Gemini prompt
 - [ ] Review the current prompt against the research docs
