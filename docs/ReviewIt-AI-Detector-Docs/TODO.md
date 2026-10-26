@@ -1,6 +1,6 @@
 # To-Do
 
-Added 2026-10-26 from the supervisor's request. Work happens in the **ReviewIt** repo on branch `abdullah/humanize-new-engine` (created from `origin/main`).
+Added 2026-10-26 from the supervisor's request. Work happens in the **ReviewIt** repo on branch `abdullah/humanizer-new-engine` (created from `origin/main`).
 
 ## 1. Three responses per humanize click
 Clicking a sentence now returns three rewrites instead of the single best one: **Gemini** (main, shown prominently), **Humarin** (option) and **T5** (option). The user may pick one of the two options instead of Gemini.
@@ -25,4 +25,4 @@ Goal: the best possible results from Gemini (fidelity first, then lower detector
 - [ ] Put the winning prompt into the backend (`_tier_gemini`) and re-test
 
 ## 3. Branch
-- [x] Create `abdullah/humanize-new-engine` from `origin/main` in ReviewIt and work on it from now on
+- [x] Create `abdullah/humanizer-new-engine` from `origin/main` in ReviewIt and work on it from now on
