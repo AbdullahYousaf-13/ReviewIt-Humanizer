@@ -3,16 +3,16 @@
 Branch: `abdullah/humanizer-new-engine` (ReviewIt, from `origin/main`)
 
 ## 1. Three results per humanize click (Gemini main, Humarin + T5 options)
-- [ ] Run Gemini, Humarin, T5 on every `/api/humanize-sentence` call
-- [ ] Pass each result through the candidate guard and score it
-- [ ] Keep existing response keys unchanged
-- [ ] Add `alternatives: [{engine, humanized, new_score}]` for the other two
-- [ ] Gemini result = main (`humanized`, `engine`); omit engines that fail the guard
-- [ ] Fallback when Gemini is unavailable: best of the other two becomes main
-- [ ] Run the three engines in parallel; respect Gemini/humanize slot limits
-- [ ] Update `service.py` response
-- [ ] Update `API_FLOW.md` (new key)
-- [ ] Add/adjust tests (fake Gemini)
+- [x] Run Gemini, Humarin, T5 on every `/api/humanize-sentence` call
+- [x] Pass each result through the candidate guard and score it
+- [x] Keep existing response keys unchanged
+- [x] Add `alternatives: [{engine, humanized, new_score}]` for the other two
+- [x] Gemini result = main (`humanized`, `engine`); omit engines that fail the guard
+- [x] Fallback when Gemini is unavailable: best of the other two becomes main
+- [x] Run the three engines in parallel; respect Gemini/humanize slot limits
+- [x] Update `service.py` response
+- [x] Update `API_FLOW.md` (new key)
+- [x] Add/adjust tests (fake Gemini)
 - [ ] Tell the colleague about the new key (no edits under `ReviewIt/frontend`)
 
 ## 2. Enhance the Gemini prompt

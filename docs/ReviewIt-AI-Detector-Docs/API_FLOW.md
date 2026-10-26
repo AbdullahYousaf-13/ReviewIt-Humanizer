@@ -111,16 +111,26 @@ Styles: `academic` (default), `business`, `creative`, `casual`, `narrative`, `te
     "improvement": 0.72,
     "engine": "humarin",
     "failed": false,
-    "reason": ""
+    "reason": "",
+    "alternatives": [
+      {"engine": "humarin", "humanized": "...", "new_score": 0.18, "improvement": 0.75},
+      {"engine": "t5", "humanized": "...", "new_score": 0.35, "improvement": 0.58}
+    ]
   },
   "processing_time": 4.812,
   "humanized": "...",
   "new_score": 0.21,
   "original_score": 0.93,
   "improvement": 0.72,
-  "engine": "humarin"
+  "engine": "gemini",
+  "alternatives": [
+    {"engine": "humarin", "humanized": "...", "new_score": 0.18, "improvement": 0.75},
+    {"engine": "t5", "humanized": "...", "new_score": 0.35, "improvement": 0.58}
+  ]
 }
 ```
 `engine` is one of `humarin`, `t5`, `gemini`, `rule_based`, `original`. `original` means no rewrite beat the original, and `failed` is then `true` with a `reason`.
+
+**`alternatives` (added 2026-10-26, additive: no existing key changed).** Every click runs Gemini, Humarin and T5. The main result (`humanized`, `engine`, `new_score`, ...) is Gemini's whenever it passes the fact guard and scores below the original; otherwise it is the lowest-scoring of the other two. `alternatives` lists the other engines that also passed the guard and scored below the original: at most one entry each, in the order `humarin`, `t5`. It is `[]` when there are none (also when `failed` is `true`). `rule_based` runs only when nothing else is good enough, and never appears in `alternatives`. Each entry has `engine`, `humanized`, `new_score`, `improvement`. Present both inside `data` and at the top level.
 
 Note: these JSON bodies are the shapes the code produces ([service.py](backend/aidetector/service.py)), not captured from a live run.
