@@ -1,264 +1,213 @@
 # Project walkthrough — branch `abdullah/humanizer-dev`
 
-This note covers only the work on this branch. The original project (the detector, the first humanizer and the Flask API) was already there and is described only as the starting point.
+Last updated 2026-10-26. This note covers the work on this branch. The original project (the detector, the first humanizer and the Flask API) was already there and is described only as the starting point. The frontend is now a separate piece of work by a colleague (see section 5).
 
 ---
 
 ## 1. The project in one minute
 
-**What the app does.** You paste text or upload a document. The app finds the sentences that look AI-written and highlights them in red. You click a red sentence and the app rewrites it so a detector scores it lower. You can undo the rewrite or compare the original and the rewrite side by side.
+**What the app does.** You paste text or upload a document. The app reads it as paragraphs and headings, finds the sentences that look AI-written and marks them. You click a sentence and the app rewrites it so a detector scores it lower, without changing its facts. You can revert the rewrite or compare the original and the rewrite side by side.
 
 **If someone asks "what did you do?"**
 
-> The backend already had a detector and a humanizer. I made **Humarin the first rewriter**, with Humarin → T5 → Gemini → Rule-based as fallbacks, and made the API tell the page which rewriter won. I built a **Next.js test frontend**: paste or upload, red AI sentences, click to rewrite in place, undo, and a side-by-side Compare view. I measured why rewriting was slow and found it is mostly the **Gemini free-tier key**, not the models. I fixed several backend bugs on the way (hyphens lost in uploads, fake default scores, missing requirements, a dead Gemini model) and wrote READMEs and a list of open issues. Rewriting a whole document in one click is left out until I talk to my supervisor.
-
-**Size of the work:** 40 files changed compared to `main`. About 6,900 of the 9,000 added lines are `package-lock.json`, so the real code and docs are around 2,100 lines.
+> The backend already had a detector and a humanizer. I made **Humarin the first rewriter** (Humarin → T5 → Gemini → rule-based) and made the API tell the page which rewriter won. I measured why rewriting was slow (mostly the Gemini free-tier key). I then made the backend **safe and structured**: uploads are read by layout as paragraphs and headings with the title page, references, tables and footnotes removed; every rewrite goes through a **guard** that rejects lost citations, changed numbers, reversed meaning and broken punctuation, and a failed rewrite is never inserted; sentences with citations go to Gemini only; a non-default style tries Gemini first; uploads and jobs are cleaned up, the models are preloaded, and requests are limited. I checked the reader on 9 real papers and wrote 217 tests. I also built a first test frontend; the colleague's new frontend replaced it, and the API shapes are now locked for it. Rewriting a whole document in one request is left out until I talk to my supervisor.
 
 ---
 
 ## 2. What changed on this branch
 
-**Before:** Gemini was tried first. If it failed, T5 and then a rule-based rewriter were used. A local detector (BERT) scored every rewrite and the lowest score won.
+**Before:** Gemini was tried first. If it failed, T5 and then a rule-based rewriter were used. A local detector (BERT) scored every rewrite and the lowest score won, even when that rewrite was wrong. Uploads were read as one flat string.
 
-**Now:** Humarin first, then T5, then Gemini, then rule-based. The API also returns the name of the winner. A frontend exists.
+**Now:** Humarin first (default style) with T5, Gemini and rule-based as fallbacks; a guard on every rewrite; a layout-aware document reader; the API tells the page the winner (`engine`), the paragraph of each sentence (`para`), the headings, notes about skipped pages, and whether a rewrite failed (`failed`, `reason`).
 
 | Date | Commits | What |
 |---|---|---|
-| 13–14 Oct | `0d9384f`, `3d55e2a` (yours, before this session) | Humarin module and test scripts; Humarin added to the main pipeline; fallback order changed; `engine` added to the response |
-| 14 Oct | 18 commits `d17689a` … `1945ec3` | Frontend, backend fixes, docs |
+| 13–14 Oct | `0d9384f`, `3d55e2a` | Humarin module and test scripts; Humarin added to the main pipeline; fallback order changed; `engine` added to the response |
+| 14–16 Oct | `d17689a` … `7573adb` | First test frontend, backend fixes (one Gemini model, T5 candidates, hyphen, no invented scores, requirements), READMEs, issue lists |
+| 19–20 Oct | `b197710` … `2d1a299` | Diverse-beam experiment (kept on an archive tag, not on this branch); T5 uses 3 beams |
+| 20 Oct | `fc70ada`, `1c7a61d`, `387cef7`, `1147eed`, `f4b6696` | Paragraph and heading reader, the guard, upload clean-up, model preload, request limit, strict styles, skip Gemini on a used-up quota |
+| 21 Oct | `96d6f3f`, `fde1cd8`, `81d5b42`, `8c9fa56`, `f9fd756` | Lowest safe score wins (no 0.15 margin), layout fixes found on real papers, soft errors for scanned files, citations → Gemini only, guard fixes, footnote and bullet fixes |
+| 22 Oct | `6c6249a` … `2ab077a`, `baf13ba` | Root docs and the old frontend taken out of git; new frontend merged from `main`; non-default styles try Gemini first |
 
 ---
 
 ## 3. AI / ML side
 
 ### 3.1 How one rewrite is chosen
-1. The detector scores the original sentence (0 = human, 1 = AI).
-2. Humarin writes 5 versions. Each is scored. The lowest score so far is kept.
-3. If the best score is still **0.40 or more**, T5 writes up to 3 versions. Same scoring.
-4. If it is still 0.40 or more, Gemini writes 3 versions. If it is still 0.35 or more, Gemini is asked for 3 simpler ones.
-5. If nothing has improved the sentence, or the best is still 0.50 or more, the rule-based rewriter runs.
-6. The winner is cleaned up and returned with its score and its name (`engine`).
+1. The detector scores the original sentence alone (0 = human, 1 = AI). This is the score to beat.
+2. The routing picks the order of the rewriters:
+   - **Sentence with a citation:** Gemini only.
+   - **No citation, style `academic`:** Humarin → T5 → Gemini → rule-based.
+   - **No citation, another style:** Gemini → Humarin → T5 → rule-based.
+   The first one always runs; the next one runs only if nothing has helped yet or the best score is still 0.40 or more. Rule-based is the last resort (nothing helped, or best 0.50 or more).
+3. Humarin writes 5 versions, T5 up to 3, Gemini 3 (and 3 simpler ones if the best is still 0.35 or more).
+4. Every version passes the **guard** first. A rejected version is never scored or kept.
+5. The versions that pass are scored by the detector. The **lowest score wins** if it is lower than the original's.
+6. If none is safe and lower, the original is returned with `failed: true` and a reason.
 
-The numbers to remember: **0.75** = the detector calls it AI. **0.40** = our "good enough" line. **0.50** = when the rule-based rewriter is used. **0.35** = when Gemini gets a second try.
+The numbers to remember: **0.75** = the detector calls a sentence AI. **0.40** = our "good enough" line (green/amber, and when the next rewriter is tried). **0.50** = when the rule-based rewriter is used. **0.35** = when Gemini gets a second try.
 
 ### 3.2 Decisions
 
 **Humarin is the first rewriter** *(you and your supervisor)*
-- *Why:* it runs on your own computer. No API key, no quota, no cost, no internet needed.
-- *Other options:* keep Gemini first (the original design); T5 only; PEGASUS or BART (your research: PEGASUS deleted content and BART just copied the input).
-- *Know this:* in your 20-set test, Gemini passed both detectors on 12 of 20 sets and Humarin on 8 of 20. Humarin also dropped two statistics. Gemini kept every statistic but repeated citations. So Humarin first is a choice for local and free, not because it is stronger.
+- *Why:* it runs on your own computer. No key, no quota, no cost, no internet.
+- *Know this:* in your 20-set test, Gemini passed both detectors on 12 of 20 sets and Humarin on 8 of 20. Humarin dropped two statistics; Gemini kept every statistic but repeated citations. So "Humarin first" is a choice for local and free, not because it is stronger.
 - *Check with your supervisor* what exactly their reason was. It is not written anywhere.
 
-**Every rewrite is checked by the same detector** *(original design, kept)*
-- *Why:* the detector score is the goal, so every candidate is measured with it and the lowest wins.
-- *Limit:* the score says "looks like AI". It does not check that facts, numbers or citations survived.
+**The guard is deterministic, not a meaning model** *(you decided: no NLI)*
+- *Why:* a rewrite with the lowest score could be wrong (`higher risk` became `lower rate … [citation needed]`) and was still inserted.
+- *What it checks:* citations, years and numbers (including minus signs) kept; no invented markers; negation not added or removed; direction not flipped (higher/lower, increase/decrease…); brackets balanced; length between 0.4 and 2.2 times the original; no `,.` `;.` `..` or space inside brackets.
+- *Limit:* it cannot prove that a paraphrase keeps its meaning. It only catches the failures on its list. You decided to **keep it as it is**.
 
-**Gemini uses one model only, `gemini-3.8-flash`** *(your decision)*
-- *Why:* the old code tried five model names one after another. One of them returned "not found" and the others often returned "overloaded". Each failure cost 5 to 9 seconds.
-- *Other options:* keep the list; add a time limit; use a paid key.
-- If Gemini fails, the code moves on to the next rewriter.
+**The lowest safe score wins, even if it only barely helps** *(you decided; the 0.15 margin rule was removed)*
+- *Consequence:* a badge can read "Tier 2 · T5 · 1.00": the rewrite scored 0.9996 against 1.0000 and both show as 1.00. The score is right, only the display rounds it. See `OPEN_ISSUES.md` (B8).
 
-**Gemini writes 3 versions (it was 4)** *(your decision)*
-- *Why:* 3 versions for both Gemini and T5, fewer tokens.
-- *Not checked live:* the free-tier quota ran out right before. It is a two-line change in the prompt, but we did not see a real answer with exactly 3.
+**A sentence with a citation goes to Gemini only** *(you decided: "option A")*
+- *Why (measured on 40 cited sentences):* Humarin kept every citation in 42% of its candidates (19 of 40 sentences had at least one), T5 in 70% (30 of 40). Gemini follows instructions and keeps the marker.
+- If Gemini is not available or gives nothing safe, the original is kept with a reason. No local fallback for cited sentences.
+
+**A non-default style tries Gemini first** *(you decided, 22 Oct)*
+- *Why:* only Gemini applies the style (a line in its prompt). Humarin and T5 ignore it, and the rule-based rewriter only adds a pronoun for non-academic styles. If the style choice is to mean anything, Gemini has to go first.
+- *Fallback:* if Gemini gives nothing usable, the local tiers still run (the style is then ignored).
+- *Know this:* the style is one line of the prompt, so the six styles may produce similar rewrites. A stronger per-style prompt would be a separate step.
+
+**Gemini uses one model, `gemini-3.8-flash` (`GEMINI_MODEL`)** *(your decision)*
+- The old code tried five model names one after another; failures cost 5 to 9 seconds each.
+- A short 429 is retried twice with a 2 s back-off. A "daily quota used up" answer is **not** retried: Gemini is skipped for 5 minutes and the next tier answers. The key to use is the paid one (`GOOGLE_API_KEY_PAID`), which the code prefers.
 
 **T5: every version it writes is scored** *(you approved)*
-- *Why:* T5 wrote 3 versions but only the first different one was scored.
-- *How:* a new function `paraphrase_candidates()`. The old `paraphrase_sentence()` behaves exactly as before, because other code uses it. We tested both on 5 inputs and got identical results.
-- *Honest note:* often only 1 or 2 of T5's 3 versions differ from the original, so the gain is small.
-
-**Ideas we tested and dropped**
-- *"Make T5 return only 1 version."* Measured: 3 versions take 5.2 s and 1 version takes 5.2 s. The time goes into the search, not into the number returned. So nothing is saved.
-- *"Write one version at a time and stop when one is good."* Measured on 6 sentences: the first Humarin version scored under 0.40 in **0** of 6. One-at-a-time writing costs about 2.7 s per version, so it would be slower than one batch of 5 (about 5.4 s).
-- *What would really speed things up:* a GPU, or a cheaper search. That is your supervisor's decision.
+- New function `paraphrase_candidates()`; the old `paraphrase_sentence()` behaves as before. Often only 1 or 2 of T5's 3 versions differ from the original, so the gain is small. T5 uses 3 beams (was 4) with the same results in tests.
 
 **Green and amber at 0.40** *(you approved)*
-- A rewrite is **humanized (green)** only if its own score is below 0.40. If the text changed but the score is 0.40 or more, it is **attempted (amber)**.
-- *Why 0.40:* it is the pipeline's own "good enough" line.
-- *Other options:* 0.75 (the detector's AI line); count any improvement as success (a drop from 1.00 to 0.99 would look like a win).
+- A rewrite is a success (green) only if its own score is below 0.40; if the text changed but the score is 0.40 or more, it is only an attempt (amber).
 
-**Style only changes Gemini** *(finding)*
-- The style picks a sentence in the Gemini prompt. Humarin ignores it, and T5 accepted it but never used it. We removed the unused style argument from the new T5 function.
+**Style, in short.** Only Gemini applies it (see above). This is why the style list is one fixed list of six; an unsupported style returns HTTP 400.
+
+**Citations stay in the text the detector scores** *(you decided on 21 Oct; to confirm with your supervisor)*
+- *Why:* a real detector reads the whole text, and flagging more sentences would spend extra Gemini calls on cited sentences.
+- *Measured:* in a citation-dense paper (176 of 452 sentences cited) **184 sentences are flagged with the citations and 380 without**. In a thesis 996 → 1000, in two lighter papers 28 → 28 and 30 → 38.
+
+**Ideas we tested and dropped**
+- *"Make T5 return only 1 version."* 3 versions take 5.2 s and 1 version takes 5.2 s. The time goes into the search.
+- *"Write one version at a time and stop when one is good."* The first Humarin version scored under 0.40 in 0 of 6 sentences, and one-at-a-time costs more.
+- *Diverse beam search for Humarin.* Tested; results are in `DIVERSE_BEAM_RESULTS.md`. The code is on an archive tag, not on this branch.
+- *Hiding citation markers from the models and putting them back afterwards.* Replaced by "citations go to Gemini only".
 
 ### 3.3 Numbers you can quote
 
 | Measurement | Result |
 |---|---|
-| One click, 32-word sentence, local rewriters only | about **12 s** (Humarin 5 s + T5 5.6 s + scoring 1.1 s) |
-| A 15-word sentence | about 2 s per rewriter |
+| One click, 32-word sentence, Humarin and T5 both running | about 12 s (Humarin 5 s + T5 5.6 s + scoring 1.1 s). A request on a cold start took 13.4 s, warm 4.9 s (the models are now preloaded) |
 | Humarin settings | 5 versions: 5.4 s · 1 version: 5.3 s · greedy (1 version, no search): 2.5 s |
-| Gemini on this key | "overloaded" errors on a trivial prompt; one call took **188 s**; then "quota exceeded, limit 20" |
-| Group score example | 1.0 → one rewrite 0.9999 → two rewrites **0.1654** |
-| Three clicks at once | all finished after about 26 s (one alone: 17.6 s) |
+| Gemini free key | "overloaded" errors, one call took 188 s, then "quota exceeded, limit 20" |
+| Three simultaneous clicks | limit 1: results at 5.9 / 10.9 / 16.4 s; limit 3: 14.2 / 15.6 / 15.6 s. Same total, limit 1 gives the earliest first result |
+| Local tiers on a citation-dense paper | Humarin keeps the meaning in about half of its useful rewrites; T5 is safe but barely changes the text; 6 of the rule-based tier's 8 lowering rewrites were broken text (`,.`), now fixed |
+| Replay of 20 flagged sentences of one paper (local tiers only) | 8 rewritten and kept (7 below 0.40, 1 partial), 11 kept as original because no safe rewrite scored clearly lower, 1 was already human |
 | Computer | i5-8250U laptop, 4 cores, no GPU |
 
 ### 3.4 Limits to mention
-- Scores come from **one** detector (the local BERT model), not from ZeroGPT or Copyleaks.
-- The pipeline does not check that facts, numbers and citations are preserved.
-- With the Gemini free quota used up, rewriting runs on Humarin, T5 and rule-based only.
+- Scores come from **one** detector (the local BERT model), not from ZeroGPT, Turnitin or Copyleaks.
+- The guard does not check meaning beyond its list. Direct quotations are not protected yet (`OPEN_ISSUES.md` B7).
+- The local models are weak on citation-dense text; Gemini carries those sentences.
+- Gemini has not been run against the paid key yet; the routing and guard were tested with a fake Gemini.
 
 ---
 
 ## 4. Backend
 
-**Already there:** a Flask server (`backend/app.py`) with the logic in `backend/aidetector/service.py`. Uploads become background jobs kept in memory.
+**Already there:** a Flask server (`backend/app.py`) with the logic in `backend/aidetector/service.py`. Uploads are background jobs kept in memory.
 
-### 4.1 Decisions
+### 4.1 What was built here
 
-**Use the existing API, no new endpoints** *(your decision)*
-- The frontend uses five existing calls, plus `/api/detector-score`, which nobody used before.
-- *Other options:* add batch or whole-document endpoints; switch to FastAPI; add a proxy.
+**A layout-aware document reader** (`pipeline/block_extractor.py` and `pipeline/structure.py`) — instead of one flat string:
+- PDF paragraphs are rebuilt from line spacing, indents, short last lines, list markers and style changes; justified lines with wide gaps are re-joined; a heading above its paragraph is split off; a paragraph that continues on the next page is joined.
+- Removed: running headers, page numbers, footnotes and footnote marks (small print in the lower 40% of the page), tables with and without borders (but never real paragraphs in a highlighted box), figure text, formula lines, captions, table-of-contents lines, rotated text, cover-page metadata, front matter before the abstract, and every reference list.
+- DOCX uses real paragraphs and heading styles; TXT and pasted text use blank lines.
+- Scanned PDFs, password-protected PDFs and the "protected document" placeholder stop with a plain message (`error_code`); partly scanned PDFs are read and a note says how many pages were skipped. **No OCR, by decision.**
+- Checked on 9 real papers (a 28-page paper, a 112-page thesis, a 38-page review, a 7-page journal article, 2 physics papers, a German paper with footnotes, an AI review with a cover page, a protected file) and on generated PDFs. It is a set of heuristics with known gaps (`OPEN_ISSUES.md` B5).
 
-**The response includes `engine`** *(yours, before this session)*
-- The page needs to show which rewriter won.
+**Sentences and scoring:** `sentences.py` (Punkt plus abbreviation rules), `text_cleaner.py` (only glued sentences get their space back; URLs, e-mails and DOIs are protected), `detector.py` (blocks of 4 consecutive sentences; `para` on every sentence; headings returned separately).
 
-**Humarin has its own loader inside `humanizer.py`** *(yours)*
-- A separate file, `humarin_humanizer.py`, is used only by `test_humarin.py`. The pipeline has its own copy of the loader. The reason for two copies is not written anywhere, so do not make one up.
+**Jobs and service:** the uploaded file is deleted right after it was read; it is stored as `<job id><ext>` (the client's name is never used); expired jobs and orphaned files are removed at start, on every upload and every 10 minutes; a document is cut to 20,000 words; the three models load in the background at start (`/api/health` reports `models_ready`); at most `MAX_CONCURRENT_HUMANIZE` (1) humanize requests use the models at once and at most `MAX_CONCURRENT_GEMINI` (2) Gemini calls are in flight.
 
-**Keep the hyphen when joining words split at a line end** *(you approved)*
-- *Problem:* `well-` at the end of a line plus `differentiated` on the next line became `welldifferentiated`. Only uploads were affected.
-- *Fix:* a one-character change in a regular expression.
-- *Other options:* join only when the result is a real word (needs a word list); leave it.
-- *Trade-off:* a word that was only split by the line wrap (`inter-` + `national`) keeps a stray hyphen. That is less harmful than a merged non-word.
+**Humanizer safety:** the guard, the routing and the decision rule (section 3).
 
-**No invented scores** *(you approved)*
-- *Problem:* if the humanizer left out its scores, the service filled in 0.85, 0.15 and 0.70.
-- *Fix:* a missing score now produces a clear error.
-
-**Requirements completed** *(you approved)*
-- Added `flask==3.1.3`, `flask-cors==6.0.5` and `google-genai==2.30.0` to `aidetector/requirements.txt`. They were already installed but not listed.
-
-**Housekeeping:** an out-of-date comment in `humanizer.py` was fixed, and `backend/README.md` was added.
+**Earlier fixes (14 Oct):** one Gemini model; all T5 versions scored; the hyphen is kept when a word is split at a line end; no invented scores; missing requirements added; an unused T5 style argument removed.
 
 ### 4.2 Left alone on purpose
 
 | Item | Why |
 |---|---|
+| Three API implementations (Flask and two FastAPI files, one of which cannot start) | Supervisor (21 Oct): leave it as it is for now |
+| Insecure defaults (`debug=True`, open to the network, open CORS, fixed `secret_key`, no upload size limit) | Fine on a laptop; only matters when deployed |
+| Whole-document rewrite (`/api/humanize`) | Out of scope; a "humanize all" loop exists in the colleague's frontend and uses the sentence call |
+| OCR for scanned PDFs | By decision: no OCR; a soft message instead |
 | Time limit on Gemini calls | Supervisor's pipeline; a paid key probably removes the need |
-| A "document was cut" flag and an upload size limit | You chose to leave the backend alone; the page shows a banner instead |
-| `debug=True`, open to the network, open CORS, fixed `secret_key` | Fine on a laptop. Only matters when deployed. The key is not even used |
-| Three API implementations (Flask and two FastAPI files, one of which cannot start) | Needs the supervisor's decision on what to delete |
-| 9 styles listed but 6 accepted | Supervisor's decision |
-| Several clicks at once (no queue, models load without a lock) | Logged; not seen as a bug |
-| Whole-document rewrite (`/api/humanize`) | Out of scope for now |
 
 ### 4.3 Problems we solved
-- **Windows Smart App Control** blocked a PyTorch file (`WinError 4551`), so the backend could not start. You turned Smart App Control off. The other options were WSL2, another machine, or a different PyTorch build.
-- **Free Gemini key:** the quota is 20 requests a day. The fix is a paid key set as `GOOGLE_API_KEY_PAID`. The code already prefers that key.
+- **Windows Smart App Control** blocked a PyTorch file (`WinError 4551`), so the backend could not start. You turned Smart App Control off.
+- **Free Gemini key:** 20 requests a day. The fix is a paid key as `GOOGLE_API_KEY_PAID`.
+
+### 4.4 The API is locked (22 Oct)
+`API_FLOW.md` was given to the colleague who builds the new frontend. **Keys, routes and request fields are frozen; values may change.** Everything added on this branch (`para`, `headings`, `notes`, `error_code`, `models_ready`, `warmup`, `engine`, `failed`, `reason`) is already in that file. Unsupported styles now return HTTP 400 instead of silently becoming `academic` (a change from `main`).
 
 ---
 
 ## 5. Frontend
 
-**Built with:** Next.js 16.4, React 19, TypeScript, Tailwind CSS. It lives in `frontend/`, next to `backend/`.
+**Status.** The first test frontend (built on this branch in October) was replaced on 22 Oct by the colleague's frontend, merged from `main`: Next.js 13.5 (App Router), React 18, Tailwind 3, shadcn/ui, Zustand and framer-motion. **From now on no changes are made to the frontend from this side**; its owner is the colleague. The old one is kept outside the repo in `ReviewIt-Humanizer/ReviewIt-frontend-old`.
 
-### 5.1 Decisions
+**What the new frontend uses from the backend:** `/api/detect-text`, `/api/detect` + `/api/status/<id>` + `/api/result/<id>` + `DELETE /api/status/<id>`, `/api/humanize-sentence` and `/api/health` (and `/styles`, which is not in `API_FLOW.md`). It reads `para`, `headings`, `notes`, `error_code`, `engine`, `failed`/`reason` and `models_ready`.
 
-**Only the original workflow** *(your decision)*
-- Detect, highlight, click a sentence, rewrite in place, undo. You turned down extras such as a separate "quick humanizer" tab.
+**What it does:** a Dashboard (paste or upload, Document and Checklist views with headings, filters, click-to-humanize with a style, revert, next/previous AI sentence, "Humanize all", Highlight/Compare), a Humanizer studio page (a text box, one `/api/humanize-sentence` call per sentence), History and Settings (in browser memory only), and a Plagiarism page and a credit counter with sample data.
 
-**The page calls the backend directly, with the address read at runtime** *(you approved)*
-- *Why:* rewriting can take minutes. A Next.js proxy would give up earlier (I believe about 30 s; not checked). The server already allows CORS.
-- *How:* `page.tsx` reads `API_URL` each time the page is served. Changing it needs a restart, not a rebuild. We proved it with one build and two servers.
-- *Other options:* a build-time variable; a proxy.
+**Things noticed when reading it** (no changes were made; see `OPEN_ISSUES.md` F2): the overall score is the average of the sentences' own scores; a "failed" rewrite is still marked rewritten; "Humanize all" always uses `academic`; the studio page shows a fixed latency number; there is no queue, so clicks run at the server's pace.
 
-**Paste text or upload a file** *(the original backend supports both)*
-- Upload is a job: send the file, ask every 1.5 s until it is done, fetch the result, then delete the job on the server.
-
-**Click a red sentence to rewrite it in place** *(the original workflow)*
-- The page also sends the sentences before and after, as background for the rewrite. Those are the sentences as shown at that moment.
-
-**Colours:** red = AI, green = humanized, amber = rewritten but still AI-like, grey = no better rewrite, blue = working.
-
-**Group scores for the headline numbers** *(you asked for this)*
-- *Problem:* "AI score now" mixed group scores (for untouched sentences) with single-sentence scores (for rewritten ones).
-- *Fix:* after every rewrite or undo, the page scores the changed group of four again with `/api/detector-score` and averages group scores. The badge on a sentence keeps its own score, as you wanted.
-- *Other options:* leave the mix; run a whole new detection; show only per-sentence scores.
-- The group size (4) is written in two places: `Studio.tsx` and `detector.py`. They must match.
-
-**Highlight | Compare switch** *(your supervisor's request, your design)*
-- Compare shows original on the left and rewrite on the right, row by row, with a "Show only changed sentences" checkbox. It becomes available after the first rewrite. No per-row scores.
-- *Other options:* a pop-up window; two flowing paragraphs; word-level differences.
-
-**Amber "attempted"** *(you approved)*
-- Counted separately from "humanized". Still counted as "flagged as AI". Shown in Compare.
-
-**Style dropdown** *(you approved)*
-- A fixed list of the 6 styles that work. The backend lists 9, but three silently behave like "academic". The select is a rounded pill with a chevron, like the View switch.
-
-**Smaller things:** a timer while a sentence is being rewritten; the browser-extension warning silenced; the "Backend connected" pill removed; drag-and-drop upload; an amber banner when an upload was cut to 20,000 words.
-
-### 5.2 Left out on purpose
-A "rewrite the whole document" button (waiting for your supervisor), an upload size limit, a queue for many clicks at once, a tooltip saying style only affects Gemini, a custom dropdown menu.
-
-### 5.3 How it was checked
-- Every change: type check, lint and a production build.
-- Real calls to the server for health, CORS, detect, upload (`.txt`, `.docx`, `.pdf`), rewrite and group scoring.
-- Your screenshots showed detect, rewrite, undo and Compare working in the browser.
-- **Not seen in a browser yet:** the amber state, the pill select, drag-and-drop and the truncation banner. Gemini returning exactly 3 versions was not seen either.
+Frontend items from the first version (queue, "kept the original" message, amber states, model-loading banner) are fixed in `FIXED_ISSUES.md` (FF1 to FF10) but belong to the old frontend.
 
 ---
 
 ## 6. Code decisions (the "how")
 
 **Backend**
-1. `_generate_candidates()` returns `None` when nothing was tried or it failed, and `[]` when the model produced nothing usable. That way `paraphrase_sentence()` returns exactly what it always did.
-2. A new function `paraphrase_candidates()` was added instead of changing `paraphrase_sentence()`, because other code calls the old one.
-3. `_call_gemini` logs the error and raises it again. The existing error handling then moves to the next rewriter.
-4. The service raises an error for missing scores inside its existing error handling, so the page gets the same kind of error message as before.
-5. The test and timing scripts were kept out of the repository. The results are in `OPEN_ISSUES.md` and here.
+1. `_generate_candidates()` returns `None` when nothing was tried or it failed, and `[]` when the model produced nothing usable. `paraphrase_sentence()` therefore returns exactly what it always did.
+2. `paraphrase_candidates()` was added instead of changing `paraphrase_sentence()`, because other code calls the old one.
+3. The humanizer's tiers are nested functions (`_tier_humarin`, `_tier_t5`, `_tier_gemini`) that share one running best candidate; the order is chosen in one place.
+4. `check_candidate()` returns `(ok, reason)`; the last reason becomes the `reason` of a failed answer.
+5. `_call_gemini` uses a semaphore, retries a short 429 and puts a 5-minute cool-down on a daily-quota 429.
+6. The service raises an error for missing scores inside its existing error handling.
+7. Model loaders (BERT, Humarin, T5, Gemini client) have a lock each, so parallel clicks cannot load a model twice.
+8. Only `block_extractor.py` knows the layout; `structure.py` only sees blocks with text, size, bold, italic, page and position, so it can be tested without PDFs.
+9. The rule-based splitter has its own joiner (`_join_sentences`) so it cannot produce `,.`.
+10. The test and timing scripts that are not tests are kept out of the repository.
 
-**Frontend**
-1. All state lives in one component, `Studio.tsx`. A state library would be too much for an app this small.
-2. `createApi(baseUrl)` is a function that builds the API helper, so the address can be a runtime value.
-3. One helper, `request()`, handles every call and turns failures into readable messages.
-4. Three guards against late replies: an `AbortController` (cancel), a `runId` counter (ignore rewrites that finish after a new detection) and `scoredTexts` (ignore group scores for text that changed again).
-5. Group scores are re-checked by a watcher that compares each block's text with the text last scored. That covers both rewrite and undo. It never calls `setState` directly inside the watcher, because this project's lint rules reject that (we tested it).
-6. Numbers like "AI score now" and the counts are calculated each time the page draws, not stored.
-7. Constants are in `lib/config.ts` (`STYLES`, `MAX_ANALYSED_WORDS`) or next to the code that uses them (`HUMAN_THRESHOLD`, `BLOCK_SIZE`), with comments naming the backend value they must match.
-8. The page is split into small components: `InputCard`, `SentenceView`, `CompareView`, `ViewToggle`, `ScoreSummary`, `EngineBadge`, `Navbar`.
-9. `page.tsx` is a server component that reads the address after `await connection()` inside `<Suspense>`. The scaffold turns on a setting (`cacheComponents`) that requires this.
-10. The View switch is a radio group with `aria-checked`. The style control stays a real `<select>` with `appearance-none` and an icon.
+**Tests.** 217 tests (`backend/tests`, `python -m pytest tests -q`). They cover the reader (generated PDFs), structure, sentences, cleaner, guard, routing (with a fake Gemini), clean-up, styles and unreadable files. 21 tests run against real papers only when the PDFs are in `backend/test_papers/` (git-ignored). The models themselves and the Flask routes are not exercised.
 
 ---
 
 ## 7. Your contribution
 
 **What you did**
-- Set the goal: a minimal ReviewIt-style Next.js frontend for the **original** pipeline only.
-- Described the workflow and brought in your supervisor's requests: the Compare view, Gemini 3.8 as the default, the paid key.
-- Made the decisions listed above: whole-document rewrite deferred; Gemini one model and 3 variants; Humarin stays at 5; T5 left as is; early-exit idea dropped; block-wise scores; amber state; keep the hyphen; leave the backend size limit; runtime address; style list; Compare design.
-- Tested in the browser and reported the problems that led to fixes: the console error, the slow rewrite, `welldifferentiated`, the `Tier 4 · 1.00` result, the 10-second Humarin question, the several-clicks question.
-- Turned off Smart App Control, started the servers yourself, and set the working rules: plan before building, check before claiming, push only to `abdullah/humanizer-dev`, no AI tag on new commits.
+- Set the goal and the rules: research-based fixes for every use case, no guessing, plan before building, check before claiming, no AI tag on new commits.
+- Made the decisions listed above: guard stays deterministic and is kept; the lowest safe score wins; sentences with citations go to Gemini only; a non-default style tries Gemini first; skip Gemini on a used-up quota; no OCR (soft message); citations stay in the scored text; paid Gemini key for production; the API is locked for the colleague's frontend; no frontend changes from your side.
+- Asked the questions that shaped the work: why only one rewrite passed, why it is slow, who added the guard, how to measure each fallback, whether titles over 40 words or short sentences break the reader.
+- Tested in the browser and sent screenshots that exposed real bugs (prose removed as "tables", a footnote glued into a sentence, a bullet scrambled).
+- Turned off Smart App Control and handled the Git side (merges, pushes, branches).
 
 **How the code was made**
-- Everything is committed under your name. This session's code was written with Claude Code as the coding assistant. The 18 commits from this session carry a `Co-Authored-By` tag; new commits do not.
-- Your two earlier commits are yours. Say how you made them the way it really happened.
+- Everything is committed under your name. This session's code was written with Claude Code as the coding assistant. The 18 commits from 14 Oct carry a `Co-Authored-By` tag; later commits do not.
+- Your two earliest commits are yours. Say how you made them the way it really happened.
 
 **A suggested answer**
-> I set the requirements and made the design decisions: what to build and leave out, the thresholds, how scores are shown and how the fallbacks work. I tested it in the browser and reported the bugs that shaped the fixes. I integrated Humarin earlier. For the frontend and the backend fixes I worked with Claude Code as my coding assistant.
+> I set the requirements and made the design decisions: what to build and leave out, the thresholds, how a rewrite is chosen and kept, how citations and styles are routed. I tested it in the browser and reported the bugs that shaped the fixes. I integrated Humarin earlier. For the reader, the guard and the backend fixes I worked with Claude Code as my coding assistant.
 
-Be ready to explain in your own words: the four rewriters and their order, why scores are per group of four, green versus amber, why a click takes about 12 s, and the Gemini free-tier limit.
+Be ready to explain in your own words: the four rewriters and their order, why scores are per group of four, the guard and what it cannot do, why cited sentences go to Gemini, green versus amber, and the Gemini free-tier limit.
 
 ---
 
 ## 8. Stack and libraries
 
-**Frontend**
-
-| Tool | Version | Used for |
-|---|---|---|
-| Next.js (App Router) | 16.4.0 | The whole app |
-| React | 19.3.0 | Components and state |
-| TypeScript | 5.9.3 | Types for the server's replies |
-| Tailwind CSS | 4.3.3 | All styling |
-| ESLint | 9.39.5 | Checking code on every change |
-| Geist fonts | — | Page fonts (scaffold default) |
-| `fetch` and `AbortController` | built in | All server calls and cancelling |
-
-No state library, no UI kit, no axios.
-
-**Backend** (already there; nothing new installed)
+**Backend**
 
 | Tool | Version | Used for |
 |---|---|---|
@@ -266,54 +215,62 @@ No state library, no UI kit, no axios.
 | Flask, flask-cors | 3.1.3, 6.0.5 | The server and browser access |
 | PyTorch (CPU) | 2.14.1 | Runs the local models |
 | transformers | 5.19.0 | Loads BERT, Humarin and T5 |
-| NLTK | 3.9.1 | Cutting text into sentences |
-| PyMuPDF | 1.28.2 | Reading PDFs |
+| NLTK | 3.9.1 | Cutting text into sentences (Punkt) |
+| PyMuPDF | 1.28.2 | Reading PDFs by layout |
 | python-docx | 1.2.0 | Reading Word files |
 | python-dotenv | 1.0.0 | Reading `backend/.env` |
 | google-genai | 2.30.0 | Talking to Gemini |
+| pytest (`requirements-dev.txt`) | 9.1.1 | The 217 tests |
+
+**Frontend (colleague's)**
+
+| Tool | Version |
+|---|---|
+| Next.js (App Router) | 13.5.1 |
+| React | 18.2.0 |
+| TypeScript | 5.2.2 |
+| Tailwind CSS | 3.3.3 |
+| shadcn/ui (Radix), Zustand 5, framer-motion 14, recharts, sonner, lucide-react | — |
+| ESLint | 8.49.0 |
 
 **Models**
 
 | Model | Role | Chosen by |
 |---|---|---|
 | `followsci/bert-ai-text-detector` | Scores AI-ness; flags at 0.75 | Original code |
-| `humarin/chatgpt_paraphraser_on_T5_base` | Rewriter 1 | You and your supervisor |
+| `humarin/chatgpt_paraphraser_on_T5_base` | Rewriter 1 (default style) | You and your supervisor |
 | `Vamsi/T5_Paraphrase_Paws` | Rewriter 2 | Original code |
-| `gemini-3.8-flash` | Rewriter 3 | Your supervisor's default |
-| Rule-based code | Rewriter 4 | Original code |
+| `gemini-3.8-flash` (`GEMINI_MODEL`) | Rewriter 3; the only one for cited sentences; first for non-default styles | Your supervisor's default |
+| Rule-based code | Rewriter 4 (last resort, uncited only) | Original code |
 
 ---
 
 ## 9. Files we changed
 
-**Frontend (`frontend/`, about 1,050 lines of source, all new)**
-`src/app/layout.tsx`, `page.tsx`, `globals.css` · `src/lib/api.ts`, `types.ts`, `config.ts` · `src/components/Studio.tsx` (state and logic), `InputCard.tsx`, `SentenceView.tsx`, `CompareView.tsx`, `ViewToggle.tsx`, `ScoreSummary.tsx`, `EngineBadge.tsx`, `Navbar.tsx` · `.env.example`, `README.md`, plus files generated by `create-next-app`.
-
 **Backend (`backend/`)**
-- `aidetector/pipeline/humarin_humanizer.py`, `test_humarin.py`, `test_gemini.py` — yours, before this session.
-- `aidetector/pipeline/humanizer.py` — Humarin tier and new order (yours); one Gemini model, 3 variants, T5 loop, comment fix (this session).
-- `aidetector/pipeline/t5_humanizer.py` — `paraphrase_candidates()`.
-- `aidetector/service.py` — `engine` in the response (yours); no invented scores (this session).
-- `app.py` — `engine` copied into the response (yours).
-- `aidetector/pipeline/pdf_extractor.py` — keep the hyphen.
-- `aidetector/requirements.txt`, `README.md`.
+- `aidetector/pipeline/block_extractor.py` (new reader), `structure.py` (new: heading / body / drop), `sentences.py` (new), `candidate_guard.py` (new), `detector.py` (blocks of 4, `detect_document`), `text_cleaner.py`, `humanizer.py` (routing, guard, decision rule, Gemini limits), `restructuring_engine.py` (`_join_sentences`), `t5_humanizer.py` (`paraphrase_candidates`, load lock), `humarin_humanizer.py` (yours; load lock), `pdf_extractor.py` (hyphen).
+- `aidetector/service.py` (jobs, clean-up, warm-up, limits, styles, errors), `aidetector/config/settings.py`, `app.py` (`/api/health`, `engine` copied).
+- `tests/` (217 tests), `bench_concurrency.py`, `requirements-dev.txt`, `README.md`, `.gitignore` (`test_papers/`).
 
-**Docs:** `OPEN_ISSUES.md` (open issues only), the two READMEs, and these private notes.
+**Docs** (kept outside the repo in `ReviewIt-Humanizer/docs/ReviewIt-AI-Detector-Docs/`): `API_FLOW.md` (locked), `CODE_FLOW.md`, `PROJECT_WALKTHROUGH.md`, `OPEN_ISSUES.md`, `FIXED_ISSUES.md`, `DIVERSE_BEAM_RESULTS.md`.
+
+**Frontend:** the colleague's `frontend/`; nothing is changed from this side.
 
 ---
 
 ## 10. Questions you may get
 
-1. **Why Humarin first?** It runs locally and is free: no key, no quota, no internet. Gemini scored better in my 20-set test (12 of 20 against 8 of 20) and keeps facts better, so it stays as a fallback.
-2. **Why is rewriting slow?** The local rewriters take about 5 to 12 s on this laptop. The long waits came from the Gemini free-tier key: overloaded errors, one 188 s call, then a 20-requests-a-day limit. A paid key and a GPU would fix it.
-3. **How is the AI score worked out?** A detector scores groups of 4 sentences, and each sentence shows its group's score. After a rewrite, the page scores the group again, so the top number stays comparable.
-4. **What do green and amber mean?** Green: the rewrite scores below 0.40. Amber: the text changed but still looks AI.
-5. **What does the Style dropdown do?** It only changes Gemini's instructions. Humarin and T5 ignore it.
-6. **Why does the page call the backend directly?** Rewrites are slow and CORS is already on. The address is now read at runtime.
-7. **What did you fix in the backend?** Lost hyphens in uploads, invented scores, missing requirements, a dead Gemini model and an out-of-date comment.
-8. **What did you leave out, and why?** Whole-document rewrite, a Gemini time limit, an upload size limit and merging the three APIs. Those are scope or supervisor decisions. All are in `OPEN_ISSUES.md`.
-9. **Does it keep citations and facts?** The pipeline only lowers the detector score. It does not check facts. In my research, both models can drift: Humarin dropped two statistics and Gemini repeated citations.
-10. **What next?** Get the paid key and measure again; decide what to do about the three APIs; add a time limit for Gemini; consider a fact-check; maybe use a GPU.
+1. **Why Humarin first?** It runs locally and is free: no key, no quota, no internet. Gemini scored better in my 20-set test (12 of 20 against 8 of 20) and keeps facts better, so it carries cited sentences and non-default styles.
+2. **Why do cited sentences only go to Gemini?** Measured: Humarin kept the citation in 42% of its versions and T5 in 70%; Gemini follows instructions and keeps it. A rewrite that loses a citation is thrown away by the guard anyway.
+3. **How do you make sure a rewrite does not change the meaning?** A deterministic guard: citations, numbers, negation, direction of change, markers, punctuation. It cannot prove meaning is kept; it catches the failures on its list. If nothing safe beats the original, the original is kept and the answer says why.
+4. **Why does a sentence sometimes show "No better rewrite · 0.00" and sometimes "· 1.00"?** The badge shows the sentence's own score. 0.00 means the sentence is already human on its own (it was red because of its block of 4); 1.00 means it is AI-like and nothing safe scored lower.
+5. **How is the AI score worked out?** The detector scores blocks of 4 consecutive sentences and each sentence takes its block's score; a sentence is "AI" at 0.75 or more. The page's overall number is the average.
+6. **What do green and amber mean?** Green: the rewrite scores below 0.40. Amber: the text changed but it still looks AI.
+7. **What does the style do?** Only Gemini applies it. For any style other than `academic`, Gemini runs first; Humarin and T5 ignore the style.
+8. **What does the document reader remove?** Title page, metadata, headers, page numbers, footnotes, tables, figures, formulas, captions and every reference list; headings are kept as headings. Scanned PDFs are not supported (a soft message), by decision.
+9. **Why is rewriting slow?** The local rewriters take a few seconds on this laptop; the long waits came from the Gemini free key. A paid key and a GPU would fix it.
+10. **What did you leave out, and why?** Whole-document rewrite, OCR, a Gemini time limit, an upload size limit, merging the three APIs, and quotation protection. Those are scope or supervisor decisions; all are in `OPEN_ISSUES.md`.
+11. **What next?** Run against the paid Gemini key and measure again; protect direct quotations; decide the minimum-improvement rule for the badge; confirm with the supervisor whether citations stay in the scored text.
 
 ---
 
@@ -322,7 +279,10 @@ No state library, no UI kit, no axios.
 - **Rewriter / engine:** one of Humarin, T5, Gemini or rule-based.
 - **Block:** four sentences in a row that the detector scores together.
 - **Detector:** the BERT model that gives a 0-to-1 AI score.
+- **Guard:** the checks every rewrite must pass before it is scored or kept.
 - **Humarin:** a paraphrasing model (`humarin/chatgpt_paraphraser_on_T5_base`).
 - **Attempted:** rewritten, but the new score is still 0.40 or more.
+- **Failed (`failed: true`):** no safe rewrite scored lower than the original, so the original is kept.
+- **Heading / body / drop:** what the document reader decides for each block.
 - **API call:** a message from the page to the server, sent to an address like `/api/detect-text`.
 - **Job:** an upload being processed in the background, with its own id.

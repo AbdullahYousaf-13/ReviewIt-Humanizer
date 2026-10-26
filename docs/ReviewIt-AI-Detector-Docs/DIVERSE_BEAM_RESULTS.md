@@ -2,6 +2,8 @@
 
 Date: 2026-10-19. The experiment code, test scripts and raw results were never merged into this branch. They are archived under the git tag `archive/humarin-diverse-beams` (the branch itself was deleted). To look at them: `git checkout archive/humarin-diverse-beams`.
 
+*Historical note (26 Oct): these are the results of 19 Oct, before the guard and the citation routing existed. "Passing" here means a score below 0.40 plus the quality gate of that experiment, not the current guard. Diverse beams were not adopted (only T5's 3 beams were).*
+
 **Problem:** Humarin's 5 candidates are near-identical, so if one is flagged all are, and most sentences fall to the fallbacks. The T5 fallback has the same problem.
 **Change tested:** diverse beam search (each beam in its own group, diversity penalty 4) instead of plain beam search. Off by default, enabled with `HUMARIN_DIVERSE_BEAMS=1` (covers Humarin and T5). `T5_NUM_BEAMS` and `T5_DIVERSITY_PENALTY` set T5 separately.
 
