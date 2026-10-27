@@ -65,11 +65,17 @@ The latest prompt doubled evasion (Academic below 40%: 10 → 22 of 26) but its 
 - [ ] "Ethical and social" qualifiers dropped (#75, both rewrites)
 - [ ] "The need" strengthened to "must" (#21)
 - [ ] Two list sentences still score 100% in all 5 rewrites (#30, #32)
+- [ ] **To check (reported 2026-10-27, paper `paperwithError_01`):** "Hao et al. examined the effect of restrictions …" — a citation written as "Name et al." with **no year** is not recognised as a citation. The check only knows `[12]` and `(…, 2023)`/`Name (2023)`, so this sentence is treated as uncited: it goes to Humarin and T5 too, and the guard does not check that "Hao et al." is kept.
 
-## FE (frontend changes for the colleague — the backend side does not edit `ReviewIt/frontend`)
-- [ ] When a humanize attempt fails (no rewrite kept, `failed: true`), show **no popup error message**; leave the sentence as it is
-- [ ] Remove `.doc` from the upload file picker (`accept=".pdf,.docx,.doc,.txt"` in `components/dashboard/file-upload-card.tsx` and the extension check above it): old .doc files are not supported (supervisor, 2026-10-27); the backend refuses them with a clear message
-- [ ] (Open since 22 Oct, `OPEN_ISSUES.md` F2) Overall score averages single-sentence scores while the detector scores blocks of 4; Humanizer studio page shows a fixed latency; no message when a document is cut to 20,000 words
+## Backend (2026-10-27, before the demo)
+- [x] One Gemini retry when none of the first five rewrites passes (asks for bolder changes; a failed call is not retried; at most two calls per click)
+- [ ] **After the demo, discuss with the supervisor:** faster upload scoring — sort blocks by length before batching (measured 20.4 s → 13.8 s on the 7-page paper, identical scores) and use all 8 CPU cores (→ 12.7 s)
+
+## FE (frontend changes — by default the colleague's; done here only when asked)
+- [x] When a humanize attempt fails (no rewrite kept, `failed: true`), no popup; the sentence stays as it is. "Humanize all" counts only real rewrites and shows nothing if none was rewritten (`d917b5e`)
+- [x] `.doc` removed from the upload file picker and drag-and-drop check (`components/dashboard/file-upload-card.tsx`)
+- [x] Labels: Gemini's rewrites are "Recommended 1" and "Recommended 2"; Humarin and T5 are "Option 1" and "Option 2" (`components/dashboard/rewrite-box.tsx`)
+- [ ] The landing page still says "PDF, DOCX, DOC, and TXT" (`components/landing/faq-section.tsx`, `features-section.tsx`): not changed
 
 ## 3. Branch
 - [x] Create `abdullah/humanizer-new-engine` from main
