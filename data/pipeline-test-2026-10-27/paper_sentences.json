@@ -1,0 +1,1253 @@
+[
+ {
+  "i": 0,
+  "text": "This study explores Arab university faculty’s views on fully AI-generated assignments and research papers submitted by students, what reasons they give for their stance and how they react in this case.",
+  "score": 0.0034,
+  "label": "human",
+  "para": 0,
+  "before": "",
+  "after": "Surveys with a sample of 45 Arab instructors revealed that 98% do not accept AI-generated assignments and research papers from students at all."
+ },
+ {
+  "i": 1,
+  "text": "Surveys with a sample of 45 Arab instructors revealed that 98% do not accept AI-generated assignments and research papers from students at all.",
+  "score": 0.0034,
+  "label": "human",
+  "para": 0,
+  "before": "This study explores Arab university faculty’s views on fully AI-generated assignments and research papers submitted by students, what reasons they give for their stance and how they react in this case.",
+  "after": "They gave numerous reasons for their position."
+ },
+ {
+  "i": 2,
+  "text": "They gave numerous reasons for their position.",
+  "score": 0.0034,
+  "label": "human",
+  "para": 0,
+  "before": "Surveys with a sample of 45 Arab instructors revealed that 98% do not accept AI-generated assignments and research papers from students at all.",
+  "after": "If students submit AI-generated assignments or research papers, they would ask them to re-write them."
+ },
+ {
+  "i": 3,
+  "text": "If students submit AI-generated assignments or research papers, they would ask them to re-write them.",
+  "score": 0.0034,
+  "label": "human",
+  "para": 0,
+  "before": "They gave numerous reasons for their position.",
+  "after": "The study recommends raising students’ awareness of university policies regarding AI-generated content and introducing faculty and students to AI plagiarism detection tools."
+ },
+ {
+  "i": 4,
+  "text": "The study recommends raising students’ awareness of university policies regarding AI-generated content and introducing faculty and students to AI plagiarism detection tools.",
+  "score": 0.0001,
+  "label": "human",
+  "para": 0,
+  "before": "If students submit AI-generated assignments or research papers, they would ask them to re-write them.",
+  "after": "Faculty views and recommendations are reported in detail."
+ },
+ {
+  "i": 5,
+  "text": "Faculty views and recommendations are reported in detail.",
+  "score": 0.0001,
+  "label": "human",
+  "para": 0,
+  "before": "The study recommends raising students’ awareness of university policies regarding AI-generated content and introducing faculty and students to AI plagiarism detection tools.",
+  "after": ""
+ },
+ {
+  "i": 6,
+  "text": "Latest advancements in artificial intelligence (AI) have resulted in significant strides in AI assistants, AI tools and AI chatbots’ capabilities and what they can perform in different domains such as healthcare, automated vehicles, game playing, generating art, music and poetry, fraud detection, analyzing user preferences of products, music, and videos, Natural Language Processing, language translation, summarization and paraphrase.",
+  "score": 0.0001,
+  "label": "human",
+  "para": 1,
+  "before": "",
+  "after": "In addition, AI models can generate written content, including research papers, using sophisticated algorithms to produce text based on input prompts."
+ },
+ {
+  "i": 7,
+  "text": "In addition, AI models can generate written content, including research papers, using sophisticated algorithms to produce text based on input prompts.",
+  "score": 0.0001,
+  "label": "human",
+  "para": 1,
+  "before": "Latest advancements in artificial intelligence (AI) have resulted in significant strides in AI assistants, AI tools and AI chatbots’ capabilities and what they can perform in different domains such as healthcare, automated vehicles, game playing, generating art, music and poetry, fraud detection, analyzing user preferences of products, music, and videos, Natural Language Processing, language translation, summarization and paraphrase.",
+  "after": "AI can find relevant literature using semantic search and can conduct a literature review."
+ },
+ {
+  "i": 8,
+  "text": "AI can find relevant literature using semantic search and can conduct a literature review.",
+  "score": 0.0,
+  "label": "human",
+  "para": 1,
+  "before": "In addition, AI models can generate written content, including research papers, using sophisticated algorithms to produce text based on input prompts.",
+  "after": "Examples of AI Tools and AI writing assistants used in research and writing are ChatGPT (an AI-powered Generative language model); PDFgear Copilot (PDF editor with AI), Zotero (Well-rounded AI assistant), SciTE (Smart citation tool), Consensus (AI-powered search engine), SciSpace (AI-based concept simplifier), Wordvice AI (AI-powered writing assistant), Research Rabbit (Spotify for papers), Rytr (for grammar-checking, rewriting content, and creating multiple versions of a text), Word Tune (for paraphrasing documents and summarizing content), Numerous AI (a Google Sheets plugin for automating repetitive tasks, visualizing data, generating formulas), Rationale (for multi-criteria and SWOT analysis) and others."
+ },
+ {
+  "i": 9,
+  "text": "Examples of AI Tools and AI writing assistants used in research and writing are ChatGPT (an AI-powered Generative language model); PDFgear Copilot (PDF editor with AI), Zotero (Well-rounded AI assistant), SciTE (Smart citation tool), Consensus (AI-powered search engine), SciSpace (AI-based concept simplifier), Wordvice AI (AI-powered writing assistant), Research Rabbit (Spotify for papers), Rytr (for grammar-checking, rewriting content, and creating multiple versions of a text), Word Tune (for paraphrasing documents and summarizing content), Numerous AI (a Google Sheets plugin for automating repetitive tasks, visualizing data, generating formulas), Rationale (for multi-criteria and SWOT analysis) and others.",
+  "score": 0.0,
+  "label": "human",
+  "para": 1,
+  "before": "AI can find relevant literature using semantic search and can conduct a literature review.",
+  "after": ""
+ },
+ {
+  "i": 10,
+  "text": "In this day and age, some college students resort to AI to fully write their assignments and research papers for several reasons such as having difficulty selecting a research topic, searching for and locating relevant references, designing the research instrument, selecting the sample, analyzing the data collected, writing and discussing the results, inadequate academic and research writing skills, low foreign language proficiency, lack of guidance from their instructor, and others (Al-Jarf, 2022b; Al-Jarf, 2008; Al-Jarf, 2003a; Al-Jarf, 2003b; Al-Jarf, 1991).",
+  "score": 0.0,
+  "label": "human",
+  "para": 2,
+  "before": "",
+  "after": ""
+ },
+ {
+  "i": 11,
+  "text": "While AI-generated content can be helpful to students, it raises ethical questions as academic integrity requires students to engage with the course material, conduct research, practice research and writing skills and contribute their own thoughts, insights, and experiences.",
+  "score": 0.0,
+  "label": "human",
+  "para": 3,
+  "before": "",
+  "after": "A literature review showed that research on the use of AI in students’ research and assignments, and the issue of acceptability, integrity, and responsibility of AI-generated content has not received much attention from researchers around the world."
+ },
+ {
+  "i": 12,
+  "text": "A literature review showed that research on the use of AI in students’ research and assignments, and the issue of acceptability, integrity, and responsibility of AI-generated content has not received much attention from researchers around the world.",
+  "score": 0.0,
+  "label": "human",
+  "para": 3,
+  "before": "While AI-generated content can be helpful to students, it raises ethical questions as academic integrity requires students to engage with the course material, conduct research, practice research and writing skills and contribute their own thoughts, insights, and experiences.",
+  "after": "Many studies have investigated issues related to the use of AI in academia such as instructors’ perceptions of AI code generation tools (Sheard, Denny, Hellas, Leinonen, Malmi & Simon, 2024); the harms of AI-generated inauthentic content (Menczer, Crandall, Ahn & Kapadia, 2023); opportunities, concerns, and solutions related to the use of generative AI in education and research; critical aspects of implementing AI in education to advance educational goals, ethical considerations in scientific publications, and the attribution of credit for AI-driven discoveries (Alasadi & Baiz, 2023); current capabilities and shortcomings of AI-generated content (Wu, Gan, Chen, Wan & Lin, 2023) and so on."
+ },
+ {
+  "i": 13,
+  "text": "Many studies have investigated issues related to the use of AI in academia such as instructors’ perceptions of AI code generation tools (Sheard, Denny, Hellas, Leinonen, Malmi & Simon, 2024); the harms of AI-generated inauthentic content (Menczer, Crandall, Ahn & Kapadia, 2023); opportunities, concerns, and solutions related to the use of generative AI in education and research; critical aspects of implementing AI in education to advance educational goals, ethical considerations in scientific publications, and the attribution of credit for AI-driven discoveries (Alasadi & Baiz, 2023); current capabilities and shortcomings of AI-generated content (Wu, Gan, Chen, Wan & Lin, 2023) and so on.",
+  "score": 0.0,
+  "label": "human",
+  "para": 3,
+  "before": "A literature review showed that research on the use of AI in students’ research and assignments, and the issue of acceptability, integrity, and responsibility of AI-generated content has not received much attention from researchers around the world.",
+  "after": ""
+ },
+ {
+  "i": 14,
+  "text": "Moreover, many studies in the literature focused on ChatGPT, in particular, and its utilization in education such as use of ChatGPT at universities (Willems, 2023); scholars and students’ perceptions of ChatGPT and what it means for universities (Firat, 2023); the educational impact of ChatGPT (Malinka, Perešíni, Firc, Hujňák, & Januš, 2023); challenges of ChatGPT-generated content and solutions (Wang, Pan, Yan, Su & Luan, 2023); opportunities and challenges of using ChatGPT for research and publication (Xames & Shefa, 2023); a comparative analysis of human and AI-generated learning resources (Denny, Khosravi, Hellas, Leinonen & Sarsa, 2023); confronting the coming tsunami of AI-generated educational research and writing (Tate, Doroudi, Ritchie, Xu & Warschauer, 2023); ethical implications of using artificial intelligence in education (Van der Meijden, Kirschner & Kester, 2021); combining academic judgement and software to identify generative AI tool misuse for detecting GPT-4 generated text in higher education (Perkins, Roe, Postma, McGaughran & Hickerson, 2024) and others.",
+  "score": 0.0,
+  "label": "human",
+  "para": 4,
+  "before": "",
+  "after": ""
+ },
+ {
+  "i": 15,
+  "text": "The literature review revealed lack of studies in Saudi Arabia and other Arab countries on how university faculty view AI-generated assignments and research submitted by students.",
+  "score": 0.0,
+  "label": "human",
+  "para": 5,
+  "before": "",
+  "after": "Therefore, this study aims to fill a gap in this area by exploring how Arab university instructors view the submission of fully generated assignments/research papers by AI tools and AI assistants such as GhatGPT by college students, what reasons they give for their acceptance or rejection of AI-generated assignments/research paper and how they react to the submission of AI-generated text."
+ },
+ {
+  "i": 16,
+  "text": "Therefore, this study aims to fill a gap in this area by exploring how Arab university instructors view the submission of fully generated assignments/research papers by AI tools and AI assistants such as GhatGPT by college students, what reasons they give for their acceptance or rejection of AI-generated assignments/research paper and how they react to the submission of AI-generated text.",
+  "score": 0.0,
+  "label": "human",
+  "para": 5,
+  "before": "The literature review revealed lack of studies in Saudi Arabia and other Arab countries on how university faculty view AI-generated assignments and research submitted by students.",
+  "after": "It also aims to answer some questions such as: Which AI-generated content is acceptable to them?"
+ },
+ {
+  "i": 17,
+  "text": "It also aims to answer some questions such as: Which AI-generated content is acceptable to them?",
+  "score": 0.0,
+  "label": "human",
+  "para": 5,
+  "before": "Therefore, this study aims to fill a gap in this area by exploring how Arab university instructors view the submission of fully generated assignments/research papers by AI tools and AI assistants such as GhatGPT by college students, what reasons they give for their acceptance or rejection of AI-generated assignments/research paper and how they react to the submission of AI-generated text.",
+  "after": "How do they detect AI-generated content?"
+ },
+ {
+  "i": 18,
+  "text": "How do they detect AI-generated content?",
+  "score": 0.0,
+  "label": "human",
+  "para": 5,
+  "before": "It also aims to answer some questions such as: Which AI-generated content is acceptable to them?",
+  "after": "Are there significant differences attitudes and reactions towards AI-generated content submitted by the students between male and female faculty, faculty working in different Arab countries and are different Arab universities and teaching different areas of specialization."
+ },
+ {
+  "i": 19,
+  "text": "Are there significant differences attitudes and reactions towards AI-generated content submitted by the students between male and female faculty, faculty working in different Arab countries and are different Arab universities and teaching different areas of specialization.",
+  "score": 0.0,
+  "label": "human",
+  "para": 5,
+  "before": "How do they detect AI-generated content?",
+  "after": ""
+ },
+ {
+  "i": 20,
+  "text": "This study is significant as it will introduce faculty who are and those who are not to the use of AI-generated content submitted by the students, and how their colleagues view it and react to it.",
+  "score": 0.9846,
+  "label": "ai",
+  "para": 6,
+  "before": "",
+  "after": ""
+ },
+ {
+  "i": 21,
+  "text": "Since AI-generated content is leading a paradigm shift in content creation and knowledge representation, some researchers highlighted the need for addressing its ethical, privacy, security, and legal challenges (Wang, Pan, Yan, Su & Luan, 2023).",
+  "score": 0.9846,
+  "label": "ai",
+  "para": 7,
+  "before": "",
+  "after": "ChatGPT and similar AI content-generation tools, in particular, raise numerous questions for researchers, educational practitioners and policymakers (Tate, Doroudi, Ritchie, Xu & Warschauer, 2023)."
+ },
+ {
+  "i": 22,
+  "text": "ChatGPT and similar AI content-generation tools, in particular, raise numerous questions for researchers, educational practitioners and policymakers (Tate, Doroudi, Ritchie, Xu & Warschauer, 2023).",
+  "score": 0.9846,
+  "label": "ai",
+  "para": 7,
+  "before": "Since AI-generated content is leading a paradigm shift in content creation and knowledge representation, some researchers highlighted the need for addressing its ethical, privacy, security, and legal challenges (Wang, Pan, Yan, Su & Luan, 2023).",
+  "after": "Exploration of the ethical implications of AI for education, the development of strategies for managing privacy concerns, and the investigation of how educational institutions can best prepare for the integration of AI technologies are urgently needed."
+ },
+ {
+  "i": 23,
+  "text": "Exploration of the ethical implications of AI for education, the development of strategies for managing privacy concerns, and the investigation of how educational institutions can best prepare for the integration of AI technologies are urgently needed.",
+  "score": 0.9846,
+  "label": "ai",
+  "para": 7,
+  "before": "ChatGPT and similar AI content-generation tools, in particular, raise numerous questions for researchers, educational practitioners and policymakers (Tate, Doroudi, Ritchie, Xu & Warschauer, 2023).",
+  "after": "Meyer, Urbanowicz, Martin, O’Connor, Li, Peng and Moore (2023) added that we must find ways for using Language Learning Models and chatbots in academia effectively, and the possibility that they may produce plagiarized text, that we must quantify their bias and that users must be cautious of their poor accuracy."
+ },
+ {
+  "i": 24,
+  "text": "Meyer, Urbanowicz, Martin, O’Connor, Li, Peng and Moore (2023) added that we must find ways for using Language Learning Models and chatbots in academia effectively, and the possibility that they may produce plagiarized text, that we must quantify their bias and that users must be cautious of their poor accuracy.",
+  "score": 1.0,
+  "label": "ai",
+  "para": 7,
+  "before": "Exploration of the ethical implications of AI for education, the development of strategies for managing privacy concerns, and the investigation of how educational institutions can best prepare for the integration of AI technologies are urgently needed.",
+  "after": "To maximize the benefits of AI in education, it is crucial to address the challenges posed by AI in assessment, digital literacy, and ethical considerations and develop strategies for ensuring responsible and equitable implementation."
+ },
+ {
+  "i": 25,
+  "text": "To maximize the benefits of AI in education, it is crucial to address the challenges posed by AI in assessment, digital literacy, and ethical considerations and develop strategies for ensuring responsible and equitable implementation.",
+  "score": 1.0,
+  "label": "ai",
+  "para": 7,
+  "before": "Meyer, Urbanowicz, Martin, O’Connor, Li, Peng and Moore (2023) added that we must find ways for using Language Learning Models and chatbots in academia effectively, and the possibility that they may produce plagiarized text, that we must quantify their bias and that users must be cautious of their poor accuracy.",
+  "after": ""
+ },
+ {
+  "i": 26,
+  "text": "It is important to understand the potential, opportunities and challenges associated with AI in higher education and the need for continued research in this area.",
+  "score": 1.0,
+  "label": "ai",
+  "para": 8,
+  "before": "",
+  "after": "Future research should continue to explore the potential applications and impacts of AI in education, and the development of effective frameworks for integrating AI in curricula, instruction and assessments (Firat, 2023)."
+ },
+ {
+  "i": 27,
+  "text": "Future research should continue to explore the potential applications and impacts of AI in education, and the development of effective frameworks for integrating AI in curricula, instruction and assessments (Firat, 2023).",
+  "score": 1.0,
+  "label": "ai",
+  "para": 8,
+  "before": "It is important to understand the potential, opportunities and challenges associated with AI in higher education and the need for continued research in this area.",
+  "after": ""
+ },
+ {
+  "i": 28,
+  "text": "Chatbots perform tasks like providing user support, answering customer questions, and resolving technical issues.",
+  "score": 0.9742,
+  "label": "ai",
+  "para": 9,
+  "before": "",
+  "after": "They automate repetitive processes and interactions in a workflow."
+ },
+ {
+  "i": 29,
+  "text": "They automate repetitive processes and interactions in a workflow.",
+  "score": 0.9742,
+  "label": "ai",
+  "para": 9,
+  "before": "Chatbots perform tasks like providing user support, answering customer questions, and resolving technical issues.",
+  "after": "Examples of Chatbots used in education are course inquiries, student support, student engagement and student feedback chatbots."
+ },
+ {
+  "i": 30,
+  "text": "Examples of Chatbots used in education are course inquiries, student support, student engagement and student feedback chatbots.",
+  "score": 0.9742,
+  "label": "ai",
+  "para": 9,
+  "before": "They automate repetitive processes and interactions in a workflow.",
+  "after": ""
+ },
+ {
+  "i": 31,
+  "text": "AI tools are software programs or applications that utilize AI techniques to perform specific tasks, such as natural language processing, data analysis and image recognition.",
+  "score": 0.9742,
+  "label": "ai",
+  "para": 10,
+  "before": "",
+  "after": "Examples of AI tools used in education are admission management platforms, enrollment management and forecasting tools, emotional support, dropout prediction tools, and resource planning systems."
+ },
+ {
+  "i": 32,
+  "text": "Examples of AI tools used in education are admission management platforms, enrollment management and forecasting tools, emotional support, dropout prediction tools, and resource planning systems.",
+  "score": 0.9971,
+  "label": "ai",
+  "para": 10,
+  "before": "AI tools are software programs or applications that utilize AI techniques to perform specific tasks, such as natural language processing, data analysis and image recognition.",
+  "after": ""
+ },
+ {
+  "i": 33,
+  "text": "AI Assistants are interactive software agents that perform tasks or services for users based on commands, text and voice.",
+  "score": 0.9971,
+  "label": "ai",
+  "para": 11,
+  "before": "",
+  "after": "They are more sophisticated than AI tools as they can engage in two-way communication, understand context, and provide personalized answers."
+ },
+ {
+  "i": 34,
+  "text": "They are more sophisticated than AI tools as they can engage in two-way communication, understand context, and provide personalized answers.",
+  "score": 0.9971,
+  "label": "ai",
+  "para": 11,
+  "before": "AI Assistants are interactive software agents that perform tasks or services for users based on commands, text and voice.",
+  "after": "Examples of AI Assistants used in education are personalized learning assistants, automated lesson planning, automated grading, and predictive analytics."
+ },
+ {
+  "i": 35,
+  "text": "Examples of AI Assistants used in education are personalized learning assistants, automated lesson planning, automated grading, and predictive analytics.",
+  "score": 0.9971,
+  "label": "ai",
+  "para": 11,
+  "before": "They are more sophisticated than AI tools as they can engage in two-way communication, understand context, and provide personalized answers.",
+  "after": ""
+ },
+ {
+  "i": 36,
+  "text": "A sample of 45 Arab college instructors working at different universities (King Saud University, King Fahad University, Prince Sultan University, Prince Sattam University, King Abdul-Aziz University, Dar Al-Hikma University in Jeddah, Ain Shams University, Qatar University, University of Technology and Applied Sciences in Ibri, Palestine Ahliya University, College of Letters and Humanities of Sfax and Noukchott University), in Saudi Arabia, Qatar, Egypt, Palestine, Tunisia, Oman, and Mauritania participated in the study.",
+  "score": 0.0,
+  "label": "human",
+  "para": 12,
+  "before": "",
+  "after": "43% of the participants were female and 57% were male."
+ },
+ {
+  "i": 37,
+  "text": "43% of the participants were female and 57% were male.",
+  "score": 0.0,
+  "label": "human",
+  "para": 12,
+  "before": "A sample of 45 Arab college instructors working at different universities (King Saud University, King Fahad University, Prince Sultan University, Prince Sattam University, King Abdul-Aziz University, Dar Al-Hikma University in Jeddah, Ain Shams University, Qatar University, University of Technology and Applied Sciences in Ibri, Palestine Ahliya University, College of Letters and Humanities of Sfax and Noukchott University), in Saudi Arabia, Qatar, Egypt, Palestine, Tunisia, Oman, and Mauritania participated in the study.",
+  "after": "The participants hold a Ph.D. in different areas of specialities as computer science and computer engineering, linguistics, translation, and physics."
+ },
+ {
+  "i": 38,
+  "text": "The participants hold a Ph.D. in different areas of specialities as computer science and computer engineering, linguistics, translation, and physics.",
+  "score": 0.0,
+  "label": "human",
+  "para": 12,
+  "before": "43% of the participants were female and 57% were male.",
+  "after": "Instructors who were not familiar with AI or the use of AI in education were excluded."
+ },
+ {
+  "i": 39,
+  "text": "Instructors who were not familiar with AI or the use of AI in education were excluded.",
+  "score": 0.0,
+  "label": "human",
+  "para": 12,
+  "before": "The participants hold a Ph.D. in different areas of specialities as computer science and computer engineering, linguistics, translation, and physics.",
+  "after": ""
+ },
+ {
+  "i": 40,
+  "text": "The participants were contacted via WhatsApp and Facebook Messenger and were asked to respond to the following open-ended questions:",
+  "score": 0.0172,
+  "label": "human",
+  "para": 13,
+  "before": "",
+  "after": ""
+ },
+ {
+  "i": 41,
+  "text": "Would you accept an assignment or research paper that was fully generated by AI from a student?",
+  "score": 0.0172,
+  "label": "human",
+  "para": 14,
+  "before": "",
+  "after": "Give at least three reasons to justify your position."
+ },
+ {
+  "i": 42,
+  "text": "Give at least three reasons to justify your position.",
+  "score": 0.0172,
+  "label": "human",
+  "para": 14,
+  "before": "Would you accept an assignment or research paper that was fully generated by AI from a student?",
+  "after": "How would you react if a student submits an assignment or research paper that was fully generated by AI?"
+ },
+ {
+  "i": 43,
+  "text": "How would you react if a student submits an assignment or research paper that was fully generated by AI?",
+  "score": 0.0172,
+  "label": "human",
+  "para": 14,
+  "before": "Give at least three reasons to justify your position.",
+  "after": "In which tasks can students use AI and what do you consider acceptable AI-generated content?"
+ },
+ {
+  "i": 44,
+  "text": "In which tasks can students use AI and what do you consider acceptable AI-generated content?",
+  "score": 0.0,
+  "label": "human",
+  "para": 14,
+  "before": "How would you react if a student submits an assignment or research paper that was fully generated by AI?",
+  "after": ""
+ },
+ {
+  "i": 45,
+  "text": "Responses to the questions were sorted out and categorized and percentages of similar responses and those related to the same question were computed.",
+  "score": 0.0,
+  "label": "human",
+  "para": 15,
+  "before": "",
+  "after": "Responses are reported quantitatively and qualitatively."
+ },
+ {
+  "i": 46,
+  "text": "Responses are reported quantitatively and qualitatively.",
+  "score": 0.0,
+  "label": "human",
+  "para": 15,
+  "before": "Responses to the questions were sorted out and categorized and percentages of similar responses and those related to the same question were computed.",
+  "after": ""
+ },
+ {
+  "i": 47,
+  "text": "Results of the AI-generated content surveys showed that 98% of Arab college faculty in the sample do not approve of and do not accept the submission of AI-generated assignments or research papers by the students at all.",
+  "score": 0.0,
+  "label": "human",
+  "para": 16,
+  "before": "",
+  "after": "Only one instructor in the sample accepts AI-generated assignments and research papers from her students provided that they have revised the content, corrected errors and weaknesses, checked the validity of the references and made sure each reference does exist because AI provides false information and fake references."
+ },
+ {
+  "i": 48,
+  "text": "Only one instructor in the sample accepts AI-generated assignments and research papers from her students provided that they have revised the content, corrected errors and weaknesses, checked the validity of the references and made sure each reference does exist because AI provides false information and fake references.",
+  "score": 0.0,
+  "label": "human",
+  "para": 16,
+  "before": "Results of the AI-generated content surveys showed that 98% of Arab college faculty in the sample do not approve of and do not accept the submission of AI-generated assignments or research papers by the students at all.",
+  "after": "She added that she discusses the assignment and/or research paper with each student to make sure she understands the content and can defend it."
+ },
+ {
+  "i": 49,
+  "text": "She added that she discusses the assignment and/or research paper with each student to make sure she understands the content and can defend it.",
+  "score": 0.0,
+  "label": "human",
+  "para": 16,
+  "before": "Only one instructor in the sample accepts AI-generated assignments and research papers from her students provided that they have revised the content, corrected errors and weaknesses, checked the validity of the references and made sure each reference does exist because AI provides false information and fake references.",
+  "after": "Other than that, she does not accept AI-generated content."
+ },
+ {
+  "i": 50,
+  "text": "Other than that, she does not accept AI-generated content.",
+  "score": 0.0,
+  "label": "human",
+  "para": 16,
+  "before": "She added that she discusses the assignment and/or research paper with each student to make sure she understands the content and can defend it.",
+  "after": "She encourages her students to use AI but does not accept copying and pasting."
+ },
+ {
+  "i": 51,
+  "text": "She encourages her students to use AI but does not accept copying and pasting.",
+  "score": 0.0,
+  "label": "human",
+  "para": 16,
+  "before": "Other than that, she does not accept AI-generated content.",
+  "after": ""
+ },
+ {
+  "i": 52,
+  "text": "No significant differences were found between male and female instructors in different Arab countries, different Arab universities and those teaching different areas of specialization in their attitude towards AI-generated texts submitted by their graduate and/or undergraduate students.",
+  "score": 0.0,
+  "label": "human",
+  "para": 17,
+  "before": "",
+  "after": "Most of them reject such submissions for reasons reported in the next section."
+ },
+ {
+  "i": 53,
+  "text": "Most of them reject such submissions for reasons reported in the next section.",
+  "score": 0.0,
+  "label": "human",
+  "para": 17,
+  "before": "No significant differences were found between male and female instructors in different Arab countries, different Arab universities and those teaching different areas of specialization in their attitude towards AI-generated texts submitted by their graduate and/or undergraduate students.",
+  "after": ""
+ },
+ {
+  "i": 54,
+  "text": "Participating instructors gave numerous reasons for rejecting AI-generated assignments and/or research papers submitted by graduate and undergraduate students as they consider plagiarism, cheating, and dishonesty and consider such assignments as just copy-paste.",
+  "score": 0.0,
+  "label": "human",
+  "para": 18,
+  "before": "",
+  "after": "Being AI generated, the submitted assignment/research paper does not reflect the student’s actual ability, skills, ideas and views."
+ },
+ {
+  "i": 55,
+  "text": "Being AI generated, the submitted assignment/research paper does not reflect the student’s actual ability, skills, ideas and views.",
+  "score": 0.0,
+  "label": "human",
+  "para": 18,
+  "before": "Participating instructors gave numerous reasons for rejecting AI-generated assignments and/or research papers submitted by graduate and undergraduate students as they consider plagiarism, cheating, and dishonesty and consider such assignments as just copy-paste.",
+  "after": "They added that graduate and undergraduate students are in the process of acquiring writing and research skill and that the aim of an assignment or research paper is to make sure that the students are learning, thinking, and practicing those skills and that autonomous learning is emphasized."
+ },
+ {
+  "i": 56,
+  "text": "They added that graduate and undergraduate students are in the process of acquiring writing and research skill and that the aim of an assignment or research paper is to make sure that the students are learning, thinking, and practicing those skills and that autonomous learning is emphasized.",
+  "score": 0.0033,
+  "label": "human",
+  "para": 18,
+  "before": "Being AI generated, the submitted assignment/research paper does not reflect the student’s actual ability, skills, ideas and views.",
+  "after": "If students copy and paste an AI-generated text, this means that they did not learn anything and did not achieve the learning goals."
+ },
+ {
+  "i": 57,
+  "text": "If students copy and paste an AI-generated text, this means that they did not learn anything and did not achieve the learning goals.",
+  "score": 0.0033,
+  "label": "human",
+  "para": 18,
+  "before": "They added that graduate and undergraduate students are in the process of acquiring writing and research skill and that the aim of an assignment or research paper is to make sure that the students are learning, thinking, and practicing those skills and that autonomous learning is emphasized.",
+  "after": "When they use AI, they do not try and do not exert any effort."
+ },
+ {
+  "i": 58,
+  "text": "When they use AI, they do not try and do not exert any effort.",
+  "score": 0.0033,
+  "label": "human",
+  "para": 18,
+  "before": "If students copy and paste an AI-generated text, this means that they did not learn anything and did not achieve the learning goals.",
+  "after": "They do not read, analyze, or connect ideas."
+ },
+ {
+  "i": 59,
+  "text": "They do not read, analyze, or connect ideas.",
+  "score": 0.0033,
+  "label": "human",
+  "para": 18,
+  "before": "When they use AI, they do not try and do not exert any effort.",
+  "after": "They do not practice any thinking skills."
+ },
+ {
+  "i": 60,
+  "text": "They do not practice any thinking skills.",
+  "score": 0.0,
+  "label": "human",
+  "para": 18,
+  "before": "They do not read, analyze, or connect ideas.",
+  "after": "Evaluations of students who have submitted AI-generated text, and those who have not, will not be fair."
+ },
+ {
+  "i": 61,
+  "text": "Evaluations of students who have submitted AI-generated text, and those who have not, will not be fair.",
+  "score": 0.0,
+  "label": "human",
+  "para": 18,
+  "before": "They do not practice any thinking skills.",
+  "after": "Due to lack of expertise, skills and competence, the students cannot verify and cannot validate or detect false information and mistranslations rendered by AI."
+ },
+ {
+  "i": 62,
+  "text": "Due to lack of expertise, skills and competence, the students cannot verify and cannot validate or detect false information and mistranslations rendered by AI.",
+  "score": 0.0,
+  "label": "human",
+  "para": 18,
+  "before": "Evaluations of students who have submitted AI-generated text, and those who have not, will not be fair.",
+  "after": "They added that it is hard to depend on AI as it sometime gives fake references that do not exist."
+ },
+ {
+  "i": 63,
+  "text": "They added that it is hard to depend on AI as it sometime gives fake references that do not exist.",
+  "score": 0.0,
+  "label": "human",
+  "para": 18,
+  "before": "Due to lack of expertise, skills and competence, the students cannot verify and cannot validate or detect false information and mistranslations rendered by AI.",
+  "after": ""
+ },
+ {
+  "i": 64,
+  "text": "• I explain to the students how to do an assignment.",
+  "score": 0.0,
+  "label": "human",
+  "para": 19,
+  "before": "",
+  "after": "I am available and give feedback."
+ },
+ {
+  "i": 65,
+  "text": "I am available and give feedback.",
+  "score": 0.0,
+  "label": "human",
+  "para": 19,
+  "before": "• I explain to the students how to do an assignment.",
+  "after": "If the student performs all the tasks required by the assignment, she deserves the grade even if she makes some mistakes."
+ },
+ {
+  "i": 66,
+  "text": "If the student performs all the tasks required by the assignment, she deserves the grade even if she makes some mistakes.",
+  "score": 0.0,
+  "label": "human",
+  "para": 19,
+  "before": "I am available and give feedback.",
+  "after": "But in the case of have AI write the assignment or research for her, this means that she has not gone through the learning process and this way she loses the whole mark assigned to the assignment or research paper."
+ },
+ {
+  "i": 67,
+  "text": "But in the case of have AI write the assignment or research for her, this means that she has not gone through the learning process and this way she loses the whole mark assigned to the assignment or research paper.",
+  "score": 0.0,
+  "label": "human",
+  "para": 19,
+  "before": "If the student performs all the tasks required by the assignment, she deserves the grade even if she makes some mistakes.",
+  "after": ""
+ },
+ {
+  "i": 68,
+  "text": "• The aim of the assignment is to reinforce what the students have learnt.",
+  "score": 0.0,
+  "label": "human",
+  "para": 20,
+  "before": "",
+  "after": ""
+ },
+ {
+  "i": 69,
+  "text": "• The performance of AI is not yet reliable, valid and trustworthy.",
+  "score": 0.0,
+  "label": "human",
+  "para": 21,
+  "before": "",
+  "after": ""
+ },
+ {
+  "i": 70,
+  "text": "The false information mentioned by the instructors in this study is consistent with Menczer, Crandall, Ahn andKapadia’s (2023) views which indicated that we currently have little awareness of the volume of inauthentic behaviour supported by AI.",
+  "score": 0.0,
+  "label": "human",
+  "para": 22,
+  "before": "",
+  "after": "They added that Generative AI tools such as ChatGPT make it easier to create large volumes of false (but convincing) social media profiles and content."
+ },
+ {
+  "i": 71,
+  "text": "They added that Generative AI tools such as ChatGPT make it easier to create large volumes of false (but convincing) social media profiles and content.",
+  "score": 0.0,
+  "label": "human",
+  "para": 22,
+  "before": "The false information mentioned by the instructors in this study is consistent with Menczer, Crandall, Ahn andKapadia’s (2023) views which indicated that we currently have little awareness of the volume of inauthentic behaviour supported by AI.",
+  "after": "An inauthentic influence campaign can tailor narratives to a particular community."
+ },
+ {
+  "i": 72,
+  "text": "An inauthentic influence campaign can tailor narratives to a particular community.",
+  "score": 1.0,
+  "label": "ai",
+  "para": 22,
+  "before": "They added that Generative AI tools such as ChatGPT make it easier to create large volumes of false (but convincing) social media profiles and content.",
+  "after": "For example, through health misinformation, a foreign adversary can make a whole population in a particular region more vulnerable to a future pandemic."
+ },
+ {
+  "i": 73,
+  "text": "For example, through health misinformation, a foreign adversary can make a whole population in a particular region more vulnerable to a future pandemic.",
+  "score": 1.0,
+  "label": "ai",
+  "para": 22,
+  "before": "An inauthentic influence campaign can tailor narratives to a particular community.",
+  "after": "Xames and Shefa (2023) revealed the challenges and concerns exposed by ChatGPT that require immediate attention such as AI authorship, nonexistent references, threats of international inequalities and unintentional plagiarism."
+ },
+ {
+  "i": 74,
+  "text": "Xames and Shefa (2023) revealed the challenges and concerns exposed by ChatGPT that require immediate attention such as AI authorship, nonexistent references, threats of international inequalities and unintentional plagiarism.",
+  "score": 1.0,
+  "label": "ai",
+  "para": 22,
+  "before": "For example, through health misinformation, a foreign adversary can make a whole population in a particular region more vulnerable to a future pandemic.",
+  "after": ""
+ },
+ {
+  "i": 75,
+  "text": "Moreover, Firat (2023) emphasized that the use of AI in education raises ethical and social concerns about access, privacy, and the potential for increased reliance on technology, which may lead to reduced cognitive capacities among the students.",
+  "score": 1.0,
+  "label": "ai",
+  "para": 23,
+  "before": "",
+  "after": ""
+ },
+ {
+  "i": 76,
+  "text": "Some participating faculty in the current study indicated that they do not ban the use of AI in research or learning altogether.",
+  "score": 0.0,
+  "label": "human",
+  "para": 24,
+  "before": "",
+  "after": "They allow the students to use AI for summarizing a research paper, book, or text, which saves them time and effort, and re-wording or re-phrasing sentences and paragraphs."
+ },
+ {
+  "i": 77,
+  "text": "They allow the students to use AI for summarizing a research paper, book, or text, which saves them time and effort, and re-wording or re-phrasing sentences and paragraphs.",
+  "score": 0.0,
+  "label": "human",
+  "para": 24,
+  "before": "Some participating faculty in the current study indicated that they do not ban the use of AI in research or learning altogether.",
+  "after": "Others allow their students to use AI in translation, revising, editing, comparing AI translation with their own and producing the work in a better way in terms of formatting and editing, in improving and polishing the language of their written text, in drafting and correcting errors, i.e. proofreading."
+ },
+ {
+  "i": 78,
+  "text": "Others allow their students to use AI in translation, revising, editing, comparing AI translation with their own and producing the work in a better way in terms of formatting and editing, in improving and polishing the language of their written text, in drafting and correcting errors, i.e. proofreading.",
+  "score": 0.0,
+  "label": "human",
+  "para": 24,
+  "before": "They allow the students to use AI for summarizing a research paper, book, or text, which saves them time and effort, and re-wording or re-phrasing sentences and paragraphs.",
+  "after": "They allow the students to incorporate paragraphs from AI in their research paper or assignment, provided that they are documented, i.e., the students mention the AI Tool or AI Assistant used, date, and time."
+ },
+ {
+  "i": 79,
+  "text": "They allow the students to incorporate paragraphs from AI in their research paper or assignment, provided that they are documented, i.e., the students mention the AI Tool or AI Assistant used, date, and time.",
+  "score": 0.0,
+  "label": "human",
+  "para": 24,
+  "before": "Others allow their students to use AI in translation, revising, editing, comparing AI translation with their own and producing the work in a better way in terms of formatting and editing, in improving and polishing the language of their written text, in drafting and correcting errors, i.e. proofreading.",
+  "after": "Others allow the students to use AI in searching for and verifying information, in understanding an unfamiliar topic and exploring ideas related to it; in analyzing data, finding the research gap in a particular area, understanding the meaning of technical terms, getting answers to complex questions, and solving problems."
+ },
+ {
+  "i": 80,
+  "text": "Others allow the students to use AI in searching for and verifying information, in understanding an unfamiliar topic and exploring ideas related to it; in analyzing data, finding the research gap in a particular area, understanding the meaning of technical terms, getting answers to complex questions, and solving problems.",
+  "score": 0.0,
+  "label": "human",
+  "para": 24,
+  "before": "They allow the students to incorporate paragraphs from AI in their research paper or assignment, provided that they are documented, i.e., the students mention the AI Tool or AI Assistant used, date, and time.",
+  "after": "If an assignment or research paper is intended for discussion and the students are required to defend a specific idea, then there is nothing wrong with AI-generated articles and there is no need for students’ original idea, assignment, or article."
+ },
+ {
+  "i": 81,
+  "text": "If an assignment or research paper is intended for discussion and the students are required to defend a specific idea, then there is nothing wrong with AI-generated articles and there is no need for students’ original idea, assignment, or article.",
+  "score": 0.0,
+  "label": "human",
+  "para": 24,
+  "before": "Others allow the students to use AI in searching for and verifying information, in understanding an unfamiliar topic and exploring ideas related to it; in analyzing data, finding the research gap in a particular area, understanding the meaning of technical terms, getting answers to complex questions, and solving problems.",
+  "after": "Those who supervise the graduation project (B.A. thesis) allow their students to use the review command in WORD, provided that they mention the tool they have used."
+ },
+ {
+  "i": 82,
+  "text": "Those who supervise the graduation project (B.A. thesis) allow their students to use the review command in WORD, provided that they mention the tool they have used.",
+  "score": 0.0,
+  "label": "human",
+  "para": 24,
+  "before": "If an assignment or research paper is intended for discussion and the students are required to defend a specific idea, then there is nothing wrong with AI-generated articles and there is no need for students’ original idea, assignment, or article.",
+  "after": ""
+ },
+ {
+  "i": 83,
+  "text": "A computer science instructor stated that the students can use AI as a search engine to search for information provided that the students filter the information, check it and verify it.",
+  "score": 0.0,
+  "label": "human",
+  "para": 25,
+  "before": "",
+  "after": ""
+ },
+ {
+  "i": 84,
+  "text": "In a study by Malinka, Peresíni, Firc, Hujnák, and Janus (2023), ChatGPT was used for completing exams, programming assignments, and term papers and evaluated multiple levels of the AI tool misuse, ranging from simply copying its outputs to utilizing it as a consultant.",
+  "score": 0.0076,
+  "label": "human",
+  "para": 26,
+  "before": "",
+  "after": "They concluded that ChatGPT can be easily used to cheat and that it can be used in discussing problems encountered while doing a homework-assignment or in speeding up the learning process."
+ },
+ {
+  "i": 85,
+  "text": "They concluded that ChatGPT can be easily used to cheat and that it can be used in discussing problems encountered while doing a homework-assignment or in speeding up the learning process.",
+  "score": 0.0076,
+  "label": "human",
+  "para": 26,
+  "before": "In a study by Malinka, Peresíni, Firc, Hujnák, and Janus (2023), ChatGPT was used for completing exams, programming assignments, and term papers and evaluated multiple levels of the AI tool misuse, ranging from simply copying its outputs to utilizing it as a consultant.",
+  "after": "In Parker, Carter, Karakas, Loper and Sokkar’s (2023) study, undergraduate students quickly integrated ChatGPT and 65% utilized it for academic tasks, whereas 48% used it for non-academic purposes."
+ },
+ {
+  "i": 86,
+  "text": "In Parker, Carter, Karakas, Loper and Sokkar’s (2023) study, undergraduate students quickly integrated ChatGPT and 65% utilized it for academic tasks, whereas 48% used it for non-academic purposes.",
+  "score": 0.0076,
+  "label": "human",
+  "para": 26,
+  "before": "They concluded that ChatGPT can be easily used to cheat and that it can be used in discussing problems encountered while doing a homework-assignment or in speeding up the learning process.",
+  "after": "All the students reported experiencing moderate academic improvements in various courses."
+ },
+ {
+  "i": 87,
+  "text": "All the students reported experiencing moderate academic improvements in various courses.",
+  "score": 0.0076,
+  "label": "human",
+  "para": 26,
+  "before": "In Parker, Carter, Karakas, Loper and Sokkar’s (2023) study, undergraduate students quickly integrated ChatGPT and 65% utilized it for academic tasks, whereas 48% used it for non-academic purposes.",
+  "after": ""
+ },
+ {
+  "i": 88,
+  "text": "To detect AI-generated content, some instructors in the sample use Blackboard’s SafeAssign and give marks according to the type and amount of plagiarism.",
+  "score": 0.0,
+  "label": "human",
+  "para": 27,
+  "before": "",
+  "after": "Some use aiphrasefinder,com to spot ChatGPT words and phrases."
+ },
+ {
+  "i": 89,
+  "text": "Some use aiphrasefinder,com to spot ChatGPT words and phrases.",
+  "score": 0.0,
+  "label": "human",
+  "para": 27,
+  "before": "To detect AI-generated content, some instructors in the sample use Blackboard’s SafeAssign and give marks according to the type and amount of plagiarism.",
+  "after": "Others use AI-plagiarism detectors such as ChatGPT Zero, Originality AI, Semrush, Copyleaks, Duplichecker, Quillbot, and Scribbr."
+ },
+ {
+  "i": 90,
+  "text": "Others use AI-plagiarism detectors such as ChatGPT Zero, Originality AI, Semrush, Copyleaks, Duplichecker, Quillbot, and Scribbr.",
+  "score": 0.0,
+  "label": "human",
+  "para": 27,
+  "before": "Some use aiphrasefinder,com to spot ChatGPT words and phrases.",
+  "after": "A computer science instructor detects AI-generated texts by spotting typos, absence of personal experiences or emotions, inaccurate citations, references that do not exist, repetitive use of words or phrases, and the overuse of words and complex sentences."
+ },
+ {
+  "i": 91,
+  "text": "A computer science instructor detects AI-generated texts by spotting typos, absence of personal experiences or emotions, inaccurate citations, references that do not exist, repetitive use of words or phrases, and the overuse of words and complex sentences.",
+  "score": 0.0,
+  "label": "human",
+  "para": 27,
+  "before": "Others use AI-plagiarism detectors such as ChatGPT Zero, Originality AI, Semrush, Copyleaks, Duplichecker, Quillbot, and Scribbr.",
+  "after": "She uses aiphrasefinder.com for detecting ChatGPT words and phrases."
+ },
+ {
+  "i": 92,
+  "text": "She uses aiphrasefinder.com for detecting ChatGPT words and phrases.",
+  "score": 0.0024,
+  "label": "human",
+  "para": 27,
+  "before": "A computer science instructor detects AI-generated texts by spotting typos, absence of personal experiences or emotions, inaccurate citations, references that do not exist, repetitive use of words or phrases, and the overuse of words and complex sentences.",
+  "after": ""
+ },
+ {
+  "i": 93,
+  "text": "Moreover, a linguistics instructor designed a scoring rubric for evaluating students’ assignments and research papers in her Research Methodology course.",
+  "score": 0.0024,
+  "label": "human",
+  "para": 28,
+  "before": "",
+  "after": "In the rubric, marks are allocated to each task."
+ },
+ {
+  "i": 94,
+  "text": "In the rubric, marks are allocated to each task.",
+  "score": 0.0024,
+  "label": "human",
+  "para": 28,
+  "before": "Moreover, a linguistics instructor designed a scoring rubric for evaluating students’ assignments and research papers in her Research Methodology course.",
+  "after": ""
+ },
+ {
+  "i": 95,
+  "text": "Nevertheless, some instructors indicated that AI Plagiarism Checkers should be used with caution as they are not 100% reliable.",
+  "score": 0.0024,
+  "label": "human",
+  "para": 29,
+  "before": "",
+  "after": "In some cases, the students submit an authentic human text, and the AI plagiarism detector claims that it is AI-generated."
+ },
+ {
+  "i": 96,
+  "text": "In some cases, the students submit an authentic human text, and the AI plagiarism detector claims that it is AI-generated.",
+  "score": 0.0013,
+  "label": "human",
+  "para": 29,
+  "before": "Nevertheless, some instructors indicated that AI Plagiarism Checkers should be used with caution as they are not 100% reliable.",
+  "after": "In this case and if the student is accused of AI-plagiarism, she would complain to the administration."
+ },
+ {
+  "i": 97,
+  "text": "In this case and if the student is accused of AI-plagiarism, she would complain to the administration.",
+  "score": 0.0013,
+  "label": "human",
+  "para": 29,
+  "before": "In some cases, the students submit an authentic human text, and the AI plagiarism detector claims that it is AI-generated.",
+  "after": ""
+ },
+ {
+  "i": 98,
+  "text": "The lack of reliability of AI plagiarism checkers mentioned by some participants in the current study is supported by findings of a study by Perkins, Roe, Postma, McGaughran and Hickerson (2024) in which the researchers used the Turnitin AI tool to detect GPT- 4-generated text in students’ submissions.",
+  "score": 0.0013,
+  "label": "human",
+  "para": 30,
+  "before": "",
+  "after": "They found that the AI detection tool identified 91% of the experimental submissions as containing AI-generated content, but only 54.8% of the content was identified as AI-generated by the instructors, underscoring the challenges of detecting AI content when advanced prompting techniques were used."
+ },
+ {
+  "i": 99,
+  "text": "They found that the AI detection tool identified 91% of the experimental submissions as containing AI-generated content, but only 54.8% of the content was identified as AI-generated by the instructors, underscoring the challenges of detecting AI content when advanced prompting techniques were used.",
+  "score": 0.0013,
+  "label": "human",
+  "para": 30,
+  "before": "The lack of reliability of AI plagiarism checkers mentioned by some participants in the current study is supported by findings of a study by Perkins, Roe, Postma, McGaughran and Hickerson (2024) in which the researchers used the Turnitin AI tool to detect GPT- 4-generated text in students’ submissions.",
+  "after": "When instructors marked the experimental submissions, only 54.5% were reported as an academic misconduct."
+ },
+ {
+  "i": 100,
+  "text": "When instructors marked the experimental submissions, only 54.5% were reported as an academic misconduct.",
+  "score": 0.0,
+  "label": "human",
+  "para": 30,
+  "before": "They found that the AI detection tool identified 91% of the experimental submissions as containing AI-generated content, but only 54.8% of the content was identified as AI-generated by the instructors, underscoring the challenges of detecting AI content when advanced prompting techniques were used.",
+  "after": "Results of the study highlight the need for greater awareness of how the results of AI plagiarism detectors may be interpreted."
+ },
+ {
+  "i": 101,
+  "text": "Results of the study highlight the need for greater awareness of how the results of AI plagiarism detectors may be interpreted.",
+  "score": 0.0,
+  "label": "human",
+  "para": 30,
+  "before": "When instructors marked the experimental submissions, only 54.5% were reported as an academic misconduct.",
+  "after": ""
+ },
+ {
+  "i": 102,
+  "text": "Data analysis showed that if a student submits AI-generated assignments or research papers, 75% of the faculty in the sample require him/her to re-write the assignment.",
+  "score": 0.0,
+  "label": "human",
+  "para": 31,
+  "before": "",
+  "after": "Few require that students to declare if they have used AI in their submitted assignments or research papers, in what and where."
+ },
+ {
+  "i": 103,
+  "text": "Few require that students to declare if they have used AI in their submitted assignments or research papers, in what and where.",
+  "score": 0.0,
+  "label": "human",
+  "para": 31,
+  "before": "Data analysis showed that if a student submits AI-generated assignments or research papers, 75% of the faculty in the sample require him/her to re-write the assignment.",
+  "after": "Few explain to the student how AI can be used in research in order to avoid plagiarism."
+ },
+ {
+  "i": 104,
+  "text": "Few explain to the student how AI can be used in research in order to avoid plagiarism.",
+  "score": 0.0,
+  "label": "human",
+  "para": 31,
+  "before": "Few require that students to declare if they have used AI in their submitted assignments or research papers, in what and where.",
+  "after": "One instructor asks her students to paraphrase the AI-generated content in their own words."
+ },
+ {
+  "i": 105,
+  "text": "One instructor asks her students to paraphrase the AI-generated content in their own words.",
+  "score": 0.0,
+  "label": "human",
+  "para": 31,
+  "before": "Few explain to the student how AI can be used in research in order to avoid plagiarism.",
+  "after": ""
+ },
+ {
+  "i": 106,
+  "text": "• At the beginning of the semester, I explain to the student what is acceptable and is unacceptable about AI-generated content.",
+  "score": 0.0,
+  "label": "human",
+  "para": 32,
+  "before": "",
+  "after": "If the student persists, he/she will get a zero."
+ },
+ {
+  "i": 107,
+  "text": "If the student persists, he/she will get a zero.",
+  "score": 0.0,
+  "label": "human",
+  "para": 32,
+  "before": "• At the beginning of the semester, I explain to the student what is acceptable and is unacceptable about AI-generated content.",
+  "after": ""
+ },
+ {
+  "i": 108,
+  "text": "• I give the students time to revise their work and do something drastic about the AI-generated parts.",
+  "score": 0.0,
+  "label": "human",
+  "para": 33,
+  "before": "",
+  "after": ""
+ },
+ {
+  "i": 109,
+  "text": "On the other hand, 25% give a zero (no grade), 15% and 25% of the grade for submitting the assignment even if it was generated by AI.",
+  "score": 0.0,
+  "label": "human",
+  "para": 34,
+  "before": "",
+  "after": "They explain to the student why they failed, with evidence of the AI-generated content such as having CHATGPT Zero, SafeAssign or another AI plagiarism detection tool highlight all AI content."
+ },
+ {
+  "i": 110,
+  "text": "They explain to the student why they failed, with evidence of the AI-generated content such as having CHATGPT Zero, SafeAssign or another AI plagiarism detection tool highlight all AI content.",
+  "score": 0.0,
+  "label": "human",
+  "para": 34,
+  "before": "On the other hand, 25% give a zero (no grade), 15% and 25% of the grade for submitting the assignment even if it was generated by AI.",
+  "after": ""
+ },
+ {
+  "i": 111,
+  "text": "• I give the student a zero and report him to the department head.",
+  "score": 0.0,
+  "label": "human",
+  "para": 35,
+  "before": "",
+  "after": "In some cases, the student might be expelled from the university."
+ },
+ {
+  "i": 112,
+  "text": "In some cases, the student might be expelled from the university.",
+  "score": 0.0,
+  "label": "human",
+  "para": 35,
+  "before": "• I give the student a zero and report him to the department head.",
+  "after": ""
+ },
+ {
+  "i": 113,
+  "text": "Few instructors indicated that it depends on the grading policy of the course, which depends on the nature of the course.",
+  "score": 0.0,
+  "label": "human",
+  "para": 36,
+  "before": "",
+  "after": "If there is no clear policy that bans the submission of AI-generated content, the instructor would guide the student and ask him/her to re-write and re-submit the assignment."
+ },
+ {
+  "i": 114,
+  "text": "If there is no clear policy that bans the submission of AI-generated content, the instructor would guide the student and ask him/her to re-write and re-submit the assignment.",
+  "score": 0.0,
+  "label": "human",
+  "para": 36,
+  "before": "Few instructors indicated that it depends on the grading policy of the course, which depends on the nature of the course.",
+  "after": "But if the university has an announced policy that bans the use of AI-generated content, the student would get a zero with a warning."
+ },
+ {
+  "i": 115,
+  "text": "But if the university has an announced policy that bans the use of AI-generated content, the student would get a zero with a warning.",
+  "score": 0.0,
+  "label": "human",
+  "para": 36,
+  "before": "If there is no clear policy that bans the submission of AI-generated content, the instructor would guide the student and ask him/her to re-write and re-submit the assignment.",
+  "after": ""
+ },
+ {
+  "i": 116,
+  "text": "Regarding students’ awareness of the ethics of using AI in assignments, Parker, Carter, Karakas, Loper and Sokkar (2023) reported diverse ethical perspectives among undergraduate students in their study.",
+  "score": 0.9996,
+  "label": "ai",
+  "para": 37,
+  "before": "",
+  "after": "Some students considered the use of AI in education ethically acceptable, while others expressed reservations."
+ },
+ {
+  "i": 117,
+  "text": "Some students considered the use of AI in education ethically acceptable, while others expressed reservations.",
+  "score": 0.9996,
+  "label": "ai",
+  "para": 37,
+  "before": "Regarding students’ awareness of the ethics of using AI in assignments, Parker, Carter, Karakas, Loper and Sokkar (2023) reported diverse ethical perspectives among undergraduate students in their study.",
+  "after": "Students who actively used ChatGPT showed a greater ethical acceptance of its educational use compared to those who did not."
+ },
+ {
+  "i": 118,
+  "text": "Students who actively used ChatGPT showed a greater ethical acceptance of its educational use compared to those who did not.",
+  "score": 0.9996,
+  "label": "ai",
+  "para": 37,
+  "before": "Some students considered the use of AI in education ethically acceptable, while others expressed reservations.",
+  "after": ""
+ },
+ {
+  "i": 119,
+  "text": "AI-generated content is a relatively recent phenomenon.",
+  "score": 0.9996,
+  "label": "ai",
+  "para": 38,
+  "before": "",
+  "after": "Due to its novelty, this study recommends raising students’ awareness of their instructors and college and university policies regarding the submission of AI-generated assignments and research papers through workshops."
+ },
+ {
+  "i": 120,
+  "text": "Due to its novelty, this study recommends raising students’ awareness of their instructors and college and university policies regarding the submission of AI-generated assignments and research papers through workshops.",
+  "score": 0.0551,
+  "label": "human",
+  "para": 38,
+  "before": "AI-generated content is a relatively recent phenomenon.",
+  "after": "If a university or department does not have a policy regarding AI-generated content, participants in the current study recommended that instructors alert the students at the beginning of the semester that AI-generated content is an act of plagiarizing, that the instructor can detect AI-plagiarized content with their plagiarism detection software and that this will consequently lead to cancelling the assignment grade or even failing the course."
+ },
+ {
+  "i": 121,
+  "text": "If a university or department does not have a policy regarding AI-generated content, participants in the current study recommended that instructors alert the students at the beginning of the semester that AI-generated content is an act of plagiarizing, that the instructor can detect AI-plagiarized content with their plagiarism detection software and that this will consequently lead to cancelling the assignment grade or even failing the course.",
+  "score": 0.0551,
+  "label": "human",
+  "para": 38,
+  "before": "Due to its novelty, this study recommends raising students’ awareness of their instructors and college and university policies regarding the submission of AI-generated assignments and research papers through workshops.",
+  "after": ""
+ },
+ {
+  "i": 122,
+  "text": "Academic institutions need to establish clear policies and frameworks for the ethical and fair use and inherent bias of AI tools in education and incorporate them into their decision-making processes.",
+  "score": 0.0551,
+  "label": "human",
+  "para": 39,
+  "before": "",
+  "after": "Comprehensive training of students, faculty, administrators, and stakeholders should be provided to make sure that they understand the ethical considerations and implications of AI use in education and to make sure that academic integrity is preserved (Paschal & Melly, 2023; Perkins, Roe, Postma, McGaughran & Hickerson, 2024)."
+ },
+ {
+  "i": 123,
+  "text": "Comprehensive training of students, faculty, administrators, and stakeholders should be provided to make sure that they understand the ethical considerations and implications of AI use in education and to make sure that academic integrity is preserved (Paschal & Melly, 2023; Perkins, Roe, Postma, McGaughran & Hickerson, 2024).",
+  "score": 0.0551,
+  "label": "human",
+  "para": 39,
+  "before": "Academic institutions need to establish clear policies and frameworks for the ethical and fair use and inherent bias of AI tools in education and incorporate them into their decision-making processes.",
+  "after": ""
+ },
+ {
+  "i": 124,
+  "text": "Instructors, departments, and universities can raise students’ awareness of what is allowed and what is not allowed when using AI tools and AI assistants for academic purposes through memos, course descriptions and instruction manuals.",
+  "score": 0.0727,
+  "label": "human",
+  "para": 40,
+  "before": "",
+  "after": "Students should be asked to declare which parts of an assignment or research paper were written by AI."
+ },
+ {
+  "i": 125,
+  "text": "Students should be asked to declare which parts of an assignment or research paper were written by AI.",
+  "score": 0.0727,
+  "label": "human",
+  "para": 40,
+  "before": "Instructors, departments, and universities can raise students’ awareness of what is allowed and what is not allowed when using AI tools and AI assistants for academic purposes through memos, course descriptions and instruction manuals.",
+  "after": "Students should understand the significance and necessity of acquiring certain writing and research skills, and the significance of academic integrity."
+ },
+ {
+  "i": 126,
+  "text": "Students should understand the significance and necessity of acquiring certain writing and research skills, and the significance of academic integrity.",
+  "score": 0.0727,
+  "label": "human",
+  "para": 40,
+  "before": "Students should be asked to declare which parts of an assignment or research paper were written by AI.",
+  "after": ""
+ },
+ {
+  "i": 127,
+  "text": "It is necessary for graduate and undergraduate students to perform all kinds of tasks required by their assignments or research papers from A to Z as they are not experts yet and are not well-trained in writing and research skills.",
+  "score": 0.0727,
+  "label": "human",
+  "para": 41,
+  "before": "",
+  "after": "They need to perform all kinds of tasks themselves such as summarization, paraphrasing, translation, proof-reading, checking grammar, spelling and style, searching for references in Google Scholar and specialized electronic databases, designing their research instrument, collecting and anlayzing their data and applying appropriate statistical techniques, as they are still in the learning process and have not fully acquired the skills and knowledge needed."
+ },
+ {
+  "i": 128,
+  "text": "They need to perform all kinds of tasks themselves such as summarization, paraphrasing, translation, proof-reading, checking grammar, spelling and style, searching for references in Google Scholar and specialized electronic databases, designing their research instrument, collecting and anlayzing their data and applying appropriate statistical techniques, as they are still in the learning process and have not fully acquired the skills and knowledge needed.",
+  "score": 0.0,
+  "label": "human",
+  "para": 41,
+  "before": "It is necessary for graduate and undergraduate students to perform all kinds of tasks required by their assignments or research papers from A to Z as they are not experts yet and are not well-trained in writing and research skills.",
+  "after": "They may resort to AI to get information about general-knowledge questions, definitions of terms, getting recipes, an itinerary, and similar daily life issues."
+ },
+ {
+  "i": 129,
+  "text": "They may resort to AI to get information about general-knowledge questions, definitions of terms, getting recipes, an itinerary, and similar daily life issues.",
+  "score": 0.0,
+  "label": "human",
+  "para": 41,
+  "before": "They need to perform all kinds of tasks themselves such as summarization, paraphrasing, translation, proof-reading, checking grammar, spelling and style, searching for references in Google Scholar and specialized electronic databases, designing their research instrument, collecting and anlayzing their data and applying appropriate statistical techniques, as they are still in the learning process and have not fully acquired the skills and knowledge needed.",
+  "after": ""
+ },
+ {
+  "i": 130,
+  "text": "When students use AI in English-Arabic and Arabic-English translation, they should use AI such as Google Translate, Reverso, Copilot, Poe and others with caution as such AI tools make semantic, syntactic, contextual and orthographic errors in translation (Al-Jarf, 2024; Al-Jarf, 2021; Al-Jarf, 2016).",
+  "score": 0.0,
+  "label": "human",
+  "para": 42,
+  "before": "",
+  "after": "Students should also use AI with caution when they use AI for obtaining references for a research paper as AI sometimes gives references that do not exist."
+ },
+ {
+  "i": 131,
+  "text": "Students should also use AI with caution when they use AI for obtaining references for a research paper as AI sometimes gives references that do not exist.",
+  "score": 0.0,
+  "label": "human",
+  "para": 42,
+  "before": "When students use AI in English-Arabic and Arabic-English translation, they should use AI such as Google Translate, Reverso, Copilot, Poe and others with caution as such AI tools make semantic, syntactic, contextual and orthographic errors in translation (Al-Jarf, 2024; Al-Jarf, 2021; Al-Jarf, 2016).",
+  "after": "Rather, instructors should train students in selecting search terms and searching specialized electronic databases such as MLA, LLBA, ABI, PsychInfo, Chemical Abstracts, Historical Abstracts, Dissertation Abstracts, ISA (Information Science Abstracts), LISA (Library & Information Science Abstracts, MEDLINE, PubMed, Ulrich's International Periodical Directory, Wilson Art Index, Wilson Humanities Index, Wilson Social Science Index, WorldCAT, Scopus, Web of Science, SSRN and others (Al-Jarf, 2003a; Al-Jarf, 2003b)."
+ },
+ {
+  "i": 132,
+  "text": "Rather, instructors should train students in selecting search terms and searching specialized electronic databases such as MLA, LLBA, ABI, PsychInfo, Chemical Abstracts, Historical Abstracts, Dissertation Abstracts, ISA (Information Science Abstracts), LISA (Library & Information Science Abstracts, MEDLINE, PubMed, Ulrich's International Periodical Directory, Wilson Art Index, Wilson Humanities Index, Wilson Social Science Index, WorldCAT, Scopus, Web of Science, SSRN and others (Al-Jarf, 2003a; Al-Jarf, 2003b).",
+  "score": 0.0,
+  "label": "human",
+  "para": 42,
+  "before": "Students should also use AI with caution when they use AI for obtaining references for a research paper as AI sometimes gives references that do not exist.",
+  "after": ""
+ },
+ {
+  "i": 133,
+  "text": "In order for students not to resort to AI tools to write their homework and research papers for them, instructors should provide guidance and feedback for the students before, during and after working on their assignments, research papers and translations.",
+  "score": 0.0,
+  "label": "human",
+  "para": 43,
+  "before": "",
+  "after": "Students and instructors may use blogs and online discussion forums to post questions, responses, discussions, and difficulties related to an assignment, research paper or translations and obtain answers and feedback from their classmates as well as instructor (Al-Jarf, 2022a; Al-Jarf, 2019; Al-Jarf, 2017)."
+ },
+ {
+  "i": 134,
+  "text": "Students and instructors may use blogs and online discussion forums to post questions, responses, discussions, and difficulties related to an assignment, research paper or translations and obtain answers and feedback from their classmates as well as instructor (Al-Jarf, 2022a; Al-Jarf, 2019; Al-Jarf, 2017).",
+  "score": 0.0,
+  "label": "human",
+  "para": 43,
+  "before": "In order for students not to resort to AI tools to write their homework and research papers for them, instructors should provide guidance and feedback for the students before, during and after working on their assignments, research papers and translations.",
+  "after": ""
+ },
+ {
+  "i": 135,
+  "text": "Furthermore, exploration of the ethical implications of the use of AI in education, the development of strategies for managing privacy concerns, and the investigation of how educational institutions can best prepare for the integration of AI technologies in education need to be researched further in Saudi Arabia and other Arab countries.",
+  "score": 0.0,
+  "label": "human",
+  "para": 44,
+  "before": "",
+  "after": "Researchers and educators need to understand the potential, opportunities and challenges associated with AI in higher education and the need for continued research in this area."
+ },
+ {
+  "i": 136,
+  "text": "Researchers and educators need to understand the potential, opportunities and challenges associated with AI in higher education and the need for continued research in this area.",
+  "score": 0.4769,
+  "label": "human",
+  "para": 44,
+  "before": "Furthermore, exploration of the ethical implications of the use of AI in education, the development of strategies for managing privacy concerns, and the investigation of how educational institutions can best prepare for the integration of AI technologies in education need to be researched further in Saudi Arabia and other Arab countries.",
+  "after": "The perceptions of journal editors and promotion committee members of AI-generated research articles submitted by university faculty to journals and for promotion and whether journals and publishers have policies regarding the publication of AI-generated research articles are still open for further investigation by future research."
+ },
+ {
+  "i": 137,
+  "text": "The perceptions of journal editors and promotion committee members of AI-generated research articles submitted by university faculty to journals and for promotion and whether journals and publishers have policies regarding the publication of AI-generated research articles are still open for further investigation by future research.",
+  "score": 0.4769,
+  "label": "human",
+  "para": 44,
+  "before": "Researchers and educators need to understand the potential, opportunities and challenges associated with AI in higher education and the need for continued research in this area.",
+  "after": ""
+ },
+ {
+  "i": 138,
+  "text": "The author declares no conflict of interest.",
+  "score": 0.4769,
+  "label": "human",
+  "para": 45,
+  "before": "",
+  "after": ""
+ }
+]
