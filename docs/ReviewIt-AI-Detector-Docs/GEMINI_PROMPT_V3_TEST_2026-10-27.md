@@ -12,7 +12,7 @@ Third paid run on the same paper and the same 36 sentence/style pairs as [GEMINI
 | Academic: two Gemini rewrites to show | 13 | **22** |
 | Academic: both shown rewrites evade | 7 | **16** |
 | Rewrites passing the guard | 165 / 180 | 173 / 180 |
-| Recommended rewrites with a meaning issue (my read) | 3 of 19 | 7 of 33 |
+| Academic: Recommended rewrites with a meaning issue (my read) | 5 of 19 | 5 of 24 |
 | Cost (36 calls) | $0.0465 | $0.0524 |
 | Time per call | 4.0 s | 3.8 s |
 
@@ -89,6 +89,6 @@ AI score = our BERT detector, one sentence at a time; evaded = below 40%. Meanin
 1. **Evasion went up sharply:** Academic Recommended rewrites below 40% went from 10/26 to 22/26, and the mean score from 48% to 11%. Even the list/definition sentences moved (#28, #31, #33, #34 now evade); #30 and #32 still score 100% in all five.
 2. **Two Gemini rewrites are available for 22/26 Academic sentences** (both evade for 16).
 3. **The banned words were obeyed:** no rewrite was rejected for a marker word in this run.
-4. **Meaning slips rose with the bolder rewrites:** 7 of 33 Recommended rewrites have a ⚠. Patterns: "we" added where the original has no first person (#21, #23, #26 option); a comparison turned into a cause (#118); a relation between ideas distorted (#75); a new subject or claim added (#25, Business #20, Creative #22 "Doubts multiply fast.").
+4. **Meaning slips changed in kind, not in number:** 5 of 24 Academic Recommended rewrites have a ⚠ (5 of 19 before); across all styles 7 of 33. But two are more serious than before. Patterns: "we" added where the original has no first person (#21, #23, #26 option); a comparison turned into a cause (#118); a relation between ideas distorted (#75); a new subject or claim added (#25, Business #20, Creative #22 "Doubts multiply fast.").
 
 Raw data: `data/pipeline-test-2026-10-27/gemini_v3_results.jsonl`.
