@@ -53,7 +53,23 @@ Branch: `abdullah/humanizer-new-engine` (ReviewIt, from `origin/main`)
 ## 2e. Supervisor updates (2026-10-27)
 - [x] Show Gemini's two best rewrites: the best is the main result, the second is the first option (`alternatives`, engine "gemini"); no frontend change needed, the page already lists the options
 - [x] Stronger Gemini prompt, research-based: verbs over nouns made from verbs; machine-text style words and patterns banned (guard enforces the words); varied rhythm; self-check of every rewrite before answering
-- [ ] **Frontend (colleague):** when a humanize attempt fails (no rewrite kept, `failed: true`), show **no popup error message**; leave the sentence as it is
+
+## 2f. Issues in the current prompt (found in the 2026-10-27 test, to fix on 2026-10-28)
+The latest prompt doubled evasion (Academic below 40%: 10 → 22 of 26) but its bolder rewrites changed meaning more seriously. See `GEMINI_PROMPT_V3_TEST_2026-10-27.md`.
+- [ ] "We" added where the original has no first person (#21 twice, #23, #26): guard should reject an added "we / our / us / I"
+- [ ] A comparison turned into a cause (#118: "using ChatGPT **made** students more willing"): meaning rule "never turn a comparison or a link into a cause"
+- [ ] The relation between ideas distorted (#75): same rule, plus "keep how the parts relate"
+- [ ] Who does what changed (Business #20: "Instructors will examine …"): meaning rule "keep who does what"
+- [ ] A new subject added (#25: "Educators must …") and "Such" pointing to the context (#72 option 2)
+- [ ] Creative adds a claim (#22: "Doubts multiply fast."): Creative may add a short sentence only to restate part of the target
+- [ ] "Ethical and social" qualifiers dropped (#75, both rewrites)
+- [ ] "The need" strengthened to "must" (#21)
+- [ ] Two list sentences still score 100% in all 5 rewrites (#30, #32)
+
+## FE (frontend changes for the colleague — the backend side does not edit `ReviewIt/frontend`)
+- [ ] When a humanize attempt fails (no rewrite kept, `failed: true`), show **no popup error message**; leave the sentence as it is
+- [ ] Remove `.doc` from the upload file picker (`accept=".pdf,.docx,.doc,.txt"` in `components/dashboard/file-upload-card.tsx` and the extension check above it): old .doc files are not supported (supervisor, 2026-10-27); the backend refuses them with a clear message
+- [ ] (Open since 22 Oct, `OPEN_ISSUES.md` F2) Overall score averages single-sentence scores while the detector scores blocks of 4; Humanizer studio page shows a fixed latency; no message when a document is cut to 20,000 words
 
 ## 3. Branch
 - [x] Create `abdullah/humanizer-new-engine` from main
