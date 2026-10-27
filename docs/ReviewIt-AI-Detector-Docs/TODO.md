@@ -51,9 +51,7 @@ Branch: `abdullah/humanizer-new-engine` (ReviewIt, from `origin/main`)
 - [x] Narrative style: join the parts of the target sentence only; no new clause
 - [x] Guard: reject a rewrite that adds a stock phrase (consequently, furthermore, thus, ...)
 - [x] Guard: a prefix negation (unfamiliar, non-users) can stand in for "not"
-- [x] Old .doc (Word 97-2003): converted to .docx with LibreOffice, then read as usual; clear message if LibreOffice is missing
-- [x] Install LibreOffice on this PC (26.8.1, winget) and check a real .doc upload
-- [ ] Install LibreOffice on the server where the backend will run (Linux: `sudo apt install libreoffice-writer`); optional `LIBREOFFICE_PATH`
+- [x] Old .doc (Word 97-2003): not supported (supervisor decision 2026-10-27); refused with a clear message; LibreOffice uninstalled from this PC
 
 ## 3. Branch
 - [x] Create `abdullah/humanizer-new-engine` from main
