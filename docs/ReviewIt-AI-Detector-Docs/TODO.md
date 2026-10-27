@@ -23,8 +23,6 @@ Branch: `abdullah/humanizer-new-engine` (ReviewIt, from `origin/main`)
 - [x] Set system instruction, temperature 1.0, thinking level low (env: `GEMINI_TEMPERATURE`, `GEMINI_THINK`)
 - [x] Guard: reject a repeated or added citation
 - [x] Tests for the prompt, the call settings and the guard
-- [ ] Compare old vs new prompt on the 20-sentence set (fidelity + BERT score) — **waiting: the Gemini key is the free tier, no live calls for now**. Script: scratchpad `compare_prompts.py` (not committed)
-- [ ] Manual ZeroGPT / Copyleaks check of the new prompt on reinserted paragraphs
 
 ## 2b. Supervisor fixes (2026-10-26)
 - [x] Log the time of every run (total + per engine)
@@ -33,7 +31,6 @@ Branch: `abdullah/humanizer-new-engine` (ReviewIt, from `origin/main`)
 - [x] Humarin, T5 and rule-based run only for the default style (academic); other styles: Gemini only, sentence kept with a neutral reason if Gemini gives nothing
 - [x] Guard: "raises concerns/questions/issues" no longer counts as an upward word (it rejected good rewrites as "claim reversed")
 - [x] A failed run is no longer shown as "Humanized" in the page (the sentence can be tried again)
-- [ ] Compare old vs new prompt on the 20 sentences (now possible: paid key)
 
 ## 2c. Fixes from the 2026-10-27 pipeline test
 - [x] Prompt: add nothing from the surrounding sentences (no linking words or claims that point to them)
@@ -44,7 +41,7 @@ Branch: `abdullah/humanizer-new-engine` (ReviewIt, from `origin/main`)
 - [x] Guard: reject a rewrite that does not end like a sentence
 - [x] PDF reader: skip back-matter sections (conflict of interest, funding, acknowledgements, data availability, ...)
 - [x] Log tokens and cost of every Gemini call
-- [ ] Re-test the new prompt (small, capped run) — waiting for your go
+- [x] Re-test the latest prompt: 36 calls, $0.0524 — see `GEMINI_PROMPT_V3_TEST_2026-10-27.md`
 
 ## 2d. Prompt/guard fixes from the final-prompt check, and old .doc files
 - [x] Academic style: plain, common words (the formal word setting made rewrites score higher)
@@ -52,6 +49,11 @@ Branch: `abdullah/humanizer-new-engine` (ReviewIt, from `origin/main`)
 - [x] Guard: reject a rewrite that adds a stock phrase (consequently, furthermore, thus, ...)
 - [x] Guard: a prefix negation (unfamiliar, non-users) can stand in for "not"
 - [x] Old .doc (Word 97-2003): not supported (supervisor decision 2026-10-27); refused with a clear message; LibreOffice uninstalled from this PC
+
+## 2e. Supervisor updates (2026-10-27)
+- [x] Show Gemini's two best rewrites: the best is the main result, the second is the first option (`alternatives`, engine "gemini"); no frontend change needed, the page already lists the options
+- [x] Stronger Gemini prompt, research-based: verbs over nouns made from verbs; machine-text style words and patterns banned (guard enforces the words); varied rhythm; self-check of every rewrite before answering
+- [ ] **Frontend (colleague):** when a humanize attempt fails (no rewrite kept, `failed: true`), show **no popup error message**; leave the sentence as it is
 
 ## 3. Branch
 - [x] Create `abdullah/humanizer-new-engine` from main
