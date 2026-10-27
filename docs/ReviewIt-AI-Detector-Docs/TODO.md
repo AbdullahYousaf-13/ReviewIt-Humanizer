@@ -35,5 +35,16 @@ Branch: `abdullah/humanizer-new-engine` (ReviewIt, from `origin/main`)
 - [x] A failed run is no longer shown as "Humanized" in the page (the sentence can be tried again)
 - [ ] Compare old vs new prompt on the 20 sentences (now possible: paid key)
 
+## 2c. Fixes from the 2026-10-27 pipeline test
+- [x] Prompt: add nothing from the surrounding sentences (no linking words or claims that point to them)
+- [x] Prompt: keep every qualifier at the same strength (hedges, amounts, example markers, limits)
+- [x] Prompt: restructure lists and definitions harder; 5 rewrites per call instead of 3 (all calls, same single call)
+- [x] Prompt: full description for each of the 6 styles (register, sentence length, vocabulary, voice)
+- [x] Gemini reply that stopped early (token limit, safety) is discarded
+- [x] Guard: reject a rewrite that does not end like a sentence
+- [x] PDF reader: skip back-matter sections (conflict of interest, funding, acknowledgements, data availability, ...)
+- [x] Log tokens and cost of every Gemini call
+- [ ] Re-test the new prompt (small, capped run) — waiting for your go
+
 ## 3. Branch
 - [x] Create `abdullah/humanizer-new-engine` from main
