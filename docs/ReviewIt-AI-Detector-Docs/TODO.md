@@ -46,5 +46,13 @@ Branch: `abdullah/humanizer-new-engine` (ReviewIt, from `origin/main`)
 - [x] Log tokens and cost of every Gemini call
 - [ ] Re-test the new prompt (small, capped run) — waiting for your go
 
+## 2d. Prompt/guard fixes from the final-prompt check, and old .doc files
+- [x] Academic style: plain, common words (the formal word setting made rewrites score higher)
+- [x] Narrative style: join the parts of the target sentence only; no new clause
+- [x] Guard: reject a rewrite that adds a stock phrase (consequently, furthermore, thus, ...)
+- [x] Guard: a prefix negation (unfamiliar, non-users) can stand in for "not"
+- [x] Old .doc (Word 97-2003): converted to .docx with LibreOffice, then read as usual; clear message if LibreOffice is missing
+- [ ] Install LibreOffice where the backend runs (this PC and the server); optional `LIBREOFFICE_PATH` if it is not in the usual folder
+
 ## 3. Branch
 - [x] Create `abdullah/humanizer-new-engine` from main
