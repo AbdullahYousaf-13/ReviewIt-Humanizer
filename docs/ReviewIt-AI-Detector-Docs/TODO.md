@@ -52,7 +52,8 @@ Branch: `abdullah/humanizer-new-engine` (ReviewIt, from `origin/main`)
 - [x] Guard: reject a rewrite that adds a stock phrase (consequently, furthermore, thus, ...)
 - [x] Guard: a prefix negation (unfamiliar, non-users) can stand in for "not"
 - [x] Old .doc (Word 97-2003): converted to .docx with LibreOffice, then read as usual; clear message if LibreOffice is missing
-- [ ] Install LibreOffice where the backend runs (this PC and the server); optional `LIBREOFFICE_PATH` if it is not in the usual folder
+- [x] Install LibreOffice on this PC (26.8.1, winget) and check a real .doc upload
+- [ ] Install LibreOffice on the server where the backend will run (Linux: `sudo apt install libreoffice-writer`); optional `LIBREOFFICE_PATH`
 
 ## 3. Branch
 - [x] Create `abdullah/humanizer-new-engine` from main
