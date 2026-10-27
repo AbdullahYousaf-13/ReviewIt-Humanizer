@@ -77,5 +77,9 @@ The latest prompt doubled evasion (Academic below 40%: 10 → 22 of 26) but its 
 - [x] Labels: Gemini's rewrites are "Recommended 1" and "Recommended 2"; Humarin and T5 are "Option 1" and "Option 2" (`components/dashboard/rewrite-box.tsx`)
 - [ ] The landing page still says "PDF, DOCX, DOC, and TXT" (`components/landing/faq-section.tsx`, `features-section.tsx`): not changed
 
+## Questions for the supervisor (after the demo)
+- [ ] When Humarin or T5 scores much better than Gemini (example: Gemini 98% and 100% AI risk, Humarin 2%, T5 1%), which should be the main result? Today Gemini's best rewrite is always "Recommended 1" when it passes the guard and scores below the original, even if a local engine scores far lower. Options: keep Gemini first always; or put a local rewrite first when it scores lower by a clear margin (Gemini still shown).
+- [ ] Faster upload scoring (see "Backend" above): sort blocks by length and use all CPU cores, same scores, about 38% faster.
+
 ## 3. Branch
 - [x] Create `abdullah/humanizer-new-engine` from main
