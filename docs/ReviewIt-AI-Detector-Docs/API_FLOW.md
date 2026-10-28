@@ -98,7 +98,7 @@ On failure: same shape with `"status": "error"`, plus `"error"` and `"error_code
 ```
 
 ### POST /api/humanize-sentence
-Request: `{"text", "style", "context", "context_before", "context_after"}`
+Request: `{"text", "style", "context", "context_before", "context_after", "original_score"}` — `original_score` is **optional** (added 2026-10-28): the score the first scan gave the sentence, a number from 0 to 1 (for example `0.97`). When it is sent the backend uses it as the original's score and does **not** score the original again; anything else (missing, text, true/false, negative, above 1, `97`) is ignored and the backend scores the original itself, as before. The response keys do not change; the response `original_score` is then the number that was sent, and `improvement`, `failed` / `reason` and which rewrites are shown are calculated from it (when no rewrite beats it, `engine` is `"original"`, `failed` is `true` and `new_score` equals it).
 Styles: `academic` (default), `business`, `creative`, `casual`, `narrative`, `technical`. An unsupported style returns HTTP 400.
 ```json
 {
@@ -135,7 +135,7 @@ Styles: `academic` (default), `business`, `creative`, `casual`, `narrative`, `te
 
 **Which rewrites are shown, and in what order (2026-10-28, values only: no key changed).** The par score is **30%** (it was 40%): a score below it counts as human. Gemini is asked for 2 rewrites per call.
 - Gemini's best rewrite is shown whenever it beats the original, even above 30%; its second rewrite only at 30% or below.
-- Humarin's and T5's rewrites are shown only at 30% or below (and below the original).
+- Humarin's, T5's and the rule-based engine's rewrites are shown only at 30% or below (and below the original); the rule-based engine is a local engine like the other two (never "Recommended" by default).
 - If none of Gemini's rewrites is at 30% or below, Gemini is called once more (one retry, at most two calls per click) and the results of both calls compete.
 - Order: Gemini's rewrites first while one of them is at 30% or below, then Humarin / T5 (lower score first). If none of Gemini's is at 30% or below but a Humarin / T5 one is, **that one is first** (it becomes `humanized` / `engine`) and Gemini's best follows it. So `engine` of the main result can be `humarin` or `t5` even when Gemini answered, and `alternatives` is in display order.
 - The page names them by rank, not by engine: the first is "Recommended", the others "Option 1", "Option 2", "Option 3".

@@ -6,10 +6,9 @@ Branch: `abdullah/humanizer-new-engine` (ReviewIt). Finished work is in `FIXED_I
 - [ ] Supervisor approves the "Advanced" (Gemini) / "Standard" (Humarin, T5) tags (`rewrite-box.tsx`, `groupTag`; delete it if not approved)
 - [ ] Ask Rana which login database the demo uses (repo again holds a DB password in `nodeBackend/.env.example`)
 
-## Waiting for your decision
-- [ ] Original score: don't re-score the original sentence alone, use the document's score. Needs one new optional **request** field `original_score` + the page sends it (3 calls). API is locked: your OK first
-- [ ] Page: when the backend returns the original unchanged (`engine: "original"`), show no "Recommended" copy
-- [ ] Rule-based = a local engine like Humarin / T5: shown only at 30% or below, ordered with them, never "Recommended" by default
+## Done today, to check by hand before the demo
+- [ ] Humanize a flagged sentence that scores human alone (e.g. "Examples of Chatbots used in education…"): no "Recommended" copy of the original; rewrites shown when they exist
+- [ ] Humanize an uncited sentence: Recommended + Options (Humarin / T5 / rule-based only at 30% or below)
 
 ## Prompt
 - [ ] "need" became "must" (#21); "make vulnerable" became "weaken" (#73)
