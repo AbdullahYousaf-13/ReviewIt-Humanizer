@@ -94,6 +94,14 @@ Decision (supervisor / user): do not add more checks to the guard (each one reje
 - [x] No extra "copy check" sentence in the self-check (decision: not needed)
 - [ ] Not measured on real output; a prompt can reduce copying but cannot guarantee it
 
+## 2j. Small test of the latest prompt (2026-10-28): 10 sentences, 16 calls, $0.0161 — see `GEMINI_SMALL_TEST_2026-10-28.md`
+- [x] Run done. Recommended at 30% or below: 6 of 10 (previous prompt with 5 rewrites per call: 8 of 10); 6 of 10 sentences needed the retry; a second Gemini result shown for 2
+- [ ] Meaning: "need" still became "must" (#21) and "make vulnerable" became "weaken" (#73) despite the hard rule; the other known mistakes (comparison to cause, dropped "ethical and social", doer changed) did not appear in what was shown
+- [ ] Ranking by lowest score can pick the less faithful rewrite (#73)
+- [ ] Rule-based fallback shows a near-copy as Recommended at 94% (#31); it is not filtered by the 30% rule
+- [ ] A sentence that is red in the document can score human alone (#20 9%, #74 11%, #30 0%): rewrites cannot "beat" it; for #30 the original comes back with `failed: false`, which the page shows as a "Recommended" copy of the original at 0%
+- [ ] Asking Gemini for 2 rewrites instead of 5: 6 of 10 vs 8 of 10 reached 30% on these sentences (n = 10, different samples); to raise with the supervisor
+
 ## 2g. Supervisor changes (2026-10-28)
 - [x] Par score 30% instead of 40% (backend `PAR_SCORE` in `config/settings.py`; frontend `lib/par.ts` used for colours, counts and labels)
 - [x] Gemini asked for only 2 rewrites per call; best always shown if it beats the original, second only at 30% or below; one retry when none reaches 30%, results of both calls pooled
