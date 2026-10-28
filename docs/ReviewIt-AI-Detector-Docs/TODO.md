@@ -1,115 +1,23 @@
 # To-Do
 
-Branch: `abdullah/humanizer-new-engine` (ReviewIt, from `origin/main`)
+Branch: `abdullah/humanizer-new-engine` (ReviewIt). Finished work is in `FIXED_ISSUES.md` and the test reports, not here.
 
-## 1. Three results per humanize click (Gemini main, Humarin + T5 options)
-- [x] Run Gemini, Humarin, T5 on every `/api/humanize-sentence` call
-- [x] Pass each result through the candidate guard and score it
-- [x] Keep existing response keys unchanged
-- [x] Add `alternatives: [{engine, humanized, new_score}]` for the other two
-- [x] Gemini result = main (`humanized`, `engine`); omit engines that fail the guard
-- [x] Fallback when Gemini is unavailable: best of the other two becomes main
-- [x] Run the three engines in parallel; respect Gemini/humanize slot limits
-- [x] Update `service.py` response
-- [x] Update `API_FLOW.md` (new key)
-- [x] Add/adjust tests (fake Gemini)
-- [x] Frontend: main result shown, other two as selectable options (colleague allowed FE edits for this change)
+## Before merging to main
+- [ ] Supervisor approves the "Advanced" (Gemini) / "Standard" (Humarin, T5) tags (`rewrite-box.tsx`, `groupTag`; delete it if not approved)
+- [ ] Ask Rana which login database the demo uses (repo again holds a DB password in `nodeBackend/.env.example`)
 
-## 2. Enhance the Gemini prompt
-- [x] Review the current prompt against the research docs (example citations in the prompt, sentence splitting, no settings)
-- [x] Write one new prompt in `pipeline/gemini_prompt.py` (one call, 3 rewrites; no example facts/citations; keep each citation once; no added details; change structure; keep the paper's voice)
-- [x] Remove the second-pass prompt/call (one prompt, one call)
-- [x] Verify Gemini options against the installed SDK (google-genai 2.30.0): `system_instruction`, `temperature`, `thinking_config.thinking_level`
-- [x] Set system instruction, temperature 1.0, thinking level low (env: `GEMINI_TEMPERATURE`, `GEMINI_THINK`)
-- [x] Guard: reject a repeated or added citation
-- [x] Tests for the prompt, the call settings and the guard
+## Waiting for your decision
+- [ ] Original score: don't re-score the original sentence alone, use the document's score. Needs one new optional **request** field `original_score` + the page sends it (3 calls). API is locked: your OK first
+- [ ] Page: when the backend returns the original unchanged (`engine: "original"`), show no "Recommended" copy
+- [ ] Rule-based = a local engine like Humarin / T5: shown only at 30% or below, ordered with them, never "Recommended" by default
 
-## 2b. Supervisor fixes (2026-10-26)
-- [x] Log the time of every run (total + per engine)
-- [x] No model names on the page: "Recommended", "Option 2", "Option 3" (rule-based, when it wins, is also "Recommended")
-- [x] Original sentence on top in the rewrite box, struck through with a spiky line, removed words in red; new words in green in each rewrite
-- [x] Humarin, T5 and rule-based run only for the default style (academic); other styles: Gemini only, sentence kept with a neutral reason if Gemini gives nothing
-- [x] Guard: "raises concerns/questions/issues" no longer counts as an upward word (it rejected good rewrites as "claim reversed")
-- [x] A failed run is no longer shown as "Humanized" in the page (the sentence can be tried again)
+## Prompt
+- [ ] "need" became "must" (#21); "make vulnerable" became "weaken" (#73)
+- [ ] Lowest score can pick the less faithful rewrite (#73)
+- [ ] List and definition sentences still 100% (#25, #30, #31)
+- [ ] Citation without a year ("Hao et al. examined…") not recognised as a citation
+- [ ] Prompt + retry prompt checked on 10 sentences only (6 of 10 reached 30%)
 
-## 2c. Fixes from the 2026-10-27 pipeline test
-- [x] Prompt: add nothing from the surrounding sentences (no linking words or claims that point to them)
-- [x] Prompt: keep every qualifier at the same strength (hedges, amounts, example markers, limits)
-- [x] Prompt: restructure lists and definitions harder; 5 rewrites per call instead of 3 (all calls, same single call)
-- [x] Prompt: full description for each of the 6 styles (register, sentence length, vocabulary, voice)
-- [x] Gemini reply that stopped early (token limit, safety) is discarded
-- [x] Guard: reject a rewrite that does not end like a sentence
-- [x] PDF reader: skip back-matter sections (conflict of interest, funding, acknowledgements, data availability, ...)
-- [x] Log tokens and cost of every Gemini call
-- [x] Re-test the latest prompt: 36 calls, $0.0524 — see `GEMINI_PROMPT_V3_TEST_2026-10-27.md`
-
-## 2d. Prompt/guard fixes from the final-prompt check, and old .doc files
-- [x] Academic style: plain, common words (the formal word setting made rewrites score higher)
-- [x] Narrative style: join the parts of the target sentence only; no new clause
-- [x] Guard: reject a rewrite that adds a stock phrase (consequently, furthermore, thus, ...)
-- [x] Guard: a prefix negation (unfamiliar, non-users) can stand in for "not"
-- [x] Old .doc (Word 97-2003): not supported (supervisor decision 2026-10-27); refused with a clear message; LibreOffice uninstalled from this PC
-
-## 2e. Supervisor updates (2026-10-27)
-- [x] Show Gemini's two best rewrites: the best is the main result, the second is the first option (`alternatives`, engine "gemini"); no frontend change needed, the page already lists the options
-- [x] Stronger Gemini prompt, research-based: verbs over nouns made from verbs; machine-text style words and patterns banned (guard enforces the words); varied rhythm; self-check of every rewrite before answering
-
-## 2f. Issues in the current prompt (found in the 2026-10-27 test, to fix on 2026-10-28)
-The latest prompt doubled evasion (Academic below 40%: 10 → 22 of 26) but its bolder rewrites changed meaning more seriously. See `GEMINI_PROMPT_V3_TEST_2026-10-27.md`.
-- [ ] "We" added where the original has no first person (#21 twice, #23, #26): guard should reject an added "we / our / us / I"
-- [ ] A comparison turned into a cause (#118: "using ChatGPT **made** students more willing"): meaning rule "never turn a comparison or a link into a cause"
-- [ ] The relation between ideas distorted (#75): same rule, plus "keep how the parts relate"
-- [ ] Who does what changed (Business #20: "Instructors will examine …"): meaning rule "keep who does what"
-- [ ] A new subject added (#25: "Educators must …") and "Such" pointing to the context (#72 option 2)
-- [ ] Creative adds a claim (#22: "Doubts multiply fast."): Creative may add a short sentence only to restate part of the target
-- [ ] "Ethical and social" qualifiers dropped (#75, both rewrites)
-- [ ] "The need" strengthened to "must" (#21)
-- [ ] Two list sentences still score 100% in all 5 rewrites (#30, #32)
-- [ ] **To check (reported 2026-10-27, paper `paperwithError_01`):** "Hao et al. examined the effect of restrictions …" — a citation written as "Name et al." with **no year** is not recognised as a citation. The check only knows `[12]` and `(…, 2023)`/`Name (2023)`, so this sentence is treated as uncited: it goes to Humarin and T5 too, and the guard does not check that "Hao et al." is kept.
-
-## Backend (2026-10-27, before the demo)
-- [x] One Gemini retry when none of the first five rewrites passes (asks for bolder changes; a failed call is not retried; at most two calls per click)
-- [ ] **After the demo, discuss with the supervisor:** faster upload scoring — sort blocks by length before batching (measured 20.4 s → 13.8 s on the 7-page paper, identical scores) and use all 8 CPU cores (→ 12.7 s)
-
-## FE (frontend changes — by default the colleague's; done here only when asked)
-- [x] When a humanize attempt fails (no rewrite kept, `failed: true`), no popup; the sentence stays as it is. "Humanize all" counts only real rewrites and shows nothing if none was rewritten (`d917b5e`)
-- [x] `.doc` removed from the upload file picker and drag-and-drop check (`components/dashboard/file-upload-card.tsx`)
-- [x] Labels: Gemini's rewrites are "Recommended 1" and "Recommended 2"; Humarin and T5 are "Option 1" and "Option 2" (`components/dashboard/rewrite-box.tsx`)
-
-## Questions for the supervisor (after the demo)
-- [ ] Faster upload scoring (see "Backend" above): sort blocks by length and use all CPU cores, same scores, about 38% faster.
-
-## 2h. Prompt rebuilt to remove the known mistakes (2026-10-28, no new guard checks)
-Decision (supervisor / user): do not add more checks to the guard (each one rejects more rewrites and leaves the page with less to show); fix the mistakes in the prompt instead.
-- [x] Hard rules moved to the system instruction (top), few and precise: same doer and receiver; relations stay (a comparison never becomes a cause); strength stays ("need" never "must"); every qualifier and descriptive word kept; no first person, new subject or new claim; nothing from the surrounding text; numbers, names, terms, citations exact
-- [x] 8 short writing rules instead of 13; capitals only on "HARD RULES" and "DO NOT"
-- [x] Self-check in the Gemini 3 guide's style: compare with the original (who does what, relations, strength, qualifiers, "we"), then "person or template?"
-- [x] Creative: the short sentence may only restate part of the target; Technical: cause only where the target states it
-- [ ] **Not measured on real output.** Offline only the text and the tests are checked. Open issues 1–8 of the 2026-10-28 list are addressed by wording, not proven
-- [ ] Citation without a year ("Hao et al. examined…", "Guan and Zhu built…") is not recognised as a citation, so the sentence also goes to Humarin and T5 (routing, rejects nothing)
-
-## 2i. Retry prompt (2026-10-28)
-- [x] The one retry now shows Gemini its earlier attempts with their scores and, in plain words, why other rewrites were rejected; it asks for clearly different rewrites (DO NOT reuse structure, opening or any 3-word phrase) and gives concrete moves (reverse the clauses, passive/active, different start, split with the shorter part first)
-- [x] Not copying the earlier attempts is asked for in the prompt only: no filter in the code (decision)
-- [x] No extra "copy check" sentence in the self-check (decision: not needed)
-- [ ] Not measured on real output; a prompt can reduce copying but cannot guarantee it
-
-## 2j. Small test of the latest prompt (2026-10-28): 10 sentences, 16 calls, $0.0161 — see `GEMINI_SMALL_TEST_2026-10-28.md`
-- [x] Run done. Recommended at 30% or below: 6 of 10 (previous prompt with 5 rewrites per call: 8 of 10); 6 of 10 sentences needed the retry; a second Gemini result shown for 2
-- [ ] Meaning: "need" still became "must" (#21) and "make vulnerable" became "weaken" (#73) despite the hard rule; the other known mistakes (comparison to cause, dropped "ethical and social", doer changed) did not appear in what was shown
-- [ ] Ranking by lowest score can pick the less faithful rewrite (#73)
-- [ ] Rule-based fallback shows a near-copy as Recommended at 94% (#31); it is not filtered by the 30% rule
-- [ ] A sentence that is red in the document can score human alone (#20 9%, #74 11%, #30 0%): rewrites cannot "beat" it; for #30 the original comes back with `failed: false`, which the page shows as a "Recommended" copy of the original at 0%
-- [ ] Asking Gemini for 2 rewrites instead of 5: 6 of 10 vs 8 of 10 reached 30% on these sentences (n = 10, different samples); to raise with the supervisor
-
-## 2g. Supervisor changes (2026-10-28)
-- [x] Par score 30% instead of 40% (backend `PAR_SCORE` in `config/settings.py`; frontend `lib/par.ts` used for colours, counts and labels)
-- [x] Gemini asked for only 2 rewrites per call; best always shown if it beats the original, second only at 30% or below; one retry when none reaches 30%, results of both calls pooled
-- [x] Humarin and T5 shown only at 30% or below
-- [x] A Humarin / T5 rewrite at 30% or below goes first when none of Gemini's does; Gemini's best below it
-- [x] Labels by rank: "Recommended", "Option 1", "Option 2", "Option 3" (`rewrite-box.tsx`)
-- [x] Tags "Advanced" (Gemini) / "Standard" (others) added next to each label
-- [ ] **BEFORE MERGING TO main — get the supervisor's approval:** each result now has a small neutral tag, "Advanced" (Gemini) or "Standard" (Humarin, T5, rule-based), next to its "Recommended" / "Option n" label (`components/dashboard/rewrite-box.tsx`, function `groupTag`, commit after `26378a5`). If not approved, delete `groupTag` and the `<span>` that shows it.
-
-## 3. Branch
-- [x] Create `abdullah/humanizer-new-engine` from main
+## Ask the supervisor (after the demo)
+- [ ] Gemini asked for 2 rewrites instead of 5: 6 vs 8 of 10 reached 30% on the same sentences
+- [ ] Faster upload scoring: sort blocks by length + all CPU cores (about 38% faster, same scores)
