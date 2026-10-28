@@ -55,7 +55,7 @@ Request: `{"text": "..."}`
   }
 }
 ```
-`label` is `"ai"` when `score_pct` is 40 or more. Empty text returns `{"error": "Text cannot be empty"}` (HTTP 400).
+`label` is `"ai"` when `score_pct` is 30 or more (the par score; it was 40 until 2026-10-28). Empty text returns `{"error": "Text cannot be empty"}` (HTTP 400).
 
 ### POST /api/detect
 Request: file in form field `file` (pdf, docx, doc, txt).
@@ -132,6 +132,14 @@ Styles: `academic` (default), `business`, `creative`, `casual`, `narrative`, `te
 `engine` is one of `humarin`, `t5`, `gemini`, `rule_based`, `original`. `original` means no rewrite beat the original, and `failed` is then `true` with a `reason`.
 
 **`alternatives` (added 2026-10-26, additive: no existing key changed).** Every click runs Gemini, Humarin and T5. The main result (`humanized`, `engine`, `new_score`, ...) is Gemini's whenever it passes the fact guard and scores below the original; otherwise it is the lowest-scoring of the other two. `alternatives` lists the other rewrites that also passed the guard and scored below the original, in this order: **Gemini's second-best rewrite** (`engine: "gemini"`, added 2026-10-27 — the page shows Gemini's two best rewrites), then `humarin`, then `t5` (at most one entry each). The key and the entry fields did not change; only a second `"gemini"` value can now appear. It is `[]` when there are none (also when `failed` is `true`). `rule_based` runs only when nothing else is good enough, and never appears in `alternatives`. Each entry has `engine`, `humanized`, `new_score`, `improvement`. Present both inside `data` and at the top level.
+
+**Which rewrites are shown, and in what order (2026-10-28, values only: no key changed).** The par score is **30%** (it was 40%): a score below it counts as human. Gemini is asked for 2 rewrites per call.
+- Gemini's best rewrite is shown whenever it beats the original, even above 30%; its second rewrite only at 30% or below.
+- Humarin's and T5's rewrites are shown only at 30% or below (and below the original).
+- If none of Gemini's rewrites is at 30% or below, Gemini is called once more (one retry, at most two calls per click) and the results of both calls compete.
+- Order: Gemini's rewrites first while one of them is at 30% or below, then Humarin / T5 (lower score first). If none of Gemini's is at 30% or below but a Humarin / T5 one is, **that one is first** (it becomes `humanized` / `engine`) and Gemini's best follows it. So `engine` of the main result can be `humarin` or `t5` even when Gemini answered, and `alternatives` is in display order.
+- The page names them by rank, not by engine: the first is "Recommended", the others "Option 1", "Option 2", "Option 3".
+- `label` of `/api/detect-text` is `"ai"` from `score_pct` 30 (it was 40).
 
 **Styles and citations (2026-10-26):** only Gemini applies a style and only Gemini keeps a citation reliably, so Humarin, T5 and the rule-based engine run for the default style (`academic`) and a sentence **without** a citation only; a sentence with a citation always goes to Gemini alone (`alternatives` is `[]`, and if Gemini gives nothing usable it comes back unchanged with `failed: true` and a reason that does not name a model). For any other style `alternatives` is also always `[]`. The page shows the rewrites as "Recommended" (the main result), "Option 2" and "Option 3"; `engine` is not shown to users.
 

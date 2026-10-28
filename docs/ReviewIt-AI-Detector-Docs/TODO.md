@@ -81,5 +81,14 @@ The latest prompt doubled evasion (Academic below 40%: 10 → 22 of 26) but its 
 - [ ] When Humarin or T5 scores much better than Gemini (example: Gemini 98% and 100% AI risk, Humarin 2%, T5 1%), which should be the main result? Today Gemini's best rewrite is always "Recommended 1" when it passes the guard and scores below the original, even if a local engine scores far lower. Options: keep Gemini first always; or put a local rewrite first when it scores lower by a clear margin (Gemini still shown).
 - [ ] Faster upload scoring (see "Backend" above): sort blocks by length and use all CPU cores, same scores, about 38% faster.
 
+## 2g. Supervisor changes (2026-10-28)
+- [x] Par score 30% instead of 40% (backend `PAR_SCORE` in `config/settings.py`; frontend `lib/par.ts` used for colours, counts and labels)
+- [x] Gemini asked for only 2 rewrites per call; best always shown if it beats the original, second only at 30% or below; one retry when none reaches 30%, results of both calls pooled
+- [x] Humarin and T5 shown only at 30% or below
+- [x] A Humarin / T5 rewrite at 30% or below goes first when none of Gemini's does; Gemini's best below it
+- [x] Labels by rank: "Recommended", "Option 1", "Option 2", "Option 3" (`rewrite-box.tsx`)
+- [ ] **Colleague / supervisor approval before the merge:** small neutral tags "Advanced" (Gemini) and "Standard" (Humarin, T5) next to each result, to tell the two groups apart without model names. To be added in the colleague's frontend; the `engine` value of each result is already in the response (`engine`, `alternatives[].engine`).
+- [ ] Ask the supervisor: Gemini first whenever it has a result at 30% or below, even if Humarin / T5 score lower (today's rule)? And: Gemini asked for 2 rewrites instead of 5 may lower evasion (not measured)
+
 ## 3. Branch
 - [x] Create `abdullah/humanizer-new-engine` from main
