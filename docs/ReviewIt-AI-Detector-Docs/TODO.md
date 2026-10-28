@@ -79,6 +79,15 @@ The latest prompt doubled evasion (Academic below 40%: 10 → 22 of 26) but its 
 ## Questions for the supervisor (after the demo)
 - [ ] Faster upload scoring (see "Backend" above): sort blocks by length and use all CPU cores, same scores, about 38% faster.
 
+## 2h. Prompt rebuilt to remove the known mistakes (2026-10-28, no new guard checks)
+Decision (supervisor / user): do not add more checks to the guard (each one rejects more rewrites and leaves the page with less to show); fix the mistakes in the prompt instead.
+- [x] Hard rules moved to the system instruction (top), few and precise: same doer and receiver; relations stay (a comparison never becomes a cause); strength stays ("need" never "must"); every qualifier and descriptive word kept; no first person, new subject or new claim; nothing from the surrounding text; numbers, names, terms, citations exact
+- [x] 8 short writing rules instead of 13; capitals only on "HARD RULES" and "DO NOT"
+- [x] Self-check in the Gemini 3 guide's style: compare with the original (who does what, relations, strength, qualifiers, "we"), then "person or template?"
+- [x] Creative: the short sentence may only restate part of the target; Technical: cause only where the target states it
+- [ ] **Not measured on real output.** Offline only the text and the tests are checked. Open issues 1–8 of the 2026-10-28 list are addressed by wording, not proven
+- [ ] Citation without a year ("Hao et al. examined…", "Guan and Zhu built…") is not recognised as a citation, so the sentence also goes to Humarin and T5 (routing, rejects nothing)
+
 ## 2g. Supervisor changes (2026-10-28)
 - [x] Par score 30% instead of 40% (backend `PAR_SCORE` in `config/settings.py`; frontend `lib/par.ts` used for colours, counts and labels)
 - [x] Gemini asked for only 2 rewrites per call; best always shown if it beats the original, second only at 30% or below; one retry when none reaches 30%, results of both calls pooled
