@@ -87,7 +87,8 @@ The latest prompt doubled evasion (Academic below 40%: 10 → 22 of 26) but its 
 - [x] Humarin and T5 shown only at 30% or below
 - [x] A Humarin / T5 rewrite at 30% or below goes first when none of Gemini's does; Gemini's best below it
 - [x] Labels by rank: "Recommended", "Option 1", "Option 2", "Option 3" (`rewrite-box.tsx`)
-- [ ] **Colleague / supervisor approval before the merge:** small neutral tags "Advanced" (Gemini) and "Standard" (Humarin, T5) next to each result, to tell the two groups apart without model names. To be added in the colleague's frontend; the `engine` value of each result is already in the response (`engine`, `alternatives[].engine`).
+- [x] Tags "Advanced" (Gemini) / "Standard" (others) added next to each label
+- [ ] **BEFORE MERGING TO main — get the supervisor's approval:** each result now has a small neutral tag, "Advanced" (Gemini) or "Standard" (Humarin, T5, rule-based), next to its "Recommended" / "Option n" label (`components/dashboard/rewrite-box.tsx`, function `groupTag`, commit after `26378a5`). If not approved, delete `groupTag` and the `<span>` that shows it.
 - [ ] Ask the supervisor: Gemini first whenever it has a result at 30% or below, even if Humarin / T5 score lower (today's rule)? And: Gemini asked for 2 rewrites instead of 5 may lower evasion (not measured)
 
 ## 3. Branch
