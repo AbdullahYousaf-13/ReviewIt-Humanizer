@@ -88,6 +88,12 @@ Decision (supervisor / user): do not add more checks to the guard (each one reje
 - [ ] **Not measured on real output.** Offline only the text and the tests are checked. Open issues 1–8 of the 2026-10-28 list are addressed by wording, not proven
 - [ ] Citation without a year ("Hao et al. examined…", "Guan and Zhu built…") is not recognised as a citation, so the sentence also goes to Humarin and T5 (routing, rejects nothing)
 
+## 2i. Retry prompt (2026-10-28)
+- [x] The one retry now shows Gemini its earlier attempts with their scores and, in plain words, why other rewrites were rejected; it asks for clearly different rewrites (DO NOT reuse structure, opening or any 3-word phrase) and gives concrete moves (reverse the clauses, passive/active, different start, split with the shorter part first)
+- [x] Not copying the earlier attempts is asked for in the prompt only: no filter in the code (decision)
+- [x] No extra "copy check" sentence in the self-check (decision: not needed)
+- [ ] Not measured on real output; a prompt can reduce copying but cannot guarantee it
+
 ## 2g. Supervisor changes (2026-10-28)
 - [x] Par score 30% instead of 40% (backend `PAR_SCORE` in `config/settings.py`; frontend `lib/par.ts` used for colours, counts and labels)
 - [x] Gemini asked for only 2 rewrites per call; best always shown if it beats the original, second only at 30% or below; one retry when none reaches 30%, results of both calls pooled
