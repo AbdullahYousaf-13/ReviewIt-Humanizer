@@ -75,10 +75,8 @@ The latest prompt doubled evasion (Academic below 40%: 10 → 22 of 26) but its 
 - [x] When a humanize attempt fails (no rewrite kept, `failed: true`), no popup; the sentence stays as it is. "Humanize all" counts only real rewrites and shows nothing if none was rewritten (`d917b5e`)
 - [x] `.doc` removed from the upload file picker and drag-and-drop check (`components/dashboard/file-upload-card.tsx`)
 - [x] Labels: Gemini's rewrites are "Recommended 1" and "Recommended 2"; Humarin and T5 are "Option 1" and "Option 2" (`components/dashboard/rewrite-box.tsx`)
-- [ ] The landing page still says "PDF, DOCX, DOC, and TXT" (`components/landing/faq-section.tsx`, `features-section.tsx`): not changed
 
 ## Questions for the supervisor (after the demo)
-- [ ] When Humarin or T5 scores much better than Gemini (example: Gemini 98% and 100% AI risk, Humarin 2%, T5 1%), which should be the main result? Today Gemini's best rewrite is always "Recommended 1" when it passes the guard and scores below the original, even if a local engine scores far lower. Options: keep Gemini first always; or put a local rewrite first when it scores lower by a clear margin (Gemini still shown).
 - [ ] Faster upload scoring (see "Backend" above): sort blocks by length and use all CPU cores, same scores, about 38% faster.
 
 ## 2g. Supervisor changes (2026-10-28)
@@ -89,7 +87,6 @@ The latest prompt doubled evasion (Academic below 40%: 10 → 22 of 26) but its 
 - [x] Labels by rank: "Recommended", "Option 1", "Option 2", "Option 3" (`rewrite-box.tsx`)
 - [x] Tags "Advanced" (Gemini) / "Standard" (others) added next to each label
 - [ ] **BEFORE MERGING TO main — get the supervisor's approval:** each result now has a small neutral tag, "Advanced" (Gemini) or "Standard" (Humarin, T5, rule-based), next to its "Recommended" / "Option n" label (`components/dashboard/rewrite-box.tsx`, function `groupTag`, commit after `26378a5`). If not approved, delete `groupTag` and the `<span>` that shows it.
-- [ ] Ask the supervisor: Gemini first whenever it has a result at 30% or below, even if Humarin / T5 score lower (today's rule)? And: Gemini asked for 2 rewrites instead of 5 may lower evasion (not measured)
 
 ## 3. Branch
 - [x] Create `abdullah/humanizer-new-engine` from main
