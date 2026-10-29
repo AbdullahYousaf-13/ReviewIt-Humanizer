@@ -1,215 +1,159 @@
 # What happens when someone uses the site — start to finish
 
-Last updated 2026-10-26. This describes the code as it is on branch `abdullah/humanizer-dev` (the same as `main` plus later work). The frontend is the new one built by a colleague (Next.js 13, shadcn/ui, Zustand). The exact JSON of every call is in `API_FLOW.md`, which is locked: keys, routes and request fields do not change.
+Last updated 2026-10-29. This describes the code on branch `abdullah/humanizer-new-engine`. The frontend is the colleague's Next.js app (shadcn/ui, Zustand); a few files in it were changed on this branch (listed in `PROJECT_WALKTHROUGH.md`). The JSON of every call is in `API_FLOW.md`: keys, routes and request fields are locked, only values may change.
 
 ## The parts
 
-- **The page** — the website you see. Code in `frontend/`. Opens at `http://localhost:3000`. It is the colleague's frontend; this project does not change it.
-- **The server** — does the thinking. Code in `backend/`. Runs at `http://127.0.0.1:5000` (Flask, `backend/app.py`).
-- **The detector** — a model (`followsci/bert-ai-text-detector`) that gives a piece of text a score from 0 (written by a human) to 1 (written by AI).
-- **The document reader** — turns an uploaded file or pasted text into paragraphs and headings and throws away everything that is not body text (title page, references, tables…).
-- **Four rewriters** — Humarin, T5, Gemini and a rule-based one. They try to rewrite a sentence so the detector scores it lower.
-- **The guard** — checks every rewrite before it can be used (citations, numbers, negation, direction, broken punctuation).
-
-The page and the server talk by sending small messages called **API calls**. Each has a web address, like `/api/detect-text`.
+- **The page** — the website. Code in `frontend/`, opens at `http://localhost:3000`.
+- **The server** — Flask, `backend/app.py`, at `http://127.0.0.1:5000`. Sign-up and login use a separate Node service (`nodeBackend/`, default `http://localhost:5001`) that is not part of this server.
+- **The detector** — `followsci/bert-ai-text-detector`, a model that scores text from 0 (human) to 1 (AI).
+- **The document reader** — turns an upload or pasted text into paragraphs and headings and drops everything that is not body text.
+- **Four rewriters** — Gemini, Humarin, T5 and a rule-based one.
+- **The guard** — checks every rewrite before it can be scored or shown.
 
 ---
 
-## The whole journey in 14 steps
+## The journey in 12 steps
 
-1. You open the site and go to the **Dashboard**.
-2. You paste text, or upload a PDF, Word or text file.
-3. You click **Detect**.
-4. The server reads the text as paragraphs and headings, cuts it into sentences and removes noise (uploads only).
-5. The detector scores the sentences, in groups of four.
-6. The page shows your document in paragraphs. Sentences are marked high AI (red), mixed (amber) or human.
-7. You click a sentence and choose a style.
-8. The page sends that sentence, with the sentences around it, to the server.
-9. The server tries the rewriters in an order that depends on the style and on whether the sentence has a citation.
-10. Every rewrite goes through the guard and is scored by the detector. The lowest safe score wins.
-11. If nothing safe beats the original, the original is kept and the answer says so.
-12. The page swaps the sentence, shows which rewriter won and the new score, and lets you revert.
-13. You can switch to the **Compare** view (original and rewrite side by side).
-14. You can click **Humanize all**, which does steps 7 to 12 for every high-AI sentence, one after the other.
+1. You open the Dashboard, paste text or upload a PDF, Word or text file, and click Detect.
+2. The server reads the text as paragraphs and headings, cuts it into sentences and scores them in blocks of 4.
+3. The page shows the document in paragraphs. Sentences are red (high AI), amber (mixed), or plain (human).
+4. You click a sentence, choose a style and click **Humanize This Sentence**.
+5. The page sends the sentence, its neighbours and its first-scan score to the server.
+6. The server decides which rewriters run (table in Scene 6).
+7. Gemini writes 5 rewrites in one call (JSON). If none reaches 30% or below, it is asked once more for 2 rewrites.
+8. Humarin, T5 and rule-based run next to it when the sentence has no citation and the style is Academic.
+9. Every rewrite goes through the guard, then is scored by the detector.
+10. The page shows the best one as **Recommended** and the others as **Options**. The sentence turns green.
+11. You can pick another option, or revert to the original.
+12. **Humanize All** repeats steps 4–10 for every flagged sentence, one after the other.
 
-The examples below use this text:
+The examples use this text:
 
 > Artificial intelligence has fundamentally transformed the landscape of modern education. It is important to note that these technologies offer numerous benefits for both students and educators. Furthermore, the integration of machine learning algorithms facilitates personalized learning experiences. Moreover, it is crucial to consider the ethical implications of such systems. My cat knocked a glass off the table yesterday and I laughed way too hard about it. We went to the lake after lunch because the weather finally cleared up.
 
 ---
 
-## Scene 1 — You open the site
+## Scene 1 — You open the Dashboard
 
-You type `http://localhost:3000`. `frontend/app/page.tsx` shows the landing page. The **Dashboard** is `frontend/app/dashboard/page.tsx` (with `layout.tsx`, a sidebar and a top bar).
-
-The top bar (`components/dashboard/topbar.tsx`) calls `GET /api/health` every 8 seconds. It shows whether the backend is online and, while `models_ready` is `false`, that the models are still loading (the server loads the detector, Humarin and T5 in the background when it starts, about 30 seconds on a laptop CPU). The address of the backend is `NEXT_PUBLIC_API_BASE_URL`, default `http://127.0.0.1:5000` (`frontend/lib/api.ts`).
-
-Other pages exist in the frontend (Humanizer studio, History, Plagiarism, Settings). The History and Settings data live only in the browser (Zustand store, lost on reload), and the Plagiarism page and the credit counter use sample data; none of that is connected to the backend.
+`frontend/app/dashboard/page.tsx` is the page. The top bar (`components/dashboard/topbar.tsx`) calls `GET /api/health` every 8 seconds: it shows whether the backend is online and, while `models_ready` is `false`, that the models are loading (the server loads the detector, Humarin and T5 in the background when it starts). The backend address is `NEXT_PUBLIC_API_BASE_URL` (default `http://127.0.0.1:5000`, `frontend/lib/api.ts`). Humanize and Humanize All ask you to sign in first (the colleague's login).
 
 ---
 
-## Scene 2 — You paste text or upload a file
-
-The Dashboard has a text box (paste) and a file box (`file-upload-card.tsx`). Detect is sent from `handleDetect()` (paste) or `handleFileProcess()` (upload) in `app/dashboard/page.tsx`.
-
----
-
-## Scene 3 — Detect a pasted text
+## Scene 2 — Detect pasted text
 
 ```
-POST http://127.0.0.1:5000/api/detect-text
+POST /api/detect-text
 { "text": "Artificial intelligence has fundamentally transformed ..." }
 ```
 
-What the server does (`backend/aidetector/service.py`, `detect_text_service()`):
+On the server (`service.py`, `detect_text_service()`):
+1. `blocks_from_plain_text()` makes blocks (a blank line is a paragraph break). `build_document(..., uploaded=False)` marks headings; pasted text is never judged as noise.
+2. `detect_document()` (`pipeline/detector.py`) cuts every paragraph into sentences (`pipeline/sentences.py`; pieces under 6 words are left out), puts every **4 consecutive sentences** in a block and scores the block. **Every sentence gets its block's score.** A sentence is labelled `ai` at **0.75 or more**.
+3. The service adds a summary. The overall `label` is `ai` at 30% or more (the "par score", `PAR_SCORE` = 0.30).
 
-1. `blocks_from_plain_text()` turns the text into blocks (blank lines are paragraph breaks).
-2. `build_document(..., uploaded=False)` (`pipeline/structure.py`) marks each block as a heading or body text. Pasted text is the person's own, so nothing is dropped as noise: only headings and a trailing reference list are interpreted.
-3. `detect_document()` (`pipeline/detector.py`):
-   - cuts each paragraph into sentences (`pipeline/sentences.py`: NLTK Punkt plus rules for `et al.`, `Fig.`, `e.g.`, initials and citation-only pieces; pieces under 6 words are left out),
-   - puts every 4 consecutive sentences in a **block** and gives the block a score from 0 to 1,
-   - every sentence gets the score of its block, and the label `"ai"` when that score is **0.75 or more** (`DETECTION_THRESHOLD`), otherwise `"human"`,
-   - every sentence carries `para` (its paragraph number); headings are returned separately with the paragraph they stand before.
-4. The service adds a summary (counts, average score). The overall `label` is `"ai"` when the average is 40% or more.
-
-What comes back (shortened, example values):
-
-```json
-{ "success": true, "score": 0.667, "score_pct": 67, "label": "ai",
-  "sentences": [
-    { "text": "Artificial intelligence has fundamentally ...", "label": "ai",    "score": 1.0,    "para": 0 },
-    { "text": "It is important to note that ...",              "label": "ai",    "score": 1.0,    "para": 0 },
-    { "text": "My cat knocked a glass off the table ...",      "label": "human", "score": 0.0001, "para": 0 } ],
-  "headings": [],
-  "summary": { "total_sentences": 6, "ai_sentences": 4, "score": 67 } }
-```
-
-Sentences 1 to 4 share one score (they are one block), and sentences 5 and 6 share another.
+Each sentence in the answer has `text`, `label`, `score` and `para` (its paragraph number); headings come in a separate list.
 
 ---
 
-## Scene 4 — Detect an uploaded file
+## Scene 3 — Detect an uploaded file
 
-The page accepts `.pdf`, `.docx`, `.doc` and `.txt`.
+The page accepts `.pdf`, `.docx` and `.txt` (old `.doc` files are rejected with a plain message).
 
-1. `POST /api/detect` sends the file as a form upload. `create_detection_job()` checks the extension, saves the file as `backend/uploads/aidetector_uploads/<job id><ext>` (the client's file name is never used) and starts a background thread. It answers at once: `{ "job_id": "...", "status": "processing", "filename": "..." }`.
-2. The page asks every 1.5 seconds: `GET /api/status/<job id>` → `processing`, `done` or `error` (with `elapsed_seconds`, `error` and `error_code`).
-3. Meanwhile `_process_file_background()` runs:
-   - **Read:** `extract_blocks_with_notes()` (`pipeline/block_extractor.py`) reads the file by layout: lines are merged into paragraphs from line spacing, indents, list markers and style changes. It removes running headers and page numbers, footnotes and footnote marks, tables (with and without borders), figures and their text, formula lines and rotated text. A paragraph that continues on the next page is joined. The uploaded file is **deleted right after it was read**.
-   - **Unreadable files:** a fully scanned PDF, a password-protected PDF and the "protected document" placeholder stop the job with a plain message and an `error_code` (`scanned` or `protected`). A PDF with some scanned pages is read, and a note says how many pages were skipped. There is no OCR, by decision.
-   - **Sort:** `build_document(..., uploaded=True)` (`pipeline/structure.py`) classifies every block: title page and cover metadata, front matter before the abstract, reference lists (cut at their heading or where the text looks like references), captions, table-of-contents lines and label-like fragments are dropped. Headings are kept as headings. A heading that sits directly above its paragraph or runs on in the same line is split off.
-   - If fewer than 10 words are left, the job ends with the error "No usable text could be extracted…".
-   - Only the first **20,000 words** are kept.
-   - `detect_document()` scores it exactly as in Scene 3.
-4. When the status is `done`, the page asks `GET /api/result/<job id>`: `sentences` (with `para`), `headings`, `notes`, `summary`, `filename`. Then the page asks the server to delete the job: `DELETE /api/status/<job id>`.
-
-If a job or file is left behind (closed tab, restart), `cleanup_expired()` removes it: at start, on every upload and every 10 minutes (`RESULT_TTL` 1 hour, `CLEANUP_INTERVAL` 10 minutes).
+1. `POST /api/detect` sends the file. The server saves it as `backend/uploads/aidetector_uploads/<job id><ext>`, starts a background thread and answers `{ job_id, status: "processing" }`.
+2. The page asks `GET /api/status/<job id>` every 1.5 s until it is `done` or `error`.
+3. The background job:
+   - **Read:** `extract_blocks_with_notes()` (`pipeline/block_extractor.py`) rebuilds paragraphs from the layout. It removes running headers, page numbers, footnotes, tables, figures, formulas and captions, and joins a paragraph that continues on the next page. The file is **deleted right after it is read**.
+   - **Unreadable files:** a scanned PDF, a password-protected PDF and the "protected document" placeholder stop with a plain message and an `error_code` (`scanned` or `protected`). A partly scanned PDF is read and a note says how many pages were skipped. There is no OCR.
+   - **Sort:** `build_document(..., uploaded=True)` (`pipeline/structure.py`) decides for every block: heading, body or drop (title page, front matter, reference lists, captions, table-of-contents lines, back matter such as "The author declares no conflict of interest").
+   - Fewer than 10 words left → error. Only the first 20,000 words are kept.
+   - `detect_document()` scores it as in Scene 2.
+4. `GET /api/result/<job id>` returns `sentences`, `headings`, `notes` and `summary`; then the page calls `DELETE /api/status/<job id>`. Expired jobs and orphaned files are removed at start, on every upload and every 10 minutes.
 
 ---
 
-## Scene 5 — The page shows the result
+## Scene 4 — The page shows the result
 
-`initInteractiveSentences()` in `app/dashboard/page.tsx` builds one record per sentence: original text and score, current text and score, paragraph number, `isHumanized`, engine.
+`initInteractiveSentences()` builds one record per sentence (original and current text and score, paragraph, `isHumanized`, `options`).
 
-**You see**
-- A gauge with the overall AI score, and "score before → score now" once something was rewritten. The page computes it as the average of the sentence scores (`currentOverallScore`).
-- The sentence breakdown (`components/dashboard/sentence-breakdown.tsx`): a **Document** view (paragraphs, with headings above them) and a **Checklist** view, filter pills (all, high AI at 0.75 or more, mixed from 0.40 to 0.75, human below 0.40, rewritten) and a highlight toggle.
-- Document notes (an amber box) when the server sent `notes`, for example skipped scanned pages.
-- A **Highlight / Compare** switch (`compare-view.tsx`).
+- **Gauge and bar:** the overall AI score and the AI / Mixed / Human percentages of the document.
+- **Sentences:** a **View** tab (document with paragraphs and headings, plus a Checklist layout) and a **Compare** tab (original and rewrite side by side). Filter pills: all, AI flagged (75% or more), mixed (30% to below 75%), human, rewritten. A **Highlights** switch turns the colours on and off.
+- **Badges:** "High AI Risk", "Mixed Phrasing", "Human Written", "Humanized". The page shows **no per-sentence percentages**.
+- **A humanized sentence counts as human** in the counts, the filters and the ratios (it is shown green), whatever its own score is. In the overall score it counts at no more than 30%.
+- **Notes:** an amber box for document notes (skipped scanned pages).
 
 ---
 
-## Scene 6 — You click a sentence and humanize it
-
-You select a sentence, pick a style (academic, business, creative, casual, narrative or technical) and click Humanize. `handleHumanize()` sends the third call. It includes the current text of the sentence before and after, so the rewrite fits in. Those two are only background and are never changed.
+## Scene 5 — You click a sentence and humanize it
 
 ```
-POST http://127.0.0.1:5000/api/humanize-sentence
-{ "text": "It is important to note that these technologies offer numerous benefits ...",
-  "style": "academic",
-  "context_before": "Artificial intelligence has fundamentally transformed ...",
-  "context_after":  "Furthermore, the integration of machine learning ..." }
+POST /api/humanize-sentence
+{ "text": "...", "style": "academic",
+  "context_before": "...", "context_after": "...", "original_score": 0.98 }
 ```
 
-Note: the page sends the **original** text of the sentence (not an earlier rewrite), so clicking again starts over from the original.
+The page sends the **original** text of the sentence (so a second click starts again from the original), the current text of its neighbours, and `original_score`: the score the first scan gave it (its block score). When it is sent, the server uses it and does not score the original again.
 
 ---
 
-## Scene 7 — The server rewrites the sentence
+## Scene 6 — The server rewrites the sentence
 
-This is the main part of the project (`pipeline/humanizer.py`, `humanize_single_sentence_smart()`).
+`humanize_sentence_service()` returns HTTP 400 for empty text or a style that is not one of the six; an empty style means `academic`. At most `MAX_CONCURRENT_HUMANIZE` (1) requests use the models at once. Then `humanize_single_sentence_smart()` (`pipeline/humanizer.py`):
 
-**In the service** (`humanize_sentence_service()`):
-1. Empty text → HTTP 400.
-2. `resolve_style()`: an empty style means `academic`; a style that is not one of the six returns HTTP 400.
-3. At most `MAX_CONCURRENT_HUMANIZE` requests (default 1) use the models at once; the others wait their turn.
-
-**In the humanizer**
-1. The original sentence is scored alone. This is the score to beat.
-2. The routing decides which rewriters run and in what order:
-
-| Sentence | Order |
+| Sentence | Who runs |
 |---|---|
-| Has a citation (`[12]`, `(Smith et al., 2019)`) | **Gemini only.** The local models drop the marker about half of the time (measured). If Gemini is not available (no key, quota used up, cool-down) or gives nothing safe, the original is kept and the answer says why. The rule-based rewriter is never used for it. |
-| No citation, style `academic` (or empty) | Humarin → T5 → Gemini → rule-based |
-| No citation, any other style | Gemini → Humarin → T5 → rule-based. Only Gemini applies a style (a line in its prompt); Humarin and T5 ignore it. |
+| Has a citation (`[12]`, `(Smith et al., 2019)`, or a name followed by "et al.") | **Gemini only**, because the local models drop the marker about half of the time |
+| No citation, style `academic` | **Gemini, and next to it Humarin → T5 → rule-based** (two threads) |
+| No citation, any other style | **Gemini only**, because only Gemini applies a style |
 
-The first rewriter always runs. The next one runs only if nothing has helped yet or the best score is still **0.40 or more**.
+**Gemini** (`gemini_prompt.py`, model `GEMINI_MODEL`, default `gemini-3.8-flash`): one prompt and a system instruction. The system instruction holds the HARD RULES (same meaning, same strength, add nothing, keep exact); the prompt holds the style, the neighbour sentences, the target and eight short writing rules. The answer is JSON.
+- **First call: 5 rewrites.** If none of them reaches the par score (30% or below), **one retry: 2 more rewrites**. The retry prompt shows Gemini its earlier attempts and why some were rejected, and asks for clearly different ones.
+- A short rate-limit answer is retried twice with a 2 s back-off. A "daily quota used up" answer is not retried: Gemini is skipped for 5 minutes. Calls in flight are limited to `MAX_CONCURRENT_GEMINI` (2). Every call logs its time, tokens and cost.
 
-3. What each rewriter does:
+**Local engines:** Humarin writes 5 versions, T5 up to 3, the rule-based one 1. Each engine keeps its lowest-scoring safe rewrite.
 
-| Rewriter | Where it runs | Versions | Notes |
-|---|---|---|---|
-| Humarin | your computer | 5 | the paraphrase model `humarin/chatgpt_paraphraser_on_T5_base`, beam search |
-| T5 | your computer | up to 3 | `Vamsi/T5_Paraphrase_Paws`; often only 1 or 2 differ from the original |
-| Gemini | Google, over the internet | 3, then 3 simpler ones if the best is still 0.35 or more | model `GEMINI_MODEL` (default `gemini-3.8-flash`), key `GOOGLE_API_KEY_PAID` or `GEMINI_API_KEY`; gets the style and both neighbour sentences; at most `MAX_CONCURRENT_GEMINI` (2) calls at once; a short 429 is retried twice with 2 s back-off; a "daily quota used up" answer is not retried and Gemini is skipped for 5 minutes |
-| Rule-based | your computer | 1 | plain code that swaps words and splits sentences; last resort, only if nothing has helped or the best is still 0.50 or more; never for cited sentences |
+**The guard** (`pipeline/candidate_guard.py`) runs on every rewrite of every engine; a rejected rewrite is never scored or shown. It rejects a rewrite that:
+1. is empty or identical to the original;
+2. loses or changes a citation, a year or a first author, or repeats or adds a citation;
+3. loses or changes a number (a minus sign counts);
+4. adds invented text (`[citation needed]`, "Here is…");
+5. has unbalanced brackets or a punctuation glitch (`,.`, `;.`, `..`, a space inside brackets);
+6. is cut off, or is shorter than 0.4 or longer than 2.2 times the original;
+7. adds or removes a negation;
+8. adds a stock machine phrase (utilize, furthermore, crucial, enhance…);
+9. splits a sentence that has a citation into two or more sentences;
+10. adds a bracketed phrase with new words, or an acronym the original lacks;
+11. adds a cause the original does not state ("caused", "led to", "made … more likely");
+12. flips the direction of the claim (higher↔lower, increase↔decrease…).
 
-4. **Every candidate goes through the guard first** (`pipeline/candidate_guard.py`). A candidate is rejected if it: loses or changes a citation, a year or a number (a minus sign counts); adds a marker like `[citation needed]`; adds or removes a negation; flips a direction (higher/lower, increase/decrease…); has unbalanced brackets, a length outside 0.4 to 2.2 times the original, or a punctuation glitch (`,.`, `;.`, `..`, a space inside brackets). A rejected candidate is never scored and never kept.
-5. Candidates that pass are scored by the detector. The **lowest score wins**, but only if it is lower than the original's score.
-6. The winner is cleaned up (spacing, capital letter, final stop).
-7. If no safe candidate scored lower than the original, the original is returned with `engine: "original"`, `failed: true` and a `reason` (for example "no rewrite scored lower than the original"). If the original was already below 0.40, nothing is reported as failed.
+The same rules for Gemini are also in its prompt, so it avoids them instead of losing a good rewrite. The guard's main job is to catch Humarin, T5 and rule-based, which cannot be instructed.
 
-What comes back (example values; the full shape is in `API_FLOW.md`):
+**What is shown, and in what order** (every rewrite below is already safe and scored):
+- Gemini's best rewrite when it beats the original; Gemini's second best only at 30% or below.
+- A Humarin, T5 or rule-based rewrite only at 30% or below **and** below the original (lower score first).
+- Gemini's rewrites come first while one of them is at 30% or below; if none is but a local one is, the local one goes first.
+- **Last resort:** if nothing beats the original but Gemini has a safe rewrite, its best one is shown anyway, even at 100%, so the page is never left empty.
+- Only when Gemini has no safe rewrite at all (all rejected, or the call failed) does the original come back, with `engine: "original"`, `failed: true` and a reason.
 
-```json
-{ "success": true,
-  "data": { "original": "...", "humanized": "These technologies offer ...",
-            "original_score": 0.9999, "new_score": 0.7703, "improvement": 0.2296,
-            "engine": "t5", "failed": false, "reason": "" },
-  "processing_time": 4.8,
-  "humanized": "These technologies offer ...", "new_score": 0.7703,
-  "original_score": 0.9999, "improvement": 0.2296, "engine": "t5" }
-```
-
-On a CPU-only laptop one click takes a few seconds (measured: 4.9 s warm, 13.4 s on a cold start before the models were preloaded). A slow Gemini call can add more.
-
----
-
-## Scene 8 — The page updates the sentence
-
-`handleHumanize()` in `sentence-breakdown.tsx` replaces the sentence's current text with `humanized`, its current score with `new_score`, stores the engine and shows a toast. If `data.failed` is `true` it shows "Humanization limited" with the `reason`. The sentence has an **engine badge** (`engine-badge.tsx`) and a **Revert to original** button that puts back the original text and score.
-
-The score shown for a sentence is its own single-sentence score. The detector scored the sentence on its own here, but the red/amber/green colour at detection came from the block of 4. That is why a sentence can be red and still have a low single-sentence score. See `OPEN_ISSUES.md`.
+The answer carries `humanized`, `engine`, `new_score`, `original_score`, `improvement`, `failed`, `reason` and `alternatives` (the other rewrites, in display order). A click takes 4–35 s on a CPU laptop (mean 12.7 s in a 26-sentence run): uncited sentences are slower because Humarin and T5 run next to Gemini; cited sentences take 6–10 s.
 
 ---
 
-## Scene 9 — Humanize all, and the Compare view
+## Scene 7 — The page updates the sentence
 
-- **Humanize all** (`handleHumanizeAll()` in the dashboard page) takes every sentence with a score of 0.75 or more that is not yet rewritten and calls `/api/humanize-sentence` for each, one after the other, with the current neighbours as context, always with style `academic`. A failed call is skipped. There is no new backend call for it: it is the same click-to-humanize call repeated.
-- **Compare** (`compare-view.tsx`) shows original and rewrite side by side. It uses what the page already has in memory; no call is made.
-
----
-
-## Scene 10 — The Humanizer studio page
-
-`app/dashboard/humanizer/page.tsx` has a plain text box. It cuts the text into sentences in the browser (a regular expression), calls `/api/humanize-sentence` for each sentence in turn with its neighbours as context, joins the results and shows the average score before and after. The "latency" it shows is a fixed number in the page, not measured.
+`handleHumanize()` (`sentence-breakdown.tsx`) calls `humanizedFields()` (`frontend/lib/humanize.ts`):
+- If the answer holds a rewrite (not `failed`, engine not `original`) the sentence turns green and a **rewrite box** (`rewrite-box.tsx`) opens: the original struck through, then **Recommended** and **Option 1…** with a **Use this** button. No engine names, no percentages.
+- If nothing was kept, the sentence stays as it was and no popup opens.
+- **Revert to original** puts back the original text.
 
 ---
 
-## Scenes that do not call the server
+## Scene 8 — Humanize All, Compare, the studio page
 
-Revert, filters, the view switches, Compare, History and Settings.
+- **Humanize All** (`handleHumanizeAll()` in the dashboard page) takes every sentence at 75% or more that is not humanized yet and calls `/api/humanize-sentence` for each, one after the other, with the selected style. A failed call is skipped. There is no separate backend call for it.
+- **Compare** shows original and rewrite side by side from the page's memory; no call is made.
+- **Humanizer studio** (`app/dashboard/humanizer/page.tsx`) cuts a pasted text into sentences in the browser and calls the same endpoint per sentence.
+- History, Settings, the credit counter and the Plagiarism page use local or sample data.
 
 ---
 
@@ -217,13 +161,14 @@ Revert, filters, the view switches, Compare, History and Settings.
 
 | What happens | What you see |
 |---|---|
-| The backend is not running | The top bar shows it offline; calls fail with an error toast |
-| Gemini is down, out of quota or has no key | Uncited sentences are still rewritten by Humarin or T5; **cited sentences are kept as they are** with a reason (`failed: true`) |
-| No rewrite is safe and better | The original is returned (`engine: "original"`, `failed: true`, with `reason`); the page shows "Humanization limited" |
-| A scanned or protected file | The job ends with `error_code` `scanned` or `protected` and a plain message |
-| A partly scanned PDF | The result has `notes`; the page shows them in an amber box |
-| A document over 20,000 words | Only the first 20,000 words are analysed (the response does not say so) |
-| Two humanize requests at once | The second waits until the first is done (`MAX_CONCURRENT_HUMANIZE`) |
+| The backend is not running | The top bar shows it offline; calls fail with a message |
+| Gemini is down, out of quota or has no key | Uncited sentences in Academic style are still rewritten by Humarin or T5; cited sentences and other styles come back unchanged with a reason |
+| No rewrite beats the original | Gemini's best safe rewrite is still shown (last resort) |
+| Gemini has no safe rewrite either | The sentence stays as it was; the answer has `failed: true` |
+| A scanned or protected file | A plain message (`error_code` `scanned` or `protected`) |
+| A partly scanned PDF | The result has `notes`, shown in an amber box |
+| A document over 20,000 words | Only the first 20,000 words are analysed (the response has no flag for it) |
+| Two humanize requests at once | The second waits for the first |
 
 ---
 
@@ -231,18 +176,21 @@ Revert, filters, the view switches, Compare, History and Settings.
 
 | You want to see… | Open |
 |---|---|
-| The Dashboard: detect, upload, humanize all | `frontend/app/dashboard/page.tsx` |
+| Detect, upload, Humanize All, the panel | `frontend/app/dashboard/page.tsx` |
 | Sentence list, filters, click-to-humanize, revert | `frontend/components/dashboard/sentence-breakdown.tsx` |
+| Recommended and Options box | `frontend/components/dashboard/rewrite-box.tsx` |
+| What the page does with an answer | `frontend/lib/humanize.ts` |
 | Side-by-side view | `frontend/components/dashboard/compare-view.tsx` |
-| The calls to the server | `frontend/lib/api.ts` (types in `frontend/types/index.ts`) |
-| Backend health in the top bar | `frontend/components/dashboard/topbar.tsx` |
+| Calls to the server | `frontend/lib/api.ts` (types in `frontend/types/index.ts`) |
+| The par score on the page | `frontend/lib/par.ts` |
 | The server's addresses | `backend/app.py` |
-| What each address does, jobs, clean-up, warm-up | `backend/aidetector/service.py` |
-| Reading files (layout) | `backend/aidetector/pipeline/block_extractor.py` (PDF, DOCX and TXT; `pdf_extractor.py` only supplies the plain-text reader and serves the two old FastAPI apps) |
-| Deciding heading / body / drop | `backend/aidetector/pipeline/structure.py` |
+| Jobs, clean-up, warm-up, styles, limits | `backend/aidetector/service.py` |
+| Reading files | `backend/aidetector/pipeline/block_extractor.py` |
+| Heading / body / drop | `backend/aidetector/pipeline/structure.py` |
 | Sentences and scoring | `backend/aidetector/pipeline/sentences.py`, `detector.py` |
-| The rewriters and the routing | `backend/aidetector/pipeline/humanizer.py`, `t5_humanizer.py`, `humarin_humanizer.py` |
+| Which rewriters run, what is shown | `backend/aidetector/pipeline/humanizer.py` |
+| What Gemini is told | `backend/aidetector/pipeline/gemini_prompt.py` |
 | The guard | `backend/aidetector/pipeline/candidate_guard.py` |
-| Settings (thresholds, styles, limits) | `backend/aidetector/config/settings.py` |
+| Thresholds, styles, limits | `backend/aidetector/config/settings.py` |
 | Keys and model name | `backend/.env` |
-| Tests (217) | `backend/tests/` (run `python -m pytest tests -q`) |
+| Tests (370) | `backend/tests/` (`python -m pytest tests -q`) |
