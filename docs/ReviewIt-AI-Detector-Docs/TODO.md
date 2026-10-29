@@ -3,7 +3,6 @@
 Branch: `abdullah/humanizer-new-engine` (ReviewIt). Finished work is in `FIXED_ISSUES.md` and the test reports, not here.
 
 ## Before merging to main
-- [ ] Supervisor approves the "Advanced" (Gemini) / "Standard" (Humarin, T5) tags (`rewrite-box.tsx`, `groupTag`; delete it if not approved)
 - [ ] Ask Rana which login database the demo uses (repo again holds a DB password in `nodeBackend/.env.example`)
 
 ## Prompt
