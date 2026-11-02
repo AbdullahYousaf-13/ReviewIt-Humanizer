@@ -1,6 +1,6 @@
 # AI Detector & Humanizer: API Flow (FE -> BE)
 
-Base URL: `http://127.0.0.1:5000` (frontend: `frontend/lib/api.ts`). Backend routes: `backend/app.py`.
+Base URL: `http://127.0.0.1:5000` (frontend: `frontend/lib/api.ts`). Backend routes: `backend/app.py`. Last updated 2026-11-02: keys, routes and request fields are unchanged (locked); only values and the description of what is shown changed (see the humanize section).
 
 ## Flow
 
@@ -133,10 +133,12 @@ Styles: `academic` (default), `business`, `creative`, `casual`, `narrative`, `te
 
 **`alternatives` (added 2026-10-26, additive: no existing key changed).** Every click runs Gemini, Humarin and T5. The main result (`humanized`, `engine`, `new_score`, ...) is Gemini's whenever it passes the fact guard and scores below the original; otherwise it is the lowest-scoring of the other two. `alternatives` lists the other rewrites that also passed the guard and scored below the original, in this order: **Gemini's second-best rewrite** (`engine: "gemini"`, added 2026-10-27 — the page shows Gemini's two best rewrites), then `humarin`, then `t5` (at most one entry each). The key and the entry fields did not change; only a second `"gemini"` value can now appear. It is `[]` when there are none (also when `failed` is `true`). `rule_based` runs only when nothing else is good enough, and never appears in `alternatives`. Each entry has `engine`, `humanized`, `new_score`, `improvement`. Present both inside `data` and at the top level.
 
-**Which rewrites are shown, and in what order (2026-10-28, values only: no key changed).** The par score is **30%** (it was 40%): a score below it counts as human. Gemini's first call asks for 5 rewrites and its retry for 2 (changed 2026-10-29).
+**Which rewrites are shown, and in what order (2026-10-28, values only: no key changed).** The par score is **30%** (it was 40%): a score below it counts as human. Gemini's first call asks for 5 rewrites and its retry for 5 (the retry asked for 2 from 2026-10-29 to 2026-11-02).
 - Gemini's best rewrite is shown whenever it beats the original, even above 30%; its second rewrite only at 30% or below.
 - Humarin's, T5's and the rule-based engine's rewrites are shown only at 30% or below (and below the original); the rule-based engine is a local engine like the other two (never "Recommended" by default).
 - If none of Gemini's rewrites is at 30% or below, Gemini is called once more (one retry, at most two calls per click) and the results of both calls compete.
+- **Connective fallback (2026-11-02, values only: no key changed).** For the Academic style, if both Gemini calls leave every rewrite above 30%, the best rewrites are tried with a final "too", a final "as well" or a leading "In this way," (no extra Gemini call). A variant is scored and passes the fact guard like any rewrite and is used only if it reaches 30% or below. It is then Gemini's result: `engine` is `"gemini"`, `humanized` ends with " too." / " as well." or starts with "In this way,", and `new_score` is the variant's score. Nothing else about the answer changes. It can be switched off on the server (`HUMANIZER_FALLBACK=0`).
+- **Not in the API:** whether the shown rewrite really reached 30% or below. A rewrite above 30% is still returned as `humanized` (last resort), and the page shows it as human. The backend knows (a local log line says `par=yes|no`), but the contract has no field for it.
 - **Last resort (2026-10-29):** if no engine has a rewrite that beats the original but Gemini has a safe one, Gemini's best rewrite is shown anyway (even at 100%), as `humanized` with `engine: "gemini"`, `failed: false` and `improvement: 0`. The original comes back (`engine: "original"`, `failed: true`) only when Gemini has no safe rewrite at all.
 - Order: Gemini's rewrites first while one of them is at 30% or below, then Humarin / T5 (lower score first). If none of Gemini's is at 30% or below but a Humarin / T5 one is, **that one is first** (it becomes `humanized` / `engine`) and Gemini's best follows it. So `engine` of the main result can be `humarin` or `t5` even when Gemini answered, and `alternatives` is in display order.
 - The page names them by rank, not by engine: the first is "Recommended", the others "Option 1", "Option 2", "Option 3".

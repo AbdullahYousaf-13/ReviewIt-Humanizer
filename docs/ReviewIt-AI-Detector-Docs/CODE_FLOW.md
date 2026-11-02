@@ -1,6 +1,6 @@
 # What happens when someone uses the site — start to finish
 
-Last updated 2026-10-29. This describes the code on branch `abdullah/humanizer-new-engine`. The frontend is the colleague's Next.js app (shadcn/ui, Zustand); a few files in it were changed on this branch (listed in `PROJECT_WALKTHROUGH.md`). The JSON of every call is in `API_FLOW.md`: keys, routes and request fields are locked, only values may change.
+Last updated 2026-11-02. This describes the code on branch `abdullah/humanizer-new-engine` (the humanize click changed on 2 Nov: a new first-call and retry prompt for the Academic style, and a connective fallback; see Scene 6 and `RETRY_AND_FALLBACK_EXPERIMENTS_2026-11-02.md`). The frontend is the colleague's Next.js app (shadcn/ui, Zustand); a few files in it were changed on this branch (listed in `PROJECT_WALKTHROUGH.md`). The JSON of every call is in `API_FLOW.md`: keys, routes and request fields are locked, only values may change.
 
 ## The parts
 
@@ -21,7 +21,7 @@ Last updated 2026-10-29. This describes the code on branch `abdullah/humanizer-n
 4. You click a sentence, choose a style and click **Humanize This Sentence**.
 5. The page sends the sentence, its neighbours and its first-scan score to the server.
 6. The server decides which rewriters run (table in Scene 6).
-7. Gemini writes 5 rewrites in one call (JSON). If none reaches 30% or below, it is asked once more for 2 rewrites.
+7. Gemini writes 5 rewrites in one call (JSON). If none reaches 30% or below, it is asked once more for 5 rewrites. If every rewrite is still above 30%, the best ones get one short connective (Academic style, no extra Gemini call).
 8. Humarin, T5 and rule-based run next to it when the sentence has no citation and the style is Academic.
 9. Every rewrite goes through the guard, then is scored by the detector.
 10. The page shows the best one as **Recommended** and the others as **Options**. The sentence turns green.
@@ -107,8 +107,14 @@ The page sends the **original** text of the sentence (so a second click starts a
 | No citation, any other style | **Gemini only**, because only Gemini applies a style |
 
 **Gemini** (`gemini_prompt.py`, model `GEMINI_MODEL`, default `gemini-3.8-flash`): one prompt and a system instruction. The system instruction holds the HARD RULES (same meaning, same strength, add nothing, keep exact); the prompt holds the style, the neighbour sentences, the target and eight short writing rules. The answer is JSON.
-- **First call: 5 rewrites.** If none of them reaches the par score (30% or below), **one retry: 2 more rewrites**. The retry prompt shows Gemini its earlier attempts and why some were rejected, and asks for clearly different ones.
+- **First call: 5 rewrites.** For the **Academic style** (since 2 Nov) rewrites 1 and 2 are written as before (within about 30% of the target's length) and rewrites 3–5 are **spelled out**: the same thing in more, ordinary words, 1.5 to 2 times as long as the target (the prompt names the word range, for example "between 24 and 32 words"), in three shapes: same order, two sentences, starting from another part. Every other style keeps the first call exactly as it was.
+- **One retry: 5 rewrites**, when none of the first rewrites reaches the par score (30% or below). It shows Gemini its earlier attempts and why some were rejected. For the Academic style **all 5 retry rewrites are spelled out**, one shape each: same order, two sentences, starts elsewhere, verb clauses, two sentences with verb clauses. A sentence with a citation stays one sentence. Other styles keep the older retry text.
+- **Faithfulness is asked in the prompt, not checked by the guard:** a spelled-out rewrite may only spell out what the target's own words already mean (no new claim, reason or detail, no new adjective, adverb or word of time or degree, no detail turned into a separate statement). The guard cannot judge this.
 - A short rate-limit answer is retried twice with a 2 s back-off. A "daily quota used up" answer is not retried: Gemini is skipped for 5 minutes. Calls in flight are limited to `MAX_CONCURRENT_GEMINI` (2). Every call logs its time, tokens and cost.
+
+**The connective fallback** (`pipeline/connectives.py`, called from `humanizer.py`; Academic style only; `HUMANIZER_FALLBACK=0` turns it off). When both Gemini calls leave every rewrite above 30%, the best 5 rewrites are tried, one at a time, with a final "too", a final "as well" or a leading "In this way,". Each variant goes through the guard and is scored by the detector like any rewrite; the first rewrite that has a variant at 30% or below ends the search, and its lowest variant is shown (as Gemini's result, `engine: "gemini"`). A sentence with a citation only gets the leading connective; a name or acronym at the start is never lowercased; a connective is never added twice. No Gemini call is made. If no variant reaches 30%, nothing changes. A use is logged: `[humanizer] connective fallback: "too" brought a rewrite from 97% to 23%`. Why it exists: see the experiments report; it was tested offline (5 of 5 failing rewrites reached 30% or below with a final "too") and end to end with a mocked Gemini, but **not yet on a live Gemini run**. The added word carries a slight implication ("too": another item; "In this way,": a sentence before).
+
+**Local diagnostic log** (not part of the pushed branch): with `HUMANIZER_DIAG` on (default in those commits) the backend writes `[humanizer-diag] #<sentence id> …` lines: the sentence with its block score and its score alone, every Gemini and local candidate (call, shape asked for, words, length ratio, score, guard verdict, text), the Gemini pool, every fallback variant tried, and a result line (winning shape, `par=yes|no`, last resort used, fallback used, number of Gemini calls, rejection reasons). The same sentence has the same id in every run.
 
 **Local engines:** Humarin writes 5 versions, T5 up to 3, the rule-based one 1. Each engine keeps its lowest-scoring safe rewrite.
 
@@ -132,6 +138,7 @@ The same rules for Gemini are also in its prompt, so it avoids them instead of l
 - Gemini's best rewrite when it beats the original; Gemini's second best only at 30% or below.
 - A Humarin, T5 or rule-based rewrite only at 30% or below **and** below the original (lower score first).
 - Gemini's rewrites come first while one of them is at 30% or below; if none is but a local one is, the local one goes first.
+- Among Gemini's rewrites the **lowest score** wins. (Choosing the one closest to the original's length instead was proposed on 2 Nov so that a faithful rewrite wins when it also passes; it is **not done**, because it changes which rewrite the page recommends.)
 - **Last resort:** if nothing beats the original but Gemini has a safe rewrite, its best one is shown anyway, even at 100%, so the page is never left empty.
 - Only when Gemini has no safe rewrite at all (all rejected, or the call failed) does the original come back, with `engine: "original"`, `failed: true` and a reason.
 
@@ -190,7 +197,8 @@ The answer carries `humanized`, `engine`, `new_score`, `original_score`, `improv
 | Sentences and scoring | `backend/aidetector/pipeline/sentences.py`, `detector.py` |
 | Which rewriters run, what is shown | `backend/aidetector/pipeline/humanizer.py` |
 | What Gemini is told | `backend/aidetector/pipeline/gemini_prompt.py` |
+| The connective fallback | `backend/aidetector/pipeline/connectives.py` (the variants), called from `humanizer.py` (`_connective_fallback`) |
 | The guard | `backend/aidetector/pipeline/candidate_guard.py` |
 | Thresholds, styles, limits | `backend/aidetector/config/settings.py` |
 | Keys and model name | `backend/.env` |
-| Tests (370) | `backend/tests/` (`python -m pytest tests -q`) |
+| Tests (398 on the pushed branch; 406 with the local diagnostics) | `backend/tests/` (`python -m pytest tests -q`) |
