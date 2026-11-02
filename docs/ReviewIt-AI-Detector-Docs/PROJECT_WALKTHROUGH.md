@@ -10,7 +10,7 @@ Last updated 2026-11-02. Work was done on `abdullah/humanizer-dev` (until 22 Oct
 
 **If someone asks "what did you do?"**
 
-> The backend already had a detector and a humanizer. I made it **safe and structured**: uploads are read by layout (title page, references, tables, footnotes removed) into paragraphs and headings; every rewrite goes through a **guard** (citations, numbers, negation, direction, causes, added text, broken punctuation); a failed rewrite is never inserted. I rebuilt the humanize click around **Gemini as the main engine** with a carefully designed prompt (hard meaning rules, one call of 5 rewrites and one retry of 5 that shows the earlier attempts; for the Academic style the retry and part of the first call ask for the same thing said in more, ordinary words), and kept Humarin, T5 and a rule-based engine as local options. Sentences with citations go to Gemini only, other styles go to Gemini only, and a sentence never comes back empty. I measured the pipeline on real papers: on a full paper the number of red sentences went from 24 to 4 (mean score 19% to 3%). There are 382 tests. The API shapes are locked for the colleague's new frontend.
+> The backend already had a detector and a humanizer. I made it **safe and structured**: uploads are read by layout (title page, references, tables, footnotes removed) into paragraphs and headings; every rewrite goes through a **guard** (citations, numbers, negation, direction, causes, added text, broken punctuation); a failed rewrite is never inserted. I rebuilt the humanize click around **Gemini as the main engine** with a carefully designed prompt (hard meaning rules, one call of 5 rewrites and one retry of 5 that shows the earlier attempts; for the Academic style the retry and part of the first call ask for the same thing said in more, ordinary words), and kept Humarin, T5 and a rule-based engine as local options. Sentences with citations go to Gemini only, other styles go to Gemini only, and a sentence never comes back empty. I measured the pipeline on real papers: on a full paper the number of red sentences went from 24 to 4 (mean score 19% to 3%). There are 412 tests. The API shapes are locked for the colleague's new frontend.
 
 ---
 
@@ -20,7 +20,7 @@ Last updated 2026-11-02. Work was done on `abdullah/humanizer-dev` (until 22 Oct
 
 **Now:**
 - A layout-aware document reader with headings, paragraphs and soft errors for unreadable files.
-- A 12-group guard on every rewrite, the same for every engine.
+- A 13-rule guard on every rewrite, the same for every engine.
 - One Gemini prompt (system instruction with HARD RULES, JSON answer), first call 5 rewrites, one retry of 5. Since 2 Nov, for the Academic style: first call 2 ordinary + 3 spelled-out rewrites, retry 5 spelled-out rewrites in 5 shapes.
 - Three results per click: Gemini first, then Humarin and T5 as options (only at 30% or below), rule-based as a last local option.
 - A last resort: when nothing beats the original, Gemini's best safe rewrite is still shown.
@@ -34,7 +34,7 @@ Last updated 2026-11-02. Work was done on `abdullah/humanizer-dev` (until 22 Oct
 | 22 Oct | `6c6249a` … `2ab077a`, `baf13ba` | Docs and old frontend out of git, colleague's frontend merged, non-default style tries Gemini first |
 | 26–28 Oct | `5d364cd`, `aac109a`, `4149432`, `df21b50`, `c4bdaa4`, `446c50b`, `6cd0592`, `be90e61` | Single Gemini prompt with system instruction and JSON answer, three results per click, par score 30%, retry with the earlier attempts shown, stock-phrase guard, cost and time log |
 | 28–29 Oct | `1974540`, `4dabe15`, `a603eef`, `f2a52ae`, `e3ec622`, `f543cfe`, `a164e4e`, `cd4ead0`, `7a8bef2`, `70bb3f0`, `a1d0bce` | Prompt fixes (strength, lists, "Name et al."), first call 5 and retry 2, a cited sentence stays one sentence, guard: added bracket / acronym / cause, last resort, frontend: no percentages or tags, counts follow green, "View" tab, neutral test examples |
-| 2 Nov | `243696f`, `37511ca`; two local-only diagnostic commits | Retry asks for 5 spelled-out rewrites (Academic); first call = 2 ordinary + 3 spelled-out; faithfulness asked in the prompt; word range in the prompt. Local, not pushed: a log of every candidate. Evidence and live runs: `RETRY_AND_FIRST_CALL_EXPERIMENTS_2026-11-02.md` |
+| 2 Nov | `243696f`, `37511ca` (pushed); `82ad45a`, `2cbb9a1`, `9f3c3d5` (local, not pushed yet); two local-only diagnostic commits | Retry asks for 5 spelled-out rewrites (Academic); first call = 2 ordinary + 3 spelled-out; faithfulness asked in the prompt; word range in the prompt. Local, not pushed: a log of every candidate. Later that day: spelled-out rewrites may not add a negation word, a guard rule for a full stop before a lowercase word, and the rewrite closest in length goes first among those at 30% or below. Evidence and live runs: `RETRY_AND_FIRST_CALL_EXPERIMENTS_2026-11-02.md` |
 
 ---
 
@@ -56,7 +56,7 @@ Numbers to remember: **0.75** = the detector calls a sentence AI (red). **0.30**
 - **First call 5 rewrites, retry 5 (changed 2 Nov; it was 2).** Measured on 26 sentences with the latest prompt: the chance that a call holds at least one rewrite at 30% or below is 43% with 1 rewrite, 62% with 2, 73% with 3 and 85% with 5. Five rewrites cost about the same per sentence as two plus a retry and are faster.
 - **Spelled-out rewrites for the Academic style (2 Nov).** Offline, changes of order or structure alone (split, active/passive, start elsewhere, verb clauses) brought 0 of 20 hand-written variants to 30% or below; rewrites 1.5 times the target's length or longer did 10 of 23, shorter ones 6 of 41. Live, per candidate: ordinary first-call rewrites passed 1 of 31, spelled-out ones 14 of 48 (first call) and 6 of 35 (retry). So the retry (all 5) and part of the first call (3 of 5) ask for the same thing in more, ordinary words at 1.5–2 times the length, with the word range in the prompt. Other styles are unchanged.
 - **Faithfulness is asked in the prompt, not in the guard (2 Nov).** In a check of 5 retry rewrites, 2 had drifted (a statement made about one thing became separate claims; a word like "current" was added). The prompt now says: spell out only what the target's words already mean. The guard cannot judge this, and was not changed.
-- **Not done, on purpose (2 Nov):** choosing the passing rewrite closest to the original's length (it changes which rewrite the page recommends); any frontend change.
+- **Rewrite order (2 Nov, evening):** among Gemini's rewrites at 30% or below the one closest to the original's length goes first (the lowest score breaks a tie), so a short faithful rewrite is not beaten by a longer one that says more (in a log of a second paper this happened in 4 of 10 clicks). Backend only; the answer keeps its keys. **Not done, on purpose:** a third Gemini attempt.
 - **Par score 30%** (it was 40%). Green only below it.
 - **Last resort:** never leave the page empty; Gemini's best safe rewrite is shown even at 100%.
 - **A humanized sentence counts as human** in the page's counts and filters, and at no more than 30% in the overall score.
@@ -68,7 +68,7 @@ Numbers to remember: **0.75** = the detector calls a sentence AI (red). **0.30**
 ### 3.3 The Gemini prompt
 - **System instruction (HARD RULES):** same meaning (who does what to whom; a link is never a cause; "made", "caused" or "led to" never replace "showed" or "found"; a duty is never turned into an action; no added or removed negation; no reversed direction), same strength (need/should/may never become "must"; no stronger single word), add nothing (no new fact, person, group, bracketed phrase or acronym; no "we" unless the target has it), keep exact (numbers, names, citations once at the end of the claim; "Name et al." is a citation; a sentence with a citation stays one sentence).
 - **User prompt:** the style block, the neighbour sentences, the target, eight short writing rules (restructure; any run of three or more items becomes clauses or an uneven split; verbs over noun forms without losing strength; no stock phrases; no machine patterns or a word repeated three times; vary the rhythm; length within 30%; the rewrites differ), and a final self-check.
-- **Spelled-out rewrites (Academic, 2 Nov):** one extra paragraph, in the first call for rewrites 3–5 and in the retry for all five: say the same thing in more, ordinary words (each abstract or formal noun phrase as what happens or who does what), 1.5 to 2 times the target's length and never more than twice (it replaces the length lines of the style and of rule 7 for those rewrites; the word range is given as numbers), give each rewrite its own shape, spell out only what the target's own words mean, and keep a sentence with a citation in one sentence. Rewrites 1 and 2 of the first call keep the old length rule. The first call and the retry of every other style are byte-identical to before (30 of 30 prompts compared).
+- **Spelled-out rewrites (Academic, 2 Nov):** one extra paragraph, in the first call for rewrites 3–5 and in the retry for all five: say the same thing in more, ordinary words (each abstract or formal noun phrase as what happens or who does what), 1.5 to 2 times the target's length and never more than twice (it replaces the length lines of the style and of rule 7 for those rewrites; the word range is given as numbers), give each rewrite its own shape, spell out only what the target's own words mean, and keep a sentence with a citation in one sentence. Rewrites 1 and 2 of the first call keep the old length rule. The first call and the retry of every other style are byte-identical to before (30 of 30 prompts compared). It also says not to use "without", "no", "not" or "never" unless the target does (in one log 3 of 27 spelled-out rewrites added a "without …" phrase and were thrown away by the guard).
 - **Why it is built this way:** few precise rules are followed better than many; each rule answers a mistake seen in the tests; no example sentences (the model copies them); the hard rules come first (Google's prompting guide).
 
 ### 3.4 Numbers you can quote
@@ -85,7 +85,8 @@ Numbers to remember: **0.75** = the detector calls a sentence AI (red). **0.30**
 | Same 16 sentences, live (2 Nov, Gemini 3.8 Flash) | retry of 5 (old text): 11 of 16 reach 30% or below; new Academic retry: 15 of 16 (5 of 6 retries rescued); with the new first call: 5 of 8 and 6 of 8 (retries 2 of 5 and 0 of 2). **Runs differ by a lot**: the same 8 sentences gave 8 of 8 and 5 of 8. See the experiments report |
 | Per candidate, live (2 Nov) | ordinary first-call 1 of 31 at 30% or below; spelled-out first-call 14 of 48; retry 6 of 35; per sentence it ranges from 0 of 16 (the Kumasi sentence) to 5 of 6 |
 | Cost, 8–16 sentence runs (2 Nov) | about $0.0025–0.0033 per sentence (more retries and the longer first-call prompt cost more) |
-| Tests | 382 on the pushed branch (387 with the local diagnostics) (`python -m pytest tests -q`) |
+| Guard rule for a full stop before a lowercase word (2 Nov) | 0 of 616 saved real rewrites wrongly rejected; 1,848 cut versions of them all rejected |
+| Tests | 412 (417 with the local diagnostics) (`python -m pytest tests -q`) |
 
 ### 3.5 Limits to mention
 - One detector only (the local BERT model), not ZeroGPT, Turnitin or Copyleaks.
@@ -94,7 +95,7 @@ Numbers to remember: **0.75** = the detector calls a sentence AI (red). **0.30**
 - The prompt changes of 28–29 Oct were tested offline and on saved runs; they have not been measured on a fresh Gemini run.
 - **Results vary from run to run** (2 Nov): a first call that failed on one run passed on the next for the same sentence; the same 8 sentences gave 8 of 8 and 5 of 8. Report a range, not one percentage.
 - **Some sentences resist every rewrite** (names + acronym + list, or abstract-noun chains): 0 of 16 candidates for the Kumasi sentence, 0 of 8 for "Nursing leadership succession planning…", 0 of 11 for the data-collection sentence in two runs. Whether a sentence passes depends more on the sentence than on the prompt's wording.
-- **Spelled-out rewrites can drift** (2 of 5 retry rewrites checked): the prompt asks against it, the guard cannot catch it, and the lowest score wins, so a drifted rewrite can be shown.
+- **Spelled-out rewrites can drift** (2 of 5 retry rewrites checked): the prompt asks against it, the guard cannot catch it, and among the rewrites that pass the one closest in length wins (since the evening of 2 Nov), which helps but does not remove the risk when no short rewrite passes.
 - **The page shows every humanized sentence as human**, including one that stayed above 30% (`par=no` in the local log). This is a standing decision, so sentences that stay above 30% have to be fixed in the prompts.
 
 ---
@@ -174,7 +175,7 @@ Be ready to explain in your own words: why Gemini is the main engine, why the gu
 | PyMuPDF | 1.28.2 | PDFs by layout |
 | python-docx | 1.2.0 | Word files |
 | google-genai | 2.30.0 | Gemini |
-| pytest | 9.1.1 | The 382 tests |
+| pytest | 9.1.1 | The 412 tests |
 
 **Frontend (colleague's):** Next.js 13.5.1, React 18.2, TypeScript 5.2, Tailwind 3.3, shadcn/ui (Radix), Zustand 5, framer-motion, recharts, sonner. Login and sign-up use a separate Node service (`nodeBackend/`).
 
@@ -192,7 +193,7 @@ Be ready to explain in your own words: why Gemini is the main engine, why the gu
 
 ## 9. Files we changed
 
-- **Backend:** `pipeline/block_extractor.py`, `structure.py`, `sentences.py`, `candidate_guard.py`, `gemini_prompt.py`, `detector.py`, `text_cleaner.py`, `humanizer.py`, `restructuring_engine.py`, `t5_humanizer.py`, `humarin_humanizer.py`; `service.py`, `config/settings.py`, `app.py`; `tests/` (382 tests), `bench_concurrency.py`, `requirements-dev.txt`.
+- **Backend:** `pipeline/block_extractor.py`, `structure.py`, `sentences.py`, `candidate_guard.py`, `gemini_prompt.py`, `detector.py`, `text_cleaner.py`, `humanizer.py`, `restructuring_engine.py`, `t5_humanizer.py`, `humarin_humanizer.py`; `service.py`, `config/settings.py`, `app.py`; `tests/` (412 tests), `bench_concurrency.py`, `requirements-dev.txt`.
 - **Frontend:** see section 5.
 - **Docs** (outside the repo, in `ReviewIt-Humanizer/docs/ReviewIt-AI-Detector-Docs/`): `API_FLOW.md` (locked keys), `CODE_FLOW.md`, `PROJECT_WALKTHROUGH.md`, `OPEN_ISSUES.md`, `FIXED_ISSUES.md`, `TODO.md`, `DIVERSE_BEAM_RESULTS.md`, the Gemini test reports and `RETRY_AND_FIRST_CALL_EXPERIMENTS_2026-11-02.md` (with its scripts in `scripts/prompt_experiments_2026-11-02/`).
 
@@ -209,7 +210,7 @@ Be ready to explain in your own words: why Gemini is the main engine, why the gu
 7. **What does the style do?** Only Gemini applies it; for any style other than Academic only Gemini runs.
 8. **What does the reader remove?** Title page, metadata, headers, page numbers, footnotes, tables, figures, formulas, captions, reference lists, back matter. Scanned PDFs are not supported (a soft message).
 9. **What did you leave out, and why?** A whole-document rewrite in one request, OCR, `.doc` files, a Gemini time limit, merging the old API files.
-10. **What next?** Measure the 2 Nov changes (first call, retry) on the same 16 sentences at least twice, because runs differ a lot; fix the prompts for the sentences that stay above 30% (the target is 90% or more); decide whether the closest-to-the-original rewrite should win among those that pass; decide whether upload scoring should be faster (blocks sorted by length, all CPU cores).
+10. **What next?** Measure the 2 Nov changes (first call, retry) on the same 16 sentences at least twice, because runs differ a lot; fix the prompts for the sentences that stay above 30% (the target is 90% or more); decide whether upload scoring should be faster (blocks sorted by length, all CPU cores).
 
 ---
 

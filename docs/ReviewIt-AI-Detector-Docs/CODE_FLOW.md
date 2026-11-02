@@ -109,7 +109,7 @@ The page sends the **original** text of the sentence (so a second click starts a
 **Gemini** (`gemini_prompt.py`, model `GEMINI_MODEL`, default `gemini-3.8-flash`): one prompt and a system instruction. The system instruction holds the HARD RULES (same meaning, same strength, add nothing, keep exact); the prompt holds the style, the neighbour sentences, the target and eight short writing rules. The answer is JSON.
 - **First call: 5 rewrites.** For the **Academic style** (since 2 Nov) rewrites 1 and 2 are written as before (within about 30% of the target's length) and rewrites 3–5 are **spelled out**: the same thing in more, ordinary words, 1.5 to 2 times as long as the target (the prompt names the word range, for example "between 24 and 32 words"), in three shapes: same order, two sentences, starting from another part. Every other style keeps the first call exactly as it was.
 - **One retry: 5 rewrites**, when none of the first rewrites reaches the par score (30% or below). It shows Gemini its earlier attempts and why some were rejected. For the Academic style **all 5 retry rewrites are spelled out**, one shape each: same order, two sentences, starts elsewhere, verb clauses, two sentences with verb clauses. A sentence with a citation stays one sentence. Other styles keep the older retry text.
-- **Faithfulness is asked in the prompt, not checked by the guard:** a spelled-out rewrite may only spell out what the target's own words already mean (no new claim, reason or detail, no new adjective, adverb or word of time or degree, no detail turned into a separate statement). The guard cannot judge this.
+- **Faithfulness is asked in the prompt, not checked by the guard:** a spelled-out rewrite may only spell out what the target's own words already mean (no new claim, reason or detail, no new adjective, adverb or word of time or degree, no detail turned into a separate statement). The guard cannot judge this. The same instruction says not to use "without", "no", "not" or "never" unless the target does (a spelled-out rewrite that adds one is thrown away by the guard).
 - A short rate-limit answer is retried twice with a 2 s back-off. A "daily quota used up" answer is not retried: Gemini is skipped for 5 minutes. Calls in flight are limited to `MAX_CONCURRENT_GEMINI` (2). Every call logs its time, tokens and cost.
 
 **Local diagnostic log** (not part of the pushed branch): with `HUMANIZER_DIAG` on (default in those commits) the backend writes `[humanizer-diag] #<sentence id> …` lines: the sentence with its block score and its score alone, every Gemini and local candidate (call, shape asked for, words, length ratio, score, guard verdict, text), the Gemini pool, and a result line (winning shape, `par=yes|no`, last resort used, number of Gemini calls, rejection reasons). The same sentence has the same id in every run.
@@ -129,6 +129,7 @@ The page sends the **original** text of the sentence (so a second click starts a
 10. adds a bracketed phrase with new words, or an acronym the original lacks;
 11. adds a cause the original does not state ("caused", "led to", "made … more likely");
 12. flips the direction of the claim (higher↔lower, increase↔decrease…).
+13. cuts a sentence in the wrong place: a full stop, a space and a lowercase word that the original does not have ("interventions. improved"); not after an abbreviation (et al., etc., vs., fig. …), a dotted abbreviation (e.g., i.e., U.S., p.m.), in an ellipsis, or when the original has the same break.
 
 The same rules for Gemini are also in its prompt, so it avoids them instead of losing a good rewrite. The guard's main job is to catch Humarin, T5 and rule-based, which cannot be instructed.
 
@@ -136,7 +137,7 @@ The same rules for Gemini are also in its prompt, so it avoids them instead of l
 - Gemini's best rewrite when it beats the original; Gemini's second best only at 30% or below.
 - A Humarin, T5 or rule-based rewrite only at 30% or below **and** below the original (lower score first).
 - Gemini's rewrites come first while one of them is at 30% or below; if none is but a local one is, the local one goes first.
-- Among Gemini's rewrites the **lowest score** wins. (Choosing the one closest to the original's length instead was proposed on 2 Nov so that a faithful rewrite wins when it also passes; it is **not done**, because it changes which rewrite the page recommends.)
+- Among Gemini's rewrites **at 30% or below the one closest to the original's length goes first** (the lowest score breaks a tie), so a short faithful rewrite is not beaten by a longer one that says more; Gemini's second rewrite is shown only at 30% or below. Without a rewrite at 30% or below the lowest score goes first. (Since the evening of 2 Nov; before that the lowest score won.)
 - **Last resort:** if nothing beats the original but Gemini has a safe rewrite, its best one is shown anyway, even at 100%, so the page is never left empty.
 - Only when Gemini has no safe rewrite at all (all rejected, or the call failed) does the original come back, with `engine: "original"`, `failed: true` and a reason.
 
@@ -198,4 +199,4 @@ The answer carries `humanized`, `engine`, `new_score`, `original_score`, `improv
 | The guard | `backend/aidetector/pipeline/candidate_guard.py` |
 | Thresholds, styles, limits | `backend/aidetector/config/settings.py` |
 | Keys and model name | `backend/.env` |
-| Tests (382 on the pushed branch; 387 with the local diagnostics) | `backend/tests/` (`python -m pytest tests -q`) |
+| Tests (412 without the local diagnostics; 417 with them) | `backend/tests/` (`python -m pytest tests -q`) |

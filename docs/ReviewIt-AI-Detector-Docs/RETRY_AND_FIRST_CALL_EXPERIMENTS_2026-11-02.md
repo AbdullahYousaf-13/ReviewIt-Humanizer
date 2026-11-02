@@ -9,7 +9,7 @@ Why this was done: in the run that first logged scores (22 clicks), only 12 of 2
 - A final "too" brought 5 of 5 failing rewrites below 30% offline, but a code step built on it did nothing on the live Kumasi sentence (12 variants, all 100%) and was removed on 2 Nov.
 - Spelled-out rewrites can drift in meaning (2 of 5 checked); the prompt asks against it, the guard cannot see it.
 
-What was built from this (ReviewIt, branch `abdullah/humanizer-new-engine`): `243696f` retry and `37511ca` first call; two local-only `log:` commits for the diagnostic log. Details: `CODE_FLOW.md` Scene 6, `FIXED_ISSUES.md` FB59–FB61, `OPEN_ISSUES.md` B4–B6.
+What was built from this (ReviewIt, branch `abdullah/humanizer-new-engine`): `243696f` retry and `37511ca` first call; two local-only `log:` commits for the diagnostic log. Details: `CODE_FLOW.md` Scene 6, `FIXED_ISSUES.md` FB59–FB64, `OPEN_ISSUES.md` B4–B8. Later that day: a prompt line against "without", a guard rule and the closest-length ranking (FB62–FB64).
 
 ---
 
@@ -51,12 +51,15 @@ Scored alone, 15 of them are at 98–100%; sentence 4 scores only 9% alone (its 
 | 5 | + new first call, faithfulness rule, word range (`37511ca`) | 8 complete (9th cut off) | 5 of 8 | 3 | 5 (2) | $0.0265 |
 | 6 | same code as 5 | 8 (sentence 1 missing, sentence 16 added) | 6 of 8 | 6 | 2 (0) | $0.0211 |
 | 7 | same code | 1 (the Kumasi sentence, from the screen) | 0 of 1 | 0 | 1 (0) | $0.0051 |
+| 8 | same code, **another paper** (digital-services trade, NLP in finance) | 10 (first and last click partly cut off) | **10 of 10** | 9 | 1 (1: 5 of 5 candidates passed) | about $0.0024 per sentence |
 
 Notes
 - **Run 4 against runs 5–6 on sentences 1–8:** 8 of 8, then 5 of 8, then 6 of 8 (with one sentence swapped). The failures moved: Kumasi failed in both later runs; succession planning and reflexive analysis failed in run 5 (succession planning was not clicked in run 6); data collection failed in run 6 only.
 - **The first call is not stable:** sentences 8 and 14 failed their first call in runs 1 and 3 and passed it in run 4.
 - **Run 4's retry rescued 5 of 6** (succession planning, Kumasi at 21%, purposive sampling, data collection, reflexive analysis); runs 5–6 rescued 2 of 7. The prompt changed between them (faithfulness rule, word range, a different first call), but one run each cannot separate that from variance.
 - **Cost:** the longer first-call prompt costs about $0.0005 more per call (input 1,400 → 1,750 tokens); run 5–6 clicks cost $0.0026–0.0033 per sentence.
+
+**A different paper (run 8, 15:51):** every click reached 30% or below. On its 9 fully logged clicks the spelled-out first-call rewrites passed 15 of 24 (3 more were rejected for an added negation) and the ordinary ones 5 of 18, against 14 of 48 and 1 of 31 on the nursing paper. The prompt works much better on these sentences; the sentences that stay above 30% are the nursing paper's. The same log showed the problems fixed later that day: a longer rewrite shown although a short faithful one also passed (4 of 10 clicks), shown winners that add content, "without …" rewrites thrown away, and a broken rule-based option.
 
 ### Per candidate, from the diagnostic log (runs 5–6, 16 clicks, 114 candidates)
 
@@ -124,7 +127,7 @@ A visible example in run 5: the winner "Purposive sampling was used when recruit
 
 ## 6. Decisions taken
 - Faithfulness is asked in the prompt only, not in the guard.
-- Not done: showing the passing rewrite closest to the original's length (it changes which rewrite the page recommends); a third Gemini attempt.
+- Done later on 2 Nov: among Gemini's rewrites at 30% or below the one closest to the original's length is shown first (the lowest score breaks a tie). Not done: a third Gemini attempt.
 - The diagnostic log stays out of the shared repo.
 
 ## 7. Scripts
