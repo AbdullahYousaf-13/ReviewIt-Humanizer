@@ -1,6 +1,6 @@
 # What happens when someone uses the site — start to finish
 
-Last updated 2026-11-02. This describes the code on branch `abdullah/humanizer-new-engine` (the humanize click changed on 2 Nov: a new first-call and retry prompt for the Academic style, and a connective fallback; see Scene 6 and `RETRY_AND_FALLBACK_EXPERIMENTS_2026-11-02.md`). The frontend is the colleague's Next.js app (shadcn/ui, Zustand); a few files in it were changed on this branch (listed in `PROJECT_WALKTHROUGH.md`). The JSON of every call is in `API_FLOW.md`: keys, routes and request fields are locked, only values may change.
+Last updated 2026-11-02. This describes the code on branch `abdullah/humanizer-new-engine` (the humanize click changed on 2 Nov: a new first-call and retry prompt for the Academic style; see Scene 6 and `RETRY_AND_FIRST_CALL_EXPERIMENTS_2026-11-02.md`). The frontend is the colleague's Next.js app (shadcn/ui, Zustand); a few files in it were changed on this branch (listed in `PROJECT_WALKTHROUGH.md`). The JSON of every call is in `API_FLOW.md`: keys, routes and request fields are locked, only values may change.
 
 ## The parts
 
@@ -21,7 +21,7 @@ Last updated 2026-11-02. This describes the code on branch `abdullah/humanizer-n
 4. You click a sentence, choose a style and click **Humanize This Sentence**.
 5. The page sends the sentence, its neighbours and its first-scan score to the server.
 6. The server decides which rewriters run (table in Scene 6).
-7. Gemini writes 5 rewrites in one call (JSON). If none reaches 30% or below, it is asked once more for 5 rewrites. If every rewrite is still above 30%, the best ones get one short connective (Academic style, no extra Gemini call).
+7. Gemini writes 5 rewrites in one call (JSON). If none reaches 30% or below, it is asked once more for 5 rewrites.
 8. Humarin, T5 and rule-based run next to it when the sentence has no citation and the style is Academic.
 9. Every rewrite goes through the guard, then is scored by the detector.
 10. The page shows the best one as **Recommended** and the others as **Options**. The sentence turns green.
@@ -112,9 +112,7 @@ The page sends the **original** text of the sentence (so a second click starts a
 - **Faithfulness is asked in the prompt, not checked by the guard:** a spelled-out rewrite may only spell out what the target's own words already mean (no new claim, reason or detail, no new adjective, adverb or word of time or degree, no detail turned into a separate statement). The guard cannot judge this.
 - A short rate-limit answer is retried twice with a 2 s back-off. A "daily quota used up" answer is not retried: Gemini is skipped for 5 minutes. Calls in flight are limited to `MAX_CONCURRENT_GEMINI` (2). Every call logs its time, tokens and cost.
 
-**The connective fallback** (`pipeline/connectives.py`, called from `humanizer.py`; Academic style only; `HUMANIZER_FALLBACK=0` turns it off). When both Gemini calls leave every rewrite above 30%, the best 5 rewrites are tried, one at a time, with a final "too", a final "as well" or a leading "In this way,". Each variant goes through the guard and is scored by the detector like any rewrite; the first rewrite that has a variant at 30% or below ends the search, and its lowest variant is shown (as Gemini's result, `engine: "gemini"`). A sentence with a citation only gets the leading connective; a name or acronym at the start is never lowercased; a connective is never added twice. No Gemini call is made. If no variant reaches 30%, nothing changes. A use is logged: `[humanizer] connective fallback: "too" brought a rewrite from 97% to 23%`. Why it exists: see the experiments report; it was tested offline (5 of 5 failing rewrites reached 30% or below with a final "too") and end to end with a mocked Gemini, but on its first live use (the Kumasi sentence) none of 12 variants reached 30%, so it does not rescue every sentence. The added word carries a slight implication ("too": another item; "In this way,": a sentence before).
-
-**Local diagnostic log** (not part of the pushed branch): with `HUMANIZER_DIAG` on (default in those commits) the backend writes `[humanizer-diag] #<sentence id> …` lines: the sentence with its block score and its score alone, every Gemini and local candidate (call, shape asked for, words, length ratio, score, guard verdict, text), the Gemini pool, every fallback variant tried, and a result line (winning shape, `par=yes|no`, last resort used, fallback used, number of Gemini calls, rejection reasons). The same sentence has the same id in every run.
+**Local diagnostic log** (not part of the pushed branch): with `HUMANIZER_DIAG` on (default in those commits) the backend writes `[humanizer-diag] #<sentence id> …` lines: the sentence with its block score and its score alone, every Gemini and local candidate (call, shape asked for, words, length ratio, score, guard verdict, text), the Gemini pool, and a result line (winning shape, `par=yes|no`, last resort used, number of Gemini calls, rejection reasons). The same sentence has the same id in every run.
 
 **Local engines:** Humarin writes 5 versions, T5 up to 3, the rule-based one 1. Each engine keeps its lowest-scoring safe rewrite.
 
@@ -197,8 +195,7 @@ The answer carries `humanized`, `engine`, `new_score`, `original_score`, `improv
 | Sentences and scoring | `backend/aidetector/pipeline/sentences.py`, `detector.py` |
 | Which rewriters run, what is shown | `backend/aidetector/pipeline/humanizer.py` |
 | What Gemini is told | `backend/aidetector/pipeline/gemini_prompt.py` |
-| The connective fallback | `backend/aidetector/pipeline/connectives.py` (the variants), called from `humanizer.py` (`_connective_fallback`) |
 | The guard | `backend/aidetector/pipeline/candidate_guard.py` |
 | Thresholds, styles, limits | `backend/aidetector/config/settings.py` |
 | Keys and model name | `backend/.env` |
-| Tests (398 on the pushed branch; 406 with the local diagnostics) | `backend/tests/` (`python -m pytest tests -q`) |
+| Tests (382 on the pushed branch; 387 with the local diagnostics) | `backend/tests/` (`python -m pytest tests -q`) |

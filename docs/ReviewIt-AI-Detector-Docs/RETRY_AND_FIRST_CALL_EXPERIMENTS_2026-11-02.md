@@ -1,4 +1,4 @@
-# Retry, first call and connective fallback: experiments and live runs, 2026-11-02
+# Retry and first call: experiments and live runs, 2026-11-02
 
 Why this was done: in the run that first logged scores (22 clicks), only 12 of 22 humanized sentences really reached the par score (30% or below); the other 10 were shown as human although they stayed at 93–100% (one at 38%), and only 1 of 11 retries rescued its sentence. The question was which change to the prompt would fix that, and what the evidence says about it.
 
@@ -6,10 +6,10 @@ Why this was done: in the run that first logged scores (22 clicks), only 12 of 2
 - Ordinary-length rewrites almost never pass (1 of 31 candidates); rewrites that say the same thing in more words (1.5–2 times the length) pass much more often (20 of 83). Structure-only changes (split, active/passive, start elsewhere, verb clauses) did not help at all offline (0 of 20).
 - Whether a sentence passes depends more on the sentence than on the prompt: some sentences passed 5 of 6 times, others 0 of 16.
 - Live results differ a lot from run to run (the same 8 sentences gave 8 of 8 and 5 of 8), so no single run proves a change.
-- One small lever worked on every failing rewrite tested: a final "too". It is now a code fallback (not a prompt rule). It has not been seen on a live Gemini run.
+- A final "too" brought 5 of 5 failing rewrites below 30% offline, but a code step built on it did nothing on the live Kumasi sentence (12 variants, all 100%) and was removed on 2 Nov.
 - Spelled-out rewrites can drift in meaning (2 of 5 checked); the prompt asks against it, the guard cannot see it.
 
-What was built from this (ReviewIt, branch `abdullah/humanizer-new-engine`): `243696f` retry, `37511ca` first call, `47f80aa` fallback (all pushed or pushable); three local-only `log:` commits for the diagnostic log. Details: `CODE_FLOW.md` Scene 6, `FIXED_ISSUES.md` FB59–FB62, `OPEN_ISSUES.md` B4–B7.
+What was built from this (ReviewIt, branch `abdullah/humanizer-new-engine`): `243696f` retry and `37511ca` first call; two local-only `log:` commits for the diagnostic log. Details: `CODE_FLOW.md` Scene 6, `FIXED_ISSUES.md` FB59–FB61, `OPEN_ISSUES.md` B4–B6.
 
 ---
 
@@ -50,7 +50,7 @@ Scored alone, 15 of them are at 98–100%; sentence 4 scores only 9% alone (its 
 | 4 | new Academic retry text (`243696f`) | 16 | **15 of 16** | 10 | 6 (5) | $0.039 |
 | 5 | + new first call, faithfulness rule, word range (`37511ca`) | 8 complete (9th cut off) | 5 of 8 | 3 | 5 (2) | $0.0265 |
 | 6 | same code as 5 | 8 (sentence 1 missing, sentence 16 added) | 6 of 8 | 6 | 2 (0) | $0.0211 |
-| 7 | same code, fallback on | 1 (the Kumasi sentence, from the screen) | 0 of 1 | 0 | 1 (0) | $0.0051 |
+| 7 | same code | 1 (the Kumasi sentence, from the screen) | 0 of 1 | 0 | 1 (0) | $0.0051 |
 
 Notes
 - **Run 4 against runs 5–6 on sentences 1–8:** 8 of 8, then 5 of 8, then 6 of 8 (with one sentence swapped). The failures moved: Kumasi failed in both later runs; succession planning and reflexive analysis failed in run 5 (succession planning was not clicked in run 6); data collection failed in run 6 only.
@@ -68,6 +68,7 @@ Notes
 
 - By shape (retry, 7 each): same order 1, two sentences 1, starts elsewhere 1, verb clauses 2, two sentences + verb clauses 1: no shape stands out. First call: same order 6 of 16, starts elsewhere 5 of 16, two sentences 3 of 16.
 - By length ratio of the spelled-out candidates: 1.3–1.5× 3 of 5, 1.5–1.7× 7 of 26, 1.7–1.9× 8 of 42, 1.9–2.3× 2 of 10: no gain beyond 1.5×.
+- In a third run (15:04) the Kumasi sentence again gave 10 rewrites, all at 100%.
 - By sentence (all spelled-out candidates): "Existing informal mechanisms…" 3 of 3, sub-Saharan 5 of 6, interpretivist 5 of 11, empirical results 3 of 6, purposive 3 of 11, reflexive 1 of 11, succession planning 0 of 8, data collection 0 of 11, **Kumasi 0 of 16**.
 - In 2 of 8 clicks in run 6 the spelled-out rewrites passed where both ordinary ones failed (sub-Saharan, empirical results): without them those clicks would have needed a retry.
 - The "ordinary" rewrites are not always ordinary: in run 5, 6 of the 16 were longer than the 30% they were asked to stay within (up to 1.74×).
@@ -98,35 +99,6 @@ A list of four items. Each item kept or reworded, in a single sentence and in a 
 ### E3. Do passing rewrites keep fewer of the original's words? (`retention.py`)
 27 full-text rewrites from runs 3–4. Passing rewrites (22) keep on average 0.75 of the original's content words, failing ones (5) 0.80. **No difference**, so "replace more words" is not a lever.
 
-### E4. A small connective (`connectives.py`, `connectives_all.py`)
-The same text with and without one extra word.
-
-| Added to a rewrite that scored 97–100% | At 30% or below |
-|---|---|
-| as is | 0 of 5 |
-| ends "…too." | **5 of 5** (including Kumasi, 100% → 27%) |
-| starts "In this way," | 4 of 5 |
-| ends "…as well." | 3 of 5 |
-| starts "Overall," | 0 of 5 |
-| starts "Also," | 1 of 5 |
-
-On the 16 untouched original sentences the effect is smaller: final "too" 4 of 16 (one already passed), "as well" 3 of 16, "In this way," 5 of 16. So it works best on a sentence that has already been restructured. Scored alone, the original of sentence 4 is already at 9%.
-
-### E5. Does the fact guard reject these variants? (`guard_check.py`)
-No: "too", "as well" and "In this way," were accepted on all 5 failing rewrites and on all 16 originals; none of them is on the guard's stock-phrase list.
-
-### E6. The fallback end to end (`fallback_e2e.py`)
-Real detector and real guard, Gemini mocked with rewrites that really failed in earlier runs, both calls failing:
-
-| Sentence | Result | Shown |
-|---|---|---|
-| Kumasi | 100% → 15% | "In this way, in Kumasi, Ghana, …" |
-| Succession planning | 100% → 13% | "…nursing leadership as well." |
-| Emerging leaders | 100% → 23% | "…served the same purpose too." |
-
-The lowest score chose "In this way," for Kumasi, which reads awkwardly.
-
-**First live use (run 7, 15:04):** the Kumasi sentence again. First call: all 5 rewrites at 100% (ordinary 1.30× and 1.37×, spelled out 1.78–1.81×); retry: all 5 at 100% (1.78–1.89×); the fallback then tried 12 variants ("too" and "as well" on 5 rewrites, "In this way," on 2) and **every one scored 100%**. The page showed the best rewrite as "Humanized" and "Recommended" (green) at 100%. The click took 22.8 s, of which the fallback was 3.6 s. So the offline "5 of 5" (E4) was not general: it used one earlier Kumasi rewrite that flipped (27%), and none of these five did. The Kumasi sentence is now 0 of 24 spelled-out candidates over three runs and 0 of 12 fallback variants.
 
 ---
 
@@ -148,14 +120,11 @@ A visible example in run 5: the winner "Purposive sampling was used when recruit
 
 - Whether the first-call change (2 ordinary + 3 spelled out) beats the old first call: two runs, 3 of 8 and 6 of 8, against 2, 3 and 3 of 8 before.
 - Whether the faithfulness rule or the word range lowered the retry's success (5 of 6 in run 4, 2 of 7 in runs 5–6), or whether that is variance.
-- How often the connective fallback works on a live Gemini run: one live use, no rescue (Kumasi); and how its rewrites read.
-- How often a spelled-out rewrite drifts (5 checked).
 - One paper, one detector (the local BERT model), one Gemini model.
 
 ## 6. Decisions taken
-- The fix for sentences that fail every rewrite is a code fallback, not a prompt rule: every variant is scored and guarded before it is shown, no Gemini call is needed, and the faithfulness rule for Gemini stays strict.
 - Faithfulness is asked in the prompt only, not in the guard.
-- Not done: showing the passing rewrite closest to the original's length (it changes which rewrite the page recommends); any frontend change; a third Gemini attempt.
+- Not done: showing the passing rewrite closest to the original's length (it changes which rewrite the page recommends); a third Gemini attempt.
 - The diagnostic log stays out of the shared repo.
 
 ## 7. Scripts
