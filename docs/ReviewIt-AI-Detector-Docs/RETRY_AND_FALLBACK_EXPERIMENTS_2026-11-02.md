@@ -50,6 +50,7 @@ Scored alone, 15 of them are at 98–100%; sentence 4 scores only 9% alone (its 
 | 4 | new Academic retry text (`243696f`) | 16 | **15 of 16** | 10 | 6 (5) | $0.039 |
 | 5 | + new first call, faithfulness rule, word range (`37511ca`) | 8 complete (9th cut off) | 5 of 8 | 3 | 5 (2) | $0.0265 |
 | 6 | same code as 5 | 8 (sentence 1 missing, sentence 16 added) | 6 of 8 | 6 | 2 (0) | $0.0211 |
+| 7 | same code, fallback on | 1 (the Kumasi sentence, from the screen) | 0 of 1 | 0 | 1 (0) | $0.0051 |
 
 Notes
 - **Run 4 against runs 5–6 on sentences 1–8:** 8 of 8, then 5 of 8, then 6 of 8 (with one sentence swapped). The failures moved: Kumasi failed in both later runs; succession planning and reflexive analysis failed in run 5 (succession planning was not clicked in run 6); data collection failed in run 6 only.
@@ -125,6 +126,8 @@ Real detector and real guard, Gemini mocked with rewrites that really failed in 
 
 The lowest score chose "In this way," for Kumasi, which reads awkwardly.
 
+**First live use (run 7, 15:04):** the Kumasi sentence again. First call: all 5 rewrites at 100% (ordinary 1.30× and 1.37×, spelled out 1.78–1.81×); retry: all 5 at 100% (1.78–1.89×); the fallback then tried 12 variants ("too" and "as well" on 5 rewrites, "In this way," on 2) and **every one scored 100%**. The page showed the best rewrite as "Humanized" and "Recommended" (green) at 100%. The click took 22.8 s, of which the fallback was 3.6 s. So the offline "5 of 5" (E4) was not general: it used one earlier Kumasi rewrite that flipped (27%), and none of these five did. The Kumasi sentence is now 0 of 24 spelled-out candidates over three runs and 0 of 12 fallback variants.
+
 ---
 
 ## 4. Faithfulness check of 5 retry rewrites (run 4)
@@ -145,7 +148,7 @@ A visible example in run 5: the winner "Purposive sampling was used when recruit
 
 - Whether the first-call change (2 ordinary + 3 spelled out) beats the old first call: two runs, 3 of 8 and 6 of 8, against 2, 3 and 3 of 8 before.
 - Whether the faithfulness rule or the word range lowered the retry's success (5 of 6 in run 4, 2 of 7 in runs 5–6), or whether that is variance.
-- Whether the connective fallback works on a live Gemini run, and how its rewrites read.
+- How often the connective fallback works on a live Gemini run: one live use, no rescue (Kumasi); and how its rewrites read.
 - How often a spelled-out rewrite drifts (5 checked).
 - One paper, one detector (the local BERT model), one Gemini model.
 

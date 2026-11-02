@@ -10,7 +10,7 @@ Last updated 2026-11-02. Branch: `abdullah/humanizer-new-engine` (ReviewIt). Fin
 
 ## Decisions for you
 - [ ] Among rewrites at 30% or below, show the one closest to the original's length instead of the lowest score (`OPEN_ISSUES.md` B6). It changes which rewrite the page recommends, so it was left out on 2 Nov
-- [ ] Tell the colleague that the page shows a rewrite that stayed above 30% as human, and that the API has no field for it (`OPEN_ISSUES.md` F1 (9)); a field is a contract change
+- [ ] The page shows a rewrite that stayed above 30% as human, green, although the answer's `new_score` says it did not pass (`OPEN_ISSUES.md` F1 (9)). Deciding what it should show (for example amber, "could not reach the target") is a frontend change in the colleague's files (`lib/humanize.ts`, `sentence-breakdown.tsx`, `page.tsx`); it needs no API change
 - [ ] A third Gemini attempt for sentences that still fail: about $0.002 each, and no gain is expected for the sentences that fail every rewrite (B4); not built
 
 ## Before anything goes to main
