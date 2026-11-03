@@ -95,9 +95,10 @@ def main():
     stem = os.path.join(out, f"smaug_{a.set}_crops{a.crops}")
     with open(stem + ".csv", "w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
-        w.writerow(["file", "label", "model", "score", "predicted"])
+        w.writerow(["file", "label", "model", "subject", "split", "score", "predicted"])
         for it, s, p in zip(items, scores, pred):
-            w.writerow([it["file"], it["label"], it["model"], f"{s:.4f}", "fake" if p else "real"])
+            w.writerow([it["file"], it["label"], it["model"], it.get("subject", ""), it.get("split", ""),
+                        f"{s:.4f}", "fake" if p else "real"])
     with open(stem + "_summary.txt", "w", encoding="utf-8") as f:
         f.write(report + "\n")
     print(f"\nsaved {stem}.csv and _summary.txt")

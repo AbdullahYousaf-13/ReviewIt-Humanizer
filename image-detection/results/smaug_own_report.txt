@@ -1,0 +1,39 @@
+Smaug-AI-Image-Detector, validation on our own test set (50 real Open Images + 50 AI from 5 free tools)
+Final rows = 30 real + 30 AI. Threshold tuned on the 20 + 20 tuning rows only.
+
+=== JPEG re-save q85 (MAIN) ===
+AUC (final): 0.992   tuned threshold: 0.029
+  at default 0.5  AI caught  53.3% (16/30, 95% range 36-70%)
+                  real flagged   0.0% (0/30, 95% range 0-11%)
+  at tuned 0.029  AI caught  70.0% (21/30, 95% range 52-83%)
+                  real flagged   0.0% (0/30, 95% range 0-11%)
+  (tuning rows at tuned threshold: caught 20/20, real flagged 0/20)
+  caught per tool (all 10 each, tuned threshold): chatgpt 8/10, gemini 7/10, leonardo 8/10, metaai 9/10, recraft 9/10
+
+=== original files ===
+AUC (final): 0.985   tuned threshold: 0.037
+  at default 0.5  AI caught  56.7% (17/30, 95% range 39-73%)
+                  real flagged   0.0% (0/30, 95% range 0-11%)
+  at tuned 0.037  AI caught  70.0% (21/30, 95% range 52-83%)
+                  real flagged   0.0% (0/30, 95% range 0-11%)
+  (tuning rows at tuned threshold: caught 20/20, real flagged 0/20)
+  caught per tool (all 10 each, tuned threshold): chatgpt 9/10, gemini 7/10, leonardo 8/10, metaai 9/10, recraft 8/10
+
+=== shrunk to 512 px ===
+AUC (final): 0.975   tuned threshold: 0.040
+  at default 0.5  AI caught  66.7% (20/30, 95% range 49-81%)
+                  real flagged   0.0% (0/30, 95% range 0-11%)
+  at tuned 0.040  AI caught  76.7% (23/30, 95% range 59-88%)
+                  real flagged   0.0% (0/30, 95% range 0-11%)
+  (tuning rows at tuned threshold: caught 20/20, real flagged 2/20)
+  caught per tool (all 10 each, tuned threshold): chatgpt 9/10, gemini 6/10, leonardo 9/10, metaai 9/10, recraft 10/10
+
+=== screenshot-style 800 px PNG ===
+AUC (final): 0.981   tuned threshold: 0.044
+  at default 0.5  AI caught  60.0% (18/30, 95% range 42-75%)
+                  real flagged   0.0% (0/30, 95% range 0-11%)
+  at tuned 0.044  AI caught  73.3% (22/30, 95% range 56-86%)
+                  real flagged   3.3% (1/30, 95% range 1-17%)
+  (tuning rows at tuned threshold: caught 20/20, real flagged 0/20)
+  caught per tool (all 10 each, tuned threshold): chatgpt 9/10, gemini 8/10, leonardo 8/10, metaai 9/10, recraft 8/10
+

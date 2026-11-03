@@ -1,0 +1,14 @@
+Smaug-AI-Image-Detector on test-images/own_jpeg (50 real, 50 AI), crops=3, threshold=0.5
+Accuracy:                    83.0% (83/100)
+AUC:                         0.9912
+AI images caught:            66.0% (33/50)
+Real photos flagged as AI:   0.0% (0/50)
+Speed (CPU):                 load 23.9s, 14.28s per image
+
+Correct by group (AI = generator, REAL = photo source):
+  AI   chatgpt                     70.0% (7/10)
+  AI   gemini                      40.0% (4/10)
+  AI   leonardo                    60.0% (6/10)
+  AI   metaai                      80.0% (8/10)
+  AI   recraft                     80.0% (8/10)
+  REAL openimages                  100.0% (50/50)
