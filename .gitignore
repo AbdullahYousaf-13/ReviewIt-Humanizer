@@ -22,3 +22,6 @@ __pycache__/
 # OS / editor junk
 .DS_Store
 Thumbs.db
+
+# Image detection: downloaded test images (OpenFake is non-commercial; never commit)
+image-detection/test-images/
