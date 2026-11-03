@@ -45,18 +45,18 @@ For every image: new chat, paste the line exactly, take the first image, downloa
 - `metaai__monument-3`: A photograph of an ancient ruined temple with columns under a clear sky. Name the image "metaai__monument-3". Do not write any text or this name on the image.
 - `metaai__vehicle-3`: A photograph of a bicycle leaning against a brick wall. Name the image "metaai__vehicle-3". Do not write any text or this name on the image.
 
-## 4. Copilot (copilot.microsoft.com)
+## 4. Leonardo.ai (leonardo.ai)
 
-- `copilot__mountain-4`: A photograph of a mountain village with wooden houses below a steep cliff, early morning mist. Name the image "copilot__mountain-4". Do not write any text or this name on the image.
-- `copilot__coast-4`: A photo of a quiet bay with turquoise water and a pebble beach, seen from a hillside. Name the image "copilot__coast-4". Do not write any text or this name on the image.
-- `copilot__forest-4`: A photo of a forest clearing with ferns and fallen leaves in autumn, taken with a phone. Name the image "copilot__forest-4". Do not write any text or this name on the image.
-- `copilot__street-4`: A photo of a market street with colourful stalls and awnings, seen from the end of the road. Name the image "copilot__street-4". Do not write any text or this name on the image.
-- `copilot__interior-4`: A photo of a bedroom with an unmade bed and a desk next to a window. Name the image "copilot__interior-4". Do not write any text or this name on the image.
-- `copilot__food-4`: A photo of a slice of chocolate cake on a plate next to a cup of coffee. Name the image "copilot__food-4". Do not write any text or this name on the image.
-- `copilot__flower-4`: A photo of a pink rose with water drops after rain. Name the image "copilot__flower-4". Do not write any text or this name on the image.
-- `copilot__animal-4`: A photo of a flock of ducks swimming on a calm pond. Name the image "copilot__animal-4". Do not write any text or this name on the image.
-- `copilot__monument-4`: A photo of a stone bridge with arches over a river in a historic town. Name the image "copilot__monument-4". Do not write any text or this name on the image.
-- `copilot__vehicle-4`: A photo of a fishing boat tied up at a wooden dock in the early morning. Name the image "copilot__vehicle-4". Do not write any text or this name on the image.
+- `leonardo__mountain-4`: A photograph of a mountain village with wooden houses below a steep cliff, early morning mist. Name the image "leonardo__mountain-4". Do not write any text or this name on the image.
+- `leonardo__coast-4`: A photo of a quiet bay with turquoise water and a pebble beach, seen from a hillside. Name the image "leonardo__coast-4". Do not write any text or this name on the image.
+- `leonardo__forest-4`: A photo of a forest clearing with ferns and fallen leaves in autumn, taken with a phone. Name the image "leonardo__forest-4". Do not write any text or this name on the image.
+- `leonardo__street-4`: A photo of a market street with colourful stalls and awnings, seen from the end of the road. Name the image "leonardo__street-4". Do not write any text or this name on the image.
+- `leonardo__interior-4`: A photo of a bedroom with an unmade bed and a desk next to a window. Name the image "leonardo__interior-4". Do not write any text or this name on the image.
+- `leonardo__food-4`: A photo of a slice of chocolate cake on a plate next to a cup of coffee. Name the image "leonardo__food-4". Do not write any text or this name on the image.
+- `leonardo__flower-4`: A photo of a pink rose with water drops after rain. Name the image "leonardo__flower-4". Do not write any text or this name on the image.
+- `leonardo__animal-4`: A photo of a flock of ducks swimming on a calm pond. Name the image "leonardo__animal-4". Do not write any text or this name on the image.
+- `leonardo__monument-4`: A photo of a stone bridge with arches over a river in a historic town. Name the image "leonardo__monument-4". Do not write any text or this name on the image.
+- `leonardo__vehicle-4`: A photo of a fishing boat tied up at a wooden dock in the early morning. Name the image "leonardo__vehicle-4". Do not write any text or this name on the image.
 
 ## 5. Ideogram (ideogram.ai)
 
