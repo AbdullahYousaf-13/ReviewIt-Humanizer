@@ -58,15 +58,15 @@ For every image: new chat, paste the line exactly, take the first image, downloa
 - `leonardo__monument-4`: A photo of a stone bridge with arches over a river in a historic town. Name the image "leonardo__monument-4". Do not write any text or this name on the image.
 - `leonardo__vehicle-4`: A photo of a fishing boat tied up at a wooden dock in the early morning. Name the image "leonardo__vehicle-4". Do not write any text or this name on the image.
 
-## 5. Ideogram (ideogram.ai)
+## 5. Recraft (recraft.ai)
 
-- `ideogram__mountain-5`: A photo of a mountain ridge covered in autumn forest, taken from a hiking trail. Name the image "ideogram__mountain-5". Do not write any text or this name on the image.
-- `ideogram__coast-5`: A photograph of a lighthouse on a grassy headland above the sea at dusk. Name the image "ideogram__coast-5". Do not write any text or this name on the image.
-- `ideogram__forest-5`: A photograph of a wooden footbridge crossing a creek in a green forest. Name the image "ideogram__forest-5". Do not write any text or this name on the image.
-- `ideogram__street-5`: A photograph of a crosswalk and traffic lights at a city intersection at dusk. Name the image "ideogram__street-5". Do not write any text or this name on the image.
-- `ideogram__interior-5`: A photograph of a library reading room with long tables and tall shelves. Name the image "ideogram__interior-5". Do not write any text or this name on the image.
-- `ideogram__food-5`: A photograph of a breakfast table with eggs, toast and orange juice. Name the image "ideogram__food-5". Do not write any text or this name on the image.
-- `ideogram__flower-5`: A photograph of lavender fields in rows, taken at golden hour. Name the image "ideogram__flower-5". Do not write any text or this name on the image.
-- `ideogram__animal-5`: A photograph of a horse grazing in a field with hills behind it. Name the image "ideogram__animal-5". Do not write any text or this name on the image.
-- `ideogram__monument-5`: A photograph of a mosque with a dome and two minarets at sunset. Name the image "ideogram__monument-5". Do not write any text or this name on the image.
-- `ideogram__vehicle-5`: A photograph of a yellow bus on a country road with fields on both sides. Name the image "ideogram__vehicle-5". Do not write any text or this name on the image.
+- `recraft__mountain-5`: A photo of a mountain ridge covered in autumn forest, taken from a hiking trail. Name the image "recraft__mountain-5". Do not write any text or this name on the image.
+- `recraft__coast-5`: A photograph of a lighthouse on a grassy headland above the sea at dusk. Name the image "recraft__coast-5". Do not write any text or this name on the image.
+- `recraft__forest-5`: A photograph of a wooden footbridge crossing a creek in a green forest. Name the image "recraft__forest-5". Do not write any text or this name on the image.
+- `recraft__street-5`: A photograph of a crosswalk and traffic lights at a city intersection at dusk. Name the image "recraft__street-5". Do not write any text or this name on the image.
+- `recraft__interior-5`: A photograph of a library reading room with long tables and tall shelves. Name the image "recraft__interior-5". Do not write any text or this name on the image.
+- `recraft__food-5`: A photograph of a breakfast table with eggs, toast and orange juice. Name the image "recraft__food-5". Do not write any text or this name on the image.
+- `recraft__flower-5`: A photograph of lavender fields in rows, taken at golden hour. Name the image "recraft__flower-5". Do not write any text or this name on the image.
+- `recraft__animal-5`: A photograph of a horse grazing in a field with hills behind it. Name the image "recraft__animal-5". Do not write any text or this name on the image.
+- `recraft__monument-5`: A photograph of a mosque with a dome and two minarets at sunset. Name the image "recraft__monument-5". Do not write any text or this name on the image.
+- `recraft__vehicle-5`: A photograph of a yellow bus on a country road with fields on both sides. Name the image "recraft__vehicle-5". Do not write any text or this name on the image.

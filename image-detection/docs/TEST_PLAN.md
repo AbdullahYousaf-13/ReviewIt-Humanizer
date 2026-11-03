@@ -20,11 +20,11 @@ Limit: with only 50 real photos, even zero mistakes only shows the false-alarm r
 
 ## How to generate the AI images
 
-1. Five tools, one per column below (Copilot was dropped on 3 Nov 2026 because its free tier gives only 3 images; Leonardo.ai replaced it. Keep 5 tools).
+1. Five tools, one per column below (Copilot was dropped on 3 Nov 2026 because its free tier gives only 3 images; Leonardo.ai replaced it. Ideogram was dropped because it is not free; Recraft replaced it. Keep 5 tools).
 2. **Tool k generates prompt variant k of every subject** (10 images per tool). Example: Gemini is tool 2, so it generates `mountain-2`, `coast-2`, ... `vehicle-2`.
 3. For each prompt, open a **new chat**, paste the prompt exactly, and take the **first** image. Ready-to-paste versions, which add a request to name the image and not to write text on it, are in [PROMPTS_COPY_PASTE.md](PROMPTS_COPY_PASTE.md). Tools often ignore the naming request, so rename the file by hand if needed. Do not regenerate or edit it. If a tool refuses, note it and use a different tool for that prompt.
 4. Download the file with the tool's **download button**. No screenshots, no editing, no converting. Keep visible watermarks as they are; customers will upload those too.
-5. Save to `image-detection/test-images/own_test/fake/` named `<tool>__<promptid>.<ext>`, for example `gemini__mountain-2.png`. Tool names: `chatgpt`, `gemini`, `metaai`, `leonardo`, `ideogram`.
+5. Save to `image-detection/test-images/own_test/fake/` named `<tool>__<promptid>.<ext>`, for example `gemini__mountain-2.png`. Tool names: `chatgpt`, `gemini`, `metaai`, `leonardo`, `recraft`.
 6. Free tiers have daily limits, so spreading this over a few days is fine. Write down the model version if the tool shows one.
 
 | Tool | Variant |
@@ -33,7 +33,7 @@ Limit: with only 50 real photos, even zero mistakes only shows the false-alarm r
 | gemini | 2 |
 | metaai | 3 |
 | leonardo | 4 |
-| ideogram | 5 |
+| recraft | 5 |
 
 ## Prompts (paste exactly)
 
