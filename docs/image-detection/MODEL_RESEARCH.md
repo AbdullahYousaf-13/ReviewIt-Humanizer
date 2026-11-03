@@ -102,12 +102,12 @@ At 5% false alarms, Smaug catches 86.7% (Reddit), 95.8% (Core) and 92.2% (CF) of
 | prithivMLmods/deepfake-detector-model-v1 | Targets face deepfakes; small private dataset; marked "experimental" |
 | ash12321/flux-detector-vit | Detects Flux only; labels everything else as "Real" |
 
-## 5. Open questions for the supervisor
+## 5. Decisions (3 Nov 2026)
 
-1. **Commercial use:** will ReviewIt be a commercial product? If so, only Apache 2.0 or MIT models are allowed (Smaug, Community Forensics, Bombek1). That rules out B-Free, OpenFake and Organika.
-2. **Hardware:** where will this run, on a CPU-only server or with a GPU? Smaug and Community Forensics both work on CPU.
-3. **Single model or ensemble:** the benchmark recommends an ensemble (for example Smaug + Community Forensics), which costs more compute.
-4. **Image types:** photos only, or artwork, screenshots and partly AI-edited images too? All the models are weaker on those.
+1. **Commercial use: yes.** review-it.ai charges for its service: $6.99 per document, $59 per month for unlimited reviews, and no free trial. So only models with a commercial-friendly licence (Apache 2.0 or MIT) can be used: Smaug, Community Forensics and Bombek1. B-Free, OpenFake-SwinV2 and Organika are ruled out (non-commercial licences), and umm-maybe is ruled out too (CC BY-ND).
+2. **Hardware:** for now everything runs on the user's laptop, CPU only. A GPU may be added later, so every candidate must run on CPU.
+3. **Single model or ensemble:** test both and keep whichever scores best on our own test set.
+4. **Image types:** the focus is AI-generated images. AI-edited photos, screenshots and artwork are secondary.
 
 ## 6. Sources
 - Ren et al., *How well are open sourced AI-generated image detection models out-of-the-box*, arXiv 2602.07814: https://arxiv.org/html/2602.07814v1
