@@ -1,0 +1,28 @@
+Smaug-AI-Image-Detector on test-images/openfake_core (50 real, 50 AI), crops=3, threshold=0.5
+Accuracy:                    96.0% (96/100)
+AUC:                         0.9888
+AI images caught:            94.0% (47/50)
+Real photos flagged as AI:   2.0% (1/50)
+Speed (CPU):                 load 35.7s, 14.30s per image
+
+Correct by group (AI = generator, REAL = photo source):
+  AI   aurora-20-1-25              100.0% (1/1)
+  AI   ernie-image                 100.0% (1/1)
+  AI   ernie-image-turbo           100.0% (4/4)
+  AI   flux.2-klein-9b             100.0% (4/4)
+  AI   frames-23-1-25              50.0% (2/4)
+  AI   gpt-image-1.5               100.0% (4/4)
+  AI   gpt-image-2                 100.0% (3/3)
+  AI   halfmoon-4-4-25             100.0% (1/1)
+  AI   ideogram-2.0                100.0% (1/1)
+  AI   illustrious                 100.0% (4/4)
+  AI   lumina-17-2-25              100.0% (4/4)
+  AI   midjourney-7                100.0% (4/4)
+  AI   nano-banana-pro             100.0% (1/1)
+  AI   recraft-v3                  100.0% (2/2)
+  AI   sora-2                      100.0% (3/3)
+  AI   veo-3                       66.7% (2/3)
+  AI   wan-video-2.5               100.0% (3/3)
+  AI   z-image-turbo               100.0% (3/3)
+  REAL docci                       100.0% (16/16)
+  REAL imagenet                    97.1% (33/34)
