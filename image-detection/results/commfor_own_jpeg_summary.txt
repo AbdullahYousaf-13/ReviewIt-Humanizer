@@ -1,0 +1,14 @@
+Community Forensics (commfor-model-384) on test-images/own_jpeg (50 real, 50 AI), threshold=0.5
+Accuracy:                    55.0% (55/100)
+AUC:                         0.8688
+AI images caught:            10.0% (5/50)
+Real photos flagged as AI:   0.0% (0/50)
+Speed (CPU):                 load 1.4s, 0.39s per image
+
+Correct by group (AI = generator, REAL = photo source):
+  AI   chatgpt                     0.0% (0/10)
+  AI   gemini                      0.0% (0/10)
+  AI   leonardo                    20.0% (2/10)
+  AI   metaai                      20.0% (2/10)
+  AI   recraft                     10.0% (1/10)
+  REAL openimages                  100.0% (50/50)
