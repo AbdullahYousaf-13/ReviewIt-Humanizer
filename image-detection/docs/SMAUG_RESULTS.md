@@ -25,7 +25,7 @@ Caught per tool (all 10 each, cutoff 0.5, JPEG re-save): Meta AI 8, Recraft 8, C
 
 ## What it means
 
-- **No false alarms at the default cutoff.** Real photos all score below about 0.005. At 30 real photos the true false-alarm rate could still be up to about 11%.
+- **Almost no false alarms at the default cutoff.** On all 50 real photos at 0.5: 0 flagged in the JPEG re-save, original and screenshot versions, and 2 of 50 in the 512 px version (both in the tuning part; 0 of the 30 final real photos). At this sample size the true false-alarm rate could still be up to about 11%.
 - **It misses a lot of AI images.** About half to two thirds are caught at 0.5, depending on the version. The ranking is very good (AUC 0.975 to 0.992): the AI images it misses score close to the real photos, not in between.
 - **File format is not the clue.** Original files and JPEG re-save give nearly the same result.
 - **Shrinking or screenshots do not break it.** Differences are within the 95% ranges.
