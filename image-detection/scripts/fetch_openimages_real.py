@@ -35,7 +35,7 @@ CLIP = "openai/clip-vit-base-patch32"
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.normpath(os.path.join(HERE, "..", "test-images", "own_test"))
 
-# subject -> CLIP prompt. Subjects must match the AI prompt list (docs/TEST_PLAN.md).
+# subject -> CLIP prompt. Subjects must match the AI prompt list (docs/03_TEST_PROMPTS.md).
 SUBJECTS = {
     "mountain": "a photo of mountains",
     "coast": "a photo of a beach or sea coast",
