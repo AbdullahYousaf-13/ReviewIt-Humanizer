@@ -1,0 +1,14 @@
+Bombek1 SigLIP2+DINOv2 on test-images/own_jpeg (50 real, 50 AI), threshold=0.5
+Accuracy:                    94.0% (94/100)
+AUC:                         0.9856
+AI images caught:            100.0% (50/50)
+Real photos flagged as AI:   12.0% (6/50)
+Speed (CPU):                 load 19.2s, 47.65s per image
+
+Correct by group (AI = generator, REAL = photo source):
+  AI   chatgpt                     100.0% (10/10)
+  AI   gemini                      100.0% (10/10)
+  AI   leonardo                    100.0% (10/10)
+  AI   metaai                      100.0% (10/10)
+  AI   recraft                     100.0% (10/10)
+  REAL openimages                  88.0% (44/50)
