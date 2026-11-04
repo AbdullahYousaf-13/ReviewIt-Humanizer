@@ -1,4 +1,4 @@
-# AI image detector: results of all tests
+﻿# AI image detector: results of all tests
 
 Cutoff 0.5, laptop CPU. Own set = 50 real photos (Open Images) + 50 AI images (ChatGPT, Gemini, Meta AI, Leonardo, Recraft). Plan: [TEST_PLAN.md](TEST_PLAN.md).
 
@@ -29,6 +29,25 @@ Cutoff 0.5, laptop CPU. Own set = 50 real photos (Open Images) + 50 AI images (C
 
 Real photos wrongly called AI by Bombek1 (6): flower_04, animal_03, flower_02, forest_04, mountain_03, coast_05 (scores 0.58 to 0.93).
 
+## Combining models (exploratory, uses the scores above, no new runs)
+
+Combined score = square root of (Smaug score x Bombek1 score). Own set, JPEG re-save.
+
+| Rule | Real wrongly called AI | AI caught | Note |
+|---|---|---|---|
+| Smaug alone, cutoff 0.5 | 0/50 | 33/50 | all 100 images |
+| Bombek1 alone, cutoff 0.5 | 6/50 | 50/50 | all 100 images |
+| Smaug AND Bombek1 agree (both 0.5) | 0/50 | 33/50 | no gain over Smaug |
+| Average of the two, cutoff 0.5 | 0/50 | 40/50 | all 100 images |
+| **Combined score, cutoff 0.5** | **0/50** | **37/50** | all 100 images, AUC 0.999 |
+| Combined score, cutoff 0.096 chosen on 20 + 20 tuning images | 0/30 | 24/30 (80%, range 63 to 90%) | fair test: 30 + 30 final images |
+| Same rule for Smaug alone (cutoff 0.017) | 0/30 | 22/30 (73%, range 56 to 86%) | fair test: 30 + 30 final images |
+| Combined score, cutoff 0.05 picked after seeing all 100 | 0/50 | 46/50 | optimistic ceiling, not a result |
+
+- Combined score separates real from AI almost perfectly (AUC 0.999), better than either model alone (0.992 and 0.986).
+- Fair gain is small: 80% caught against 73% for Smaug, inside the margin of error with 30 images per class.
+- Adding Community Forensics did not help (average of all three: no better than Smaug).
+
 ## Models
 
 | Model | Size | Licence | In ReviewIt |
@@ -42,5 +61,5 @@ Real photos wrongly called AI by Bombek1 (6): flower_04, animal_03, flower_02, f
 - Smaug: no real photo flagged, about two thirds of AI images caught (cautious).
 - Bombek1: every AI image caught (50/50), but 6 of 50 real photos (12%, 95% range 6 to 24%) wrongly called AI (aggressive). Best overall score, slowest (about 48 s per image).
 - Community Forensics: fast but catches only 10% at 0.5.
-- Not yet tested: combining models.
+- Combining Smaug and Bombek1: see the combinations table.
 - Small sample (50 + 50). Open Images may be in the models' training data.
