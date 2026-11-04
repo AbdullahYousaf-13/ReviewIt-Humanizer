@@ -1,6 +1,6 @@
-# 03 Test prompts: AI image generation
+# Test prompts: AI image generation
 
-Plan: [02_TEST_PLAN.md](02_TEST_PLAN.md). 50 prompts: 10 subjects x 5 variants. Tool k uses variant k.
+Plan: [TEST_PLAN.md](TEST_PLAN.md). 50 prompts: 10 subjects x 5 variants. Tool k uses variant k.
 
 Paste the prompt, then add this sentence with the file name from the last column:
 

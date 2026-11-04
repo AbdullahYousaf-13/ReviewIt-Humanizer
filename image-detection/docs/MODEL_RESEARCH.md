@@ -1,6 +1,6 @@
-# 01 Model research: AI-generated image detectors
+# Model research: AI-generated image detectors
 
-Date: 3 Nov 2026. Results of testing: [04_TEST_RESULTS.md](04_TEST_RESULTS.md).
+Date: 3 Nov 2026. Results of testing: [TEST_RESULTS.md](TEST_RESULTS.md).
 
 ## Constraints
 

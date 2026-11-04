@@ -1,6 +1,6 @@
-# 04 Test results
+# Test results
 
-Date: 4 Nov 2026. Plan: [02_TEST_PLAN.md](02_TEST_PLAN.md). Cutoff 0.5 unless stated. Laptop CPU, 7.8 GB RAM.
+Date: 4 Nov 2026. Plan: [TEST_PLAN.md](TEST_PLAN.md). Cutoff 0.5 unless stated. Laptop CPU, 7.8 GB RAM.
 Test set: 50 real photos + 50 AI images (ChatGPT, Gemini, Meta AI, Leonardo.ai, Recraft; 10 each). Main version: JPEG re-save.
 Raw scores: `image-detection/results/*.csv`.
 
