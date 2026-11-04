@@ -1,0 +1,10 @@
+Smaug-AI-Image-Detector on test-images/own_formats (100 real, 0 AI), crops=3, threshold=0.5
+Accuracy:                    100.0% (100/100)
+AUC:                         nan
+AI images caught:            n/a
+Real photos flagged as AI:   0.0% (0/100)
+Speed (CPU):                 load 40.3s, 10.93s per image
+
+Correct by group (AI = generator, REAL = photo source):
+  REAL converted_png               100.0% (50/50)
+  REAL converted_webp              100.0% (50/50)

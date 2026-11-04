@@ -55,13 +55,25 @@ def main():
     load_s = time.perf_counter() - t0
     print(f"model loaded in {load_s:.1f}s on {det.st.device}")
 
-    scores = []
+    # every score is saved as it is produced, so a crash or sleep loses nothing and a rerun resumes
+    os.makedirs(os.path.join(ROOT, "results"), exist_ok=True)
+    partial = os.path.join(ROOT, "results", f"smaug_{a.set}_crops{a.crops}_partial.csv")
+    done = {}
+    if os.path.exists(partial):
+        with open(partial, encoding="utf-8") as f:
+            done = {r[0]: float(r[1]) for r in csv.reader(f) if len(r) == 2}
+        print(f"resuming: {len(done)} scores already saved")
+    todo = [it for it in items if it["file"] not in done]
     t1 = time.perf_counter()
-    for i in range(0, len(items), a.batch_size):
-        batch = items[i:i + a.batch_size]
-        scores += det([os.path.join(set_dir, it["file"]) for it in batch], crops=a.crops, batch_size=a.batch_size)
-        print(f"  scored {len(scores)}/{len(items)}", flush=True)
-    per_img = (time.perf_counter() - t1) / len(items)
+    for i in range(0, len(todo), a.batch_size):
+        batch = todo[i:i + a.batch_size]
+        got = det([os.path.join(set_dir, it["file"]) for it in batch], crops=a.crops, batch_size=a.batch_size)
+        with open(partial, "a", newline="", encoding="utf-8") as f:
+            csv.writer(f).writerows([it["file"], repr(float(s))] for it, s in zip(batch, got))
+        done.update({it["file"]: float(s) for it, s in zip(batch, got)})
+        print(f"  scored {len(done)}/{len(items)}", flush=True)
+    scores = [done[it["file"]] for it in items]
+    per_img = (time.perf_counter() - t1) / max(1, len(todo))
 
     y = [1 if it["label"] == "fake" else 0 for it in items]
     pred = [1 if s >= a.threshold else 0 for s in scores]
@@ -98,7 +110,7 @@ def main():
         w.writerow(["file", "label", "model", "subject", "split", "score", "predicted"])
         for it, s, p in zip(items, scores, pred):
             w.writerow([it["file"], it["label"], it["model"], it.get("subject", ""), it.get("split", ""),
-                        f"{s:.4f}", "fake" if p else "real"])
+                        f"{s:.6f}", "fake" if p else "real"])
     with open(stem + "_summary.txt", "w", encoding="utf-8") as f:
         f.write(report + "\n")
     print(f"\nsaved {stem}.csv and _summary.txt")

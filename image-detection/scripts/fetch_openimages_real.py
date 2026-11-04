@@ -70,8 +70,20 @@ def main():
     ap.add_argument("--min-side", type=int, default=640, help="shorter image side in pixels")
     ap.add_argument("--max-groups", type=int, default=60, help="row groups to read at most")
     ap.add_argument("--seed", type=int, default=13)
+    ap.add_argument("--out-name", default="real", help="folder under test-images/own_test/ for the photos")
+    ap.add_argument("--sources-csv", default="real_sources.csv", help="record of where each photo came from")
+    ap.add_argument("--exclude-csv", default="", help="a sources CSV whose photos must not be picked again")
+    ap.add_argument("--prefix", default="", help="file name prefix, e.g. r2_")
+    ap.add_argument("--pick", choices=["top", "random"], default="top",
+                    help="top = photos CLIP finds most typical for the subject; random = random among those that qualify")
+    ap.add_argument("--pool-factor", type=int, default=3, help="candidates to collect per subject = per-subject x this")
     a = ap.parse_args()
     rng = random.Random(a.seed)
+    exclude = set()
+    if a.exclude_csv:
+        with open(os.path.join(OUT, a.exclude_csv), encoding="utf-8") as fh:
+            exclude = {(r["shard"], int(r["row_group"]), int(r["row"])) for r in csv.DictReader(fh)}
+        print(f"excluding {len(exclude)} photos already in {a.exclude_csv}")
 
     files = sorted(s.rfilename for s in HfApi().dataset_info(REPO).siblings
                    if s.rfilename.startswith("data/test-") and s.rfilename.endswith(".parquet"))
@@ -88,7 +100,7 @@ def main():
     pool = {s: [] for s in SUBJECTS}  # subject -> [(prob, bytes, meta)]
     seen, groups = 0, 0
     for path in files:
-        if groups >= a.max_groups or all(len(v) >= a.per_subject * 3 for v in pool.values()):
+        if groups >= a.max_groups or all(len(v) >= a.per_subject * a.pool_factor for v in pool.values()):
             break
         pf = pq.ParquetFile(fs.open(f"datasets/{REPO}/{path}"))
         n_rg = pf.metadata.num_row_groups
@@ -115,7 +127,7 @@ def main():
                         if nm in sub_p:
                             sub_p[nm] += p[j, k].item()
                     s, pr = max(sub_p.items(), key=lambda kv: kv[1])
-                    if pr >= a.min_prob:
+                    if pr >= a.min_prob and (os.path.basename(path), rg, keep[b + j][0]) not in exclude:
                         i, size, labels = keep[b + j]
                         pool[s].append((pr, rows[i]["image"]["bytes"],
                                         {"shard": os.path.basename(path), "row_group": rg, "row": i,
@@ -124,19 +136,23 @@ def main():
             print(f"{os.path.basename(path)} rg{rg}: {seen} candidates, per subject: "
                   + " ".join(f"{s[:4]}={len(v)}" for s, v in pool.items()), flush=True)
 
-    os.makedirs(os.path.join(OUT, "real"), exist_ok=True)
+    os.makedirs(os.path.join(OUT, a.out_name), exist_ok=True)
     manifest = []
     for s, items in pool.items():
         if len(items) < a.per_subject:
             print(f"WARNING: only {len(items)} confident photos for '{s}' (need {a.per_subject}); "
                   f"raise --max-groups or lower --min-prob")
-        for n, (pr, data, meta) in enumerate(sorted(items, key=lambda x: -x[0])[:a.per_subject], 1):
-            name = f"{s}_{n:02d}.jpg"
-            with open(os.path.join(OUT, "real", name), "wb") as fh:
+        if a.pick == "random":
+            chosen = rng.sample(items, min(a.per_subject, len(items)))
+        else:
+            chosen = sorted(items, key=lambda x: -x[0])[:a.per_subject]
+        for n, (pr, data, meta) in enumerate(chosen, 1):
+            name = f"{a.prefix}{s}_{n:02d}.jpg"
+            with open(os.path.join(OUT, a.out_name, name), "wb") as fh:
                 fh.write(data)
-            manifest.append({"file": f"real/{name}", "subject": s, "clip_prob": f"{pr:.3f}", **meta})
+            manifest.append({"file": f"{a.out_name}/{name}", "subject": s, "clip_prob": f"{pr:.3f}", **meta})
     if manifest:
-        with open(os.path.join(OUT, "real_sources.csv"), "w", newline="", encoding="utf-8") as fh:
+        with open(os.path.join(OUT, a.sources_csv), "w", newline="", encoding="utf-8") as fh:
             w = csv.DictWriter(fh, fieldnames=list(manifest[0]))
             w.writeheader()
             w.writerows(manifest)

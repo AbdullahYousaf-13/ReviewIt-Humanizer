@@ -1,20 +1,21 @@
 # Test results
 
-Date: 4 Nov 2026. Plan: [TEST_PLAN.md](TEST_PLAN.md). Cutoff 0.5 unless stated. Laptop CPU, 7.8 GB RAM.
-Test set: 50 real photos + 50 AI images (ChatGPT, Gemini, Meta AI, Leonardo.ai, Recraft; 10 each). Main version: JPEG re-save.
+Date: 5 Nov 2026. Plan: [TEST_PLAN.md](TEST_PLAN.md). Cutoff 0.5 unless stated. Laptop CPU, 7.8 GB RAM.
+Test set: **50 AI images** (ChatGPT, Gemini, Meta AI, Leonardo.ai, Recraft; 10 each) and **387 real photos** (Open Images, no people: 50 first set + 337 second set). Main version: **original files**, as downloaded.
 Raw scores: `image-detection/results/*.csv`.
 
-Column meaning: **Real flagged** = real photos wrongly called AI (of 50, lower is better). **AI caught** = of 50. **Correct** = of 100. **AUC** = ranking quality (1.0 perfect, 0.5 guessing).
+Column meaning: **Real flagged** = real photos wrongly called AI (lower is better). **AI caught** = of 50. **Correct** = of all images scored. **AUC** = ranking quality (1.0 perfect, 0.5 guessing).
 
 ## 1. Smaug (`abacusai/Smaug-AI-Image-Detector`)
 
 | Test images | Real flagged | AI caught | Correct | AUC | Speed per image |
 |---|---|---|---|---|---|
-| OpenFake sample (50 + 50), smoke test | 1 | 47 | 96 | 0.989 | 14.3 s |
-| **Own set, JPEG re-save (main)** | **0** | **33** | **83** | **0.991** | 14.3 s |
-| Own set, original files | 0 | 34 | 84 | 0.986 | 15.0 s |
-| Own set, shrunk to 512 px | 2 | 38 | 86 | 0.978 | 12.8 s |
-| Own set, screenshot-style 800 px | 0 | 36 | 86 | 0.985 | not comparable* |
+| OpenFake sample (50 + 50), smoke test | 1 of 50 | 47 of 50 | 96 of 100 | 0.989 | 14.3 s |
+| Own set, JPEG re-save | 0 of 50 | 33 of 50 | 83 of 100 | 0.991 | 14.3 s |
+| **Own set, original files** | **0 of 50** | **34 of 50** | **84 of 100** | **0.986** | 15.0 s |
+| Own set, shrunk to 512 px | 2 of 50 | 38 of 50 | 86 of 100 | 0.978 | 12.8 s |
+| Own set, screenshot-style 800 px PNG | 0 of 50 | 36 of 50 | 86 of 100 | 0.985 | not comparable* |
+| **Second real set, original files (337 real)** | **2 of 337 (0.6%, range 0.2 to 2.1%)** | not applicable | 335 of 337 | not applicable | 13.9 s |
 
 \* measured while other jobs were running.
 
@@ -27,15 +28,13 @@ AI images caught per tool (of 10 each):
 | Shrunk to 512 px | 8 | 5 | 7 | 8 | 10 |
 | Screenshot-style | 8 | 6 | 9 | 7 | 6 |
 
-Final part only (30 + 30), JPEG re-save, cutoff tuned on the tuning part (0.029): AI caught 21/30 (70%, range 52 to 83%), real flagged 0/30 (range 0 to 11%). At cutoff 0.5: AI caught 16/30 (53%).
-
 ## 2. Community Forensics (`OwensLab/commfor-model-384`)
 
-Loader check: the authors' 5 example images score 0.9988, 0.9878, 0.9569, 0.9516, 0.7860, identical to their notebook.
+Dropped from further tests after the first result. Loader check: the authors' 5 example images score 0.9988, 0.9878, 0.9569, 0.9516, 0.7860, identical to their notebook.
 
 | Test images | Real flagged | AI caught | Correct | AUC | Speed per image |
 |---|---|---|---|---|---|
-| Own set, JPEG re-save | 0 | 5 | 55 | 0.869 | 0.4 s |
+| Own set, JPEG re-save | 0 of 50 | 5 of 50 | 55 of 100 | 0.869 | 0.4 s |
 
 | Own set version | ChatGPT | Gemini | Meta AI | Leonardo.ai | Recraft |
 |---|---|---|---|---|---|
@@ -46,81 +45,80 @@ Loader check: the authors' 5 example images score 0.9988, 0.9878, 0.9569, 0.9516
 | Test images | Real flagged | AI caught | Correct | AUC | Speed per image |
 |---|---|---|---|---|---|
 | OpenFake sample, self-check (10 + 10) | 3 of 10 | 9 of 10 | 16 of 20 | 0.920 | 61 s |
-| **Own set, JPEG re-save** | **6** | **50** | **94** | **0.986** | 47.7 s |
+| Own set, JPEG re-save | 6 of 50 | 50 of 50 | 94 of 100 | 0.986 | 47.7 s |
+| **Own set, original files** | **7 of 50** | **50 of 50** | **93 of 100** | **0.990** | 43.6 s |
+| **Second real set, original files (337 real)** | **49 of 337 (14.5%, range 11 to 19%)** | not applicable | 288 of 337 | not applicable | 43.6 s |
 
-| Own set version | ChatGPT | Gemini | Meta AI | Leonardo.ai | Recraft |
+AI images caught per tool: 10 of 10 for all five tools, in both versions.
+
+Loader check: the app's `bombek1.py` reproduces the research script on the 20 self-check images (16 of 20, 9 of 10, 3 of 10, AUC 0.920).
+
+## 4. Combined (Smaug + Bombek1), original files
+
+Combined score = average of the two models' log-odds, equal weights. 50 AI images, 387 real photos. The cutoff is set from real photos only; the AI images only measure the catch rate.
+
+**4a. Methods compared on all 387 real photos** (AI caught when the cutoff lets through the stated number of real photos)
+
+| Method | AUC | 1% (3 real) | 2% (7 real) | 5% (19 real) | 10% (38 real) |
 |---|---|---|---|---|---|
-| JPEG re-save | 10 | 10 | 10 | 10 | 10 |
+| Smaug alone | 0.987 | 40 of 50 | 42 of 50 | 49 of 50 | 49 of 50 |
+| Bombek1 alone | 0.988 | 37 of 50 | 42 of 50 | 47 of 50 | 49 of 50 |
+| **Combined** | **0.996** | **41 of 50** | **46 of 50** | **50 of 50** | **50 of 50** |
 
-Real photos wrongly called AI (6 of 50, 12%, 95% range 6 to 24%):
+**4b. Cutoff set on the cutoff part (97 real photos), tested on the final part (290 real photos)**
 
-| Photo | Score |
-|---|---|
-| flower_04 | 0.926 |
-| animal_03 | 0.883 |
-| flower_02 | 0.835 |
-| forest_04 | 0.806 |
-| mountain_03 | 0.749 |
-| coast_05 | 0.575 |
-
-Loader check: the app's `bombek1.py` reproduces the research script on the 20 self-check images (16/20, 9/10, 3/10, AUC 0.920).
-
-## 4. Combined (Smaug + Bombek1; Community Forensics where stated)
-
-Combined score = square root of (Smaug score x Bombek1 score). Own set, JPEG re-save. Exploratory: uses the saved scores above, no new runs.
-
-**4a. Fixed rules at cutoff 0.5, all 100 images (nothing tuned)**
-
-| Rule | Real flagged | AI caught | Correct | AUC |
-|---|---|---|---|---|
-| Smaug alone | 0 | 33 | 83 | 0.991 |
-| Bombek1 alone | 6 | 50 | 94 | 0.986 |
-| Both agree (Smaug and Bombek1 at least 0.5) | 0 | 33 | 83 | not applicable |
-| Either (Smaug or Bombek1 at least 0.5) | 6 | 50 | 94 | not applicable |
-| Average of Smaug and Bombek1 | 0 | 40 | 90 | 0.992 |
-| Average of all three models | 0 | 33 | 83 | 0.992 |
-| **Combined score** | **0** | **37** | **87** | **0.999** |
-
-AUC for the two single models is from the scoring runs; for the combinations it is computed from the saved scores (rounded to 4 decimals), so the last digit may differ by 0.001.
-
-**4b. Cutoff chosen on the 20 + 20 tuning images, reported on the 30 + 30 final images**
-
-Choice rule: at most 1 of 20 real photos flagged in tuning, then the most AI caught.
-
-| Rule | Cutoff | Real flagged (final) | AI caught (final) |
+| Method | False-alarm limit | Real flagged (final) | AI caught |
 |---|---|---|---|
-| Smaug alone | 0.017 | 0/30 (range 0 to 11%) | 22/30, 73% (range 56 to 86%) |
-| Bombek1 alone | 0.671 | 4/30, 13% (range 5 to 30%) | 28/30, 93% (range 79 to 98%) |
-| Average of Smaug and Bombek1 | 0.500 | 0/30 (range 0 to 11%) | 20/30, 67% (range 49 to 81%) |
-| Average of all three models | 0.323 | 0/30 (range 0 to 11%) | 23/30, 77% (range 59 to 88%) |
-| **Combined score** | **0.096** | **0/30 (range 0 to 11%)** | **24/30, 80% (range 63 to 90%)** |
+| Smaug alone | 1% | 0 of 290 (range 0 to 1.3%) | 22 of 50 (44%, range 31 to 58%) |
+| Bombek1 alone | 1% | 3 of 290 (1.0%, range 0.4 to 3.0%) | 37 of 50 (74%, range 60 to 84%) |
+| **Combined** | **1%** | **0 of 290 (range 0 to 1.3%)** | **31 of 50 (62%, range 48 to 74%)** |
+| Smaug alone | 2% | 4 of 290 (1.4%) | 42 of 50 (84%) |
+| Bombek1 alone | 2% | 7 of 290 (2.4%) | 43 of 50 (86%) |
+| **Combined** | **2%** | **4 of 290 (1.4%, range 0.5 to 3.5%)** | **46 of 50 (92%, range 81 to 97%)** |
+| Smaug alone | 5% | 7 of 290 (2.4%) | 45 of 50 (90%) |
+| Bombek1 alone | 5% | 7 of 290 (2.4%) | 44 of 50 (88%) |
+| **Combined** | **5%** | **8 of 290 (2.8%, range 1.4 to 5.3%)** | **50 of 50 (100%, range 93 to 100%)** |
 
-**4c. Cutoff sweep for the combined score, all 100 images (cutoff picked after seeing the data: optimistic, not a result)**
+The 0.5% and 1% limits give the same cutoff because the cutoff part has only 97 real photos.
 
-| Cutoff | Real flagged | AI caught |
-|---|---|---|
-| 0.02 | 2 | 49 |
-| 0.05 | 0 | 46 |
-| 0.10 | 0 | 44 |
-| 0.20 | 0 | 39 |
-| 0.30 | 0 | 39 |
-| 0.50 | 0 | 37 |
+**4c. Three bands** (combined score; likely AI above 2.27, likely real below -3.42; cutoffs from the cutoff part)
 
-Speed of the combination: about 62 s per image (Smaug 14 s + Bombek1 48 s).
+| | Likely AI | Unclear | Likely real |
+|---|---|---|---|
+| Real photos, final part (290) | 0 | 13 | 277 |
+| AI images (50) | 31 | 19 | 0 |
 
-## 5. Comparison (own set, JPEG re-save, cutoff 0.5, all 100 images)
+**4d. AI images caught per tool** at the 1% cutoff (of 10 each)
 
-| | Smaug | Community Forensics | Bombek1 | Combined score |
+| ChatGPT | Gemini | Meta AI | Leonardo.ai | Recraft |
 |---|---|---|---|---|
-| Real flagged (of 50) | 0 | 0 | 6 | 0 |
-| AI caught (of 50) | 33 | 5 | 50 | 37 |
-| Correct (of 100) | 83 | 55 | 94 | 87 |
-| AUC | 0.991 | 0.869 | 0.986 | 0.999 |
-| Speed per image | 14 s | 0.4 s | 48 s | 62 s |
+| 8 | 4 | 9 | 6 | 4 |
+
+## 5. Format check: real photos saved as PNG and WEBP
+
+50 real photos, original JPEG against the same photo re-saved as PNG (lossless) and WEBP (quality 90). These are converted copies, not originals. Cutoffs from 4c.
+
+| Format | Smaug above 0.5 | Bombek1 above 0.5 | Combined above the 1% cutoff | Combined above the 10% cutoff | Mean change of combined score | Largest increase |
+|---|---|---|---|---|---|---|
+| JPEG (original) | 0 of 50 | 7 of 50 | 0 of 50 | 3 of 50 | 0 | 0 |
+| PNG | 0 of 50 | 7 of 50 | 0 of 50 | 3 of 50 | -0.04 | +0.17 |
+| WEBP | 0 of 50 | 8 of 50 | 0 of 50 | 9 of 50 | +0.27 | +1.57 |
+
+## 6. Comparison (original files)
+
+| | Smaug | Bombek1 | Combined |
+|---|---|---|---|
+| Real flagged at 0.5 (of 387) | 2 | 56 (14.5%) | not applicable |
+| AI caught at 0.5 (of 50) | 34 | 50 | not applicable |
+| AUC (387 real, 50 AI) | 0.987 | 0.988 | 0.996 |
+| AI caught at 1% / 2% / 5% real flagged | 40 / 42 / 49 | 37 / 42 / 47 | 41 / 46 / 50 |
+| Speed per image | 14 s | 44 s | 58 s |
 
 ## Limits
 
-- 50 + 50 images; final part 30 + 30. Ranges are 95% Wilson intervals.
-- Open Images may be in the models' training data, so false alarms may be understated.
-- Combination rules and cutoffs in 4a and 4c use all 100 images and are optimistic; 4b is the fair test.
-- Community Forensics and Bombek1 were run on the JPEG re-save version only.
+- 50 AI images: the catch rate has a range of about 10 points. 387 real photos: a false-alarm rate of 0 of 290 allows a true rate up to about 1.3%.
+- Earlier combined results on 50 real photos (AUC 0.999, no overlap) were optimistic; with 387 real photos the combined AUC is 0.996.
+- Open Images may be in the models' training data, so false alarms may be understated. The AI images contain no people, so catch rates for AI images with people are unmeasured.
+- Format check copies are JPEGs re-saved as PNG or WEBP, not native PNG or WEBP photos.
+- Scores of the first 100 images are rounded to 4 decimals; later scores have 6.
+- Community Forensics and Bombek1 were first run on the JPEG re-save version only; Bombek1 was later also run on original files.

@@ -25,3 +25,5 @@ Thumbs.db
 
 # Image detection: downloaded test images (OpenFake is non-commercial; never commit)
 image-detection/test-images/
+
+image-detection/results/*_partial.csv

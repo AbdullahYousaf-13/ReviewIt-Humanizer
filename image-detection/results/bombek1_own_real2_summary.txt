@@ -1,0 +1,9 @@
+Bombek1 SigLIP2+DINOv2 on test-images/own_real2 (337 real, 0 AI), threshold=0.5
+Accuracy:                    85.5% (288/337)
+AUC:                         nan
+AI images caught:            n/a
+Real photos flagged as AI:   14.5% (49/337)
+Speed (CPU):                 load 14.9s, 43.60s per image
+
+Correct by group (AI = generator, REAL = photo source):
+  REAL openimages2                 85.5% (288/337)
