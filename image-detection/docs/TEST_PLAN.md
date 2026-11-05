@@ -74,6 +74,29 @@ Raw scores: `image-detection/results/*.csv`. Test images are local only (gitigno
 
 App code (ReviewIt repo, folder `backend/imagedetector/`, not connected to the API): `detector.py` (Smaug, merged to main); `commfor.py`, `bombek1.py` and `combined.py` (combined score, bands, limits as settings) with tests, on branch `abdullah/image-detector`, pull request not yet opened.
 
+## Testing with your own photos (`check_folder.py`)
+
+On demand, like the humanizer backend: it loads both models only when there are new photos, prints one log line per photo, then exits and frees the memory.
+
+| Step | What to do |
+|---|---|
+| 1. Add photos | Copy them into `ReviewIt/backend/imagedetector/inbox/` (ignored by git, never committed) |
+| 2. Run | `cd backend`, `venv\Scripts\activate`, `python -m imagedetector.check_folder` |
+| 3. Read the log | One line per photo: `beach.jpg \| LIKELY REAL \| score -4.21 \| smaug 0.0003 \| bombek1 0.3100 \| 83 s` |
+| Optional | `--watch` keeps it running and scores photos as they arrive (needs about 4 GB of RAM free; Ctrl+C stops) |
+
+| Item | Value |
+|---|---|
+| Labels | LIKELY AI (score above -1.74), UNCLEAR (above -3.16 up to -1.74), LIKELY REAL (-3.16 or below) |
+| Settings (environment variables) | `IMAGE_INBOX`, `IMAGE_LOG_FILE`, `IMAGE_ACCUSE_CUTOFF`, `IMAGE_CLEAR_CUTOFF`, `IMAGE_RESCAN=1` (score everything again), `HF_HUB_OFFLINE=1` (no network calls) |
+| Photos read | `.jpg .jpeg .png .webp .bmp .tif .tiff`, as they are, no conversion. HEIC is reported as not read |
+| Done list | `inbox/.done.json`: a photo is scored again only if it changed |
+| Log files | Console and `imagedetector/logs/detector.log` |
+| Speed | 70 to 280 s per photo on this laptop CPU (the first photo of a run includes about a minute of model loading); depends on free RAM, so close Chrome |
+| Check made | Same three photos as the research gave LIKELY AI (+6.54), UNCLEAR (-3.06) and LIKELY REAL (-6.27) |
+
+Keep photos used this way as a fresh test: do not tune any cutoff on them.
+
 ## Limits
 
 - 50 AI images: the catch rate has a range of about 10 points.
