@@ -33,7 +33,7 @@ Date: 3 Nov 2026, updated 5 Nov 2026. Results of testing: [TEST_RESULTS.md](TEST
 | Smaug | 2 of 387 real photos flagged; 34 of 50 AI caught; AUC 0.987 | Keep | `detector.py`, merged to main |
 | Community Forensics | 5 of 50 AI caught (JPEG copy); AUC 0.869 | Dropped | `commfor.py`, on branch `abdullah/image-detector`, not merged |
 | Bombek1 | 56 of 387 real photos flagged (14.5%); 50 of 50 AI caught; AUC 0.988 | Keep, for the combination | `bombek1.py`, on branch `abdullah/image-detector`, not merged |
-| **Combined (average of Smaug and Bombek1 log-odds)** | AUC 0.996; 41, 46 and 50 of 50 AI caught when 1%, 2% and 5% of real photos are let through | **Best method** | Not in ReviewIt yet |
+| **Combined (average of Smaug and Bombek1 log-odds)** | AUC 0.996; 41, 46 and 50 of 50 AI caught when 1%, 2% and 5% of real photos are let through | **Best method** (accuse limit 2%, clear limit 5%, three bands) | `combined.py`, on branch `abdullah/image-detector`, not merged |
 
 - Confirmed: Bombek1 flags many real photos (card and Smaug's table said so).
 - Confirmed: Community Forensics runs on CPU (0.4 s per image) but is too weak at 0.5.

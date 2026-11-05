@@ -72,6 +72,8 @@ Rules:
 
 Raw scores: `image-detection/results/*.csv`. Test images are local only (gitignored).
 
+App code (ReviewIt repo, folder `backend/imagedetector/`, not connected to the API): `detector.py` (Smaug, merged to main); `commfor.py`, `bombek1.py` and `combined.py` (combined score, bands, limits as settings) with tests, on branch `abdullah/image-detector`, pull request not yet opened.
+
 ## Limits
 
 - 50 AI images: the catch rate has a range of about 10 points.
