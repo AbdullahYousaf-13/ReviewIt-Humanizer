@@ -1,6 +1,6 @@
 # Model research: AI-generated image detectors
 
-Date: 3 Nov 2026. Results of testing: [TEST_RESULTS.md](TEST_RESULTS.md).
+Date: 3 Nov 2026, updated 5 Nov 2026. Results of testing: [TEST_RESULTS.md](TEST_RESULTS.md). Plan: [TEST_PLAN.md](TEST_PLAN.md).
 
 ## Constraints
 
@@ -10,7 +10,7 @@ Date: 3 Nov 2026. Results of testing: [TEST_RESULTS.md](TEST_RESULTS.md).
 | Licence | Apache 2.0 or MIT only (ReviewIt is a paid product: $6.99 per document, $59 per month) |
 | Hardware | Laptop CPU now (7.8 GB RAM), GPU possible later |
 | Focus | AI-generated images. AI-edited photos, screenshots and artwork are secondary |
-| Choice | Single model or combination, whichever scores best on our own test set |
+| Choice | Single model or combination, whichever scores best on our own test set. **Result: a combination of Smaug and Bombek1** |
 
 ## Shortlist (tested)
 
@@ -25,6 +25,19 @@ Date: 3 Nov 2026. Results of testing: [TEST_RESULTS.md](TEST_RESULTS.md).
 | Smaug | `smaug_image_detect.py` (in model repo) | `sentence-transformers[image]`, transformers 5.20.0 | none |
 | Community Forensics | none (own loader, timm architecture) | `timm` | `vit_small_patch16_384` (Apache 2.0, architecture only) |
 | Bombek1 | `model.py` (in model repo) | `timm`, `peft` | `google/siglip2-so400m-patch14-384` (Apache 2.0), `vit_large_patch14_dinov2.lvd142m` (Apache 2.0) |
+
+## Outcome after testing (own test set, original files; details in TEST_RESULTS.md)
+
+| Model | Result at cutoff 0.5 | Decision | Code in ReviewIt (`backend/imagedetector/`) |
+|---|---|---|---|
+| Smaug | 2 of 387 real photos flagged; 34 of 50 AI caught; AUC 0.987 | Keep | `detector.py`, merged to main |
+| Community Forensics | 5 of 50 AI caught (JPEG copy); AUC 0.869 | Dropped | `commfor.py`, on branch `abdullah/image-detector`, not merged |
+| Bombek1 | 56 of 387 real photos flagged (14.5%); 50 of 50 AI caught; AUC 0.988 | Keep, for the combination | `bombek1.py`, on branch `abdullah/image-detector`, not merged |
+| **Combined (average of Smaug and Bombek1 log-odds)** | AUC 0.996; 41, 46 and 50 of 50 AI caught when 1%, 2% and 5% of real photos are let through | **Best method** | Not in ReviewIt yet |
+
+- Confirmed: Bombek1 flags many real photos (card and Smaug's table said so).
+- Confirmed: Community Forensics runs on CPU (0.4 s per image) but is too weak at 0.5.
+- Smaug is the most cautious (few false alarms, misses about a third of AI images at 0.5); Bombek1 the most aggressive.
 
 ## Model details
 
