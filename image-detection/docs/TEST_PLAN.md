@@ -52,7 +52,7 @@ Rules:
 - Metrics: real photos wrongly called AI, AI images caught, correct overall, AUC, seconds per image on CPU. Ranges are 95% Wilson intervals.
 - **Combined score:** average of Smaug and Bombek1 log-odds, equal weights. Log-odds = ln(p / (1 - p)), with p limited to 0.000001 to 0.999999.
 - **Cutoff from real photos only:** all real photos are split, seeded and stratified by subject, 25% cutoff part (97) and 75% final part (290). For a false-alarm limit L, the cutoff is the score that only L of the cutoff-part real photos exceed. AI images are never used for the cutoff; they only measure the catch rate.
-- **Bands:** likely AI above the 1% cutoff; unclear between the 10% and 1% cutoffs; likely real below the 10% cutoff.
+- **Bands and limits (decided 5 Nov 2026):** accuse limit **2%**, clear limit **5%** (for now), both settings. Likely AI above the accuse cutoff; unclear between the two; likely real below the clear cutoff. Default cutoffs from all 387 real photos: accuse -1.74, clear -3.16. The limits were chosen from 500 random splits of the real photos (`analyze_layouts.py`); reasons in TEST_RESULTS section 7. `analyze_combined.py` reports the research bands at 1% and 10%.
 - Community Forensics was dropped after the first result (10% of AI images caught).
 
 ## Pipeline
@@ -66,7 +66,8 @@ Rules:
 | Score Community Forensics | `score_commfor.py` (`--selfcheck` reproduces the authors' example) |
 | Score Bombek1 | `score_bombek1.py` (`--selfcheck` uses 20 OpenFake images; saves as it goes and resumes) |
 | First-round report by split | `analyze_results.py` |
-| Combined result | `analyze_combined.py` |
+| Combined result (one split) | `analyze_combined.py` |
+| Band limits (500 random splits) and default cutoffs | `analyze_layouts.py` |
 | Format check | `build_format_check.py`, `analyze_formats.py` |
 
 Raw scores: `image-detection/results/*.csv`. Test images are local only (gitignored).

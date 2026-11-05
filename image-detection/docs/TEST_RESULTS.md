@@ -114,6 +114,45 @@ The 0.5% and 1% limits give the same cutoff because the cutoff part has only 97 
 | AI caught at 1% / 2% / 5% real flagged | 40 / 42 / 49 | 37 / 42 / 47 | 41 / 46 / 50 |
 | Speed per image | 14 s | 44 s | 58 s |
 
+## 7. Band limits and decision
+
+500 random splits of the 387 real photos (25% cutoff part, 75% final part); the 50 AI images are resampled each time. Combined score, original files. Mean (5th to 95th percentile). Script: `analyze_layouts.py`.
+
+| Accuse / clear limit | Real photos accused | Real photos cleared | AI accused | AI left unclear | AI wrongly cleared |
+|---|---|---|---|---|---|
+| 1% / 5% | 1.1% (0 to 3.8) | 94.9% (90.3 to 98.6) | 75.7% (54 to 100) | 23.8% | 0.5% (0 to 4.0) |
+| 1% / 10% | 1.1% (0 to 3.8) | 89.8% (83.8 to 94.8) | 75.7% (54 to 100) | 24.3% | 0% |
+| **2% / 5% (chosen)** | **2.1% (0 to 5.5)** | **94.9% (90.3 to 98.6)** | **89.4% (66 to 100)** | **10.1%** | **0.5% (0 to 4.0)** |
+| 2% / 10% | 2.1% (0 to 5.5) | 89.8% (83.8 to 94.8) | 89.4% (66 to 100) | 10.6% | 0% |
+| 5% / 10% | 5.1% (1.4 to 9.7) | 89.8% (83.8 to 94.8) | 99.5% (96 to 100) | 0.5% | 0% |
+| 5% / 20% | 5.1% (1.4 to 9.7) | 79.5% (72.1 to 86.2) | 99.5% (96 to 100) | 0.5% | 0% |
+
+The single-split numbers in 4b are lower than these averages (for example 1.4% at the 2% limit) because that split gave a cautious cutoff; use this table.
+
+**Decision (5 Nov 2026)**
+
+| Setting | Value | Reason |
+|---|---|---|
+| Combined score | Average of Smaug and Bombek1 log-odds, equal weights | AUC 0.996 against 0.987 and 0.988; 46 of 50 AI caught at 2% against 42 for each model alone |
+| Accuse limit | **2%** | Accusing a paying customer is the worst failure. 1% to 2% adds 13.7 points of AI accused for 1.0 point of real photos accused; 2% to 5% adds 10.1 points for 3.0 points |
+| Clear limit | **5%, for now** | Chosen by the user. Clears 94.9% of real photos; risk: 0.5% of AI images wrongly cleared on average, up to 4% in the worst 5% of splits. 10% gave 0% wrongly cleared but cleared 89.8% |
+| Default cutoffs | Accuse -1.74, clear -3.16 | Computed from all 387 real photos; both limits are settings |
+
+Share of "likely AI" verdicts that are really AI, from the means above:
+
+| Accuse limit | If 5% of uploads are AI | If 20% of uploads are AI |
+|---|---|---|
+| 1% | 78% | 95% |
+| 2% | 69% | 91% |
+| 5% | 51% | 83% |
+
+Bands with the default cutoffs, on all 387 real photos and 50 AI images (in-sample, optimistic):
+
+| | Likely AI | Unclear | Likely real |
+|---|---|---|---|
+| Real photos (387) | 7 | 12 | 368 |
+| AI images (50) | 46 | 4 | 0 |
+
 ## Limits
 
 - 50 AI images: the catch rate has a range of about 10 points. 387 real photos: a false-alarm rate of 0 of 290 allows a true rate up to about 1.3%.
