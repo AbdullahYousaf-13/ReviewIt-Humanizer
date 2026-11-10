@@ -153,6 +153,30 @@ Bands with the default cutoffs, on all 387 real photos and 50 AI images (in-samp
 | Real photos (387) | 7 | 12 | 368 |
 | AI images (50) | 46 | 4 | 0 |
 
+## 8. Speed: Bombek1 SigLIP half in bf16 vs float32 (CPU)
+
+The laptop CPU (i5-8250U, AVX2, no bf16 hardware) is slow in bf16.
+
+| | bf16 | float32 |
+|---|---|---|
+| Bombek1 seconds per photo | 49.6 | 12.2 (4.08 times faster) |
+| Score difference | | within 0.04 log-odds |
+| Bands on 3 photos | | unchanged |
+| Photos within 0.02 of a cutoff (of 437) | | 2 |
+
+Float32 is now the default on CPU (`bombek1.py`).
+
+## 9. End to end through the app (`POST /api/imagedetector/detect`)
+
+| Image | Label | Score (research score) | Seconds |
+|---|---|---|---|
+| real/flower_04.jpg | Unclear | -3.07 (-3.08) | 32.7 |
+| fake/gemini__flower-2.jpg | Unclear | -1.86 (-1.87) | 29.5 |
+| real/mountain_01.jpg | Original | -6.29 (-6.08) | 26.6 |
+| fake/chatgpt__mountain-1.png | AI | +6.55 (+6.56) | 25.0 |
+
+Models ready 80 s after start. A second request sent during a check got 429. No file gave 400; txt and HEIC gave 415.
+
 ## Limits
 
 - 50 AI images: the catch rate has a range of about 10 points. 387 real photos: a false-alarm rate of 0 of 290 allows a true rate up to about 1.3%.

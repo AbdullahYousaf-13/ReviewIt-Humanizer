@@ -72,7 +72,7 @@ Rules:
 
 Raw scores: `image-detection/results/*.csv`. Test images are local only (gitignored).
 
-App code (ReviewIt repo, folder `backend/imagedetector/`, not connected to the API): `detector.py` (Smaug, merged to main); `commfor.py`, `bombek1.py` and `combined.py` (combined score, bands, limits as settings) with tests, on branch `abdullah/image-detector`, pull request not yet opened.
+App code (ReviewIt repo, folder `backend/imagedetector/`, connected to the API on branch `abdullah/image-detector`): `detector.py` (Smaug, merged to main); `commfor.py`, `bombek1.py`, `combined.py` (combined score, bands, limits as settings) and `service.py` (routes `POST /api/imagedetector/detect`, `GET /api/imagedetector/status`; see API_FLOW.md) with tests. Pull request not opened; main untouched by the endpoint work.
 
 ## Testing with your own photos (`check_folder.py`)
 
@@ -92,11 +92,20 @@ On demand, like the humanizer backend: it loads both models only when there are 
 | Photos read | `.jpg .jpeg .png .webp .bmp .tif .tiff`, as they are, no conversion. HEIC is reported as not read |
 | Done list | `inbox/.done.json`: a photo is scored again only if it changed |
 | Log files | Console and `imagedetector/logs/detector.log` |
-| Speed | 70 to 280 s per photo on this laptop CPU (the first photo of a run includes about a minute of model loading); depends on free RAM, so close Chrome |
+| Speed | About 26 s per photo on this laptop CPU since Bombek1 runs in float32 (was 70 to 280 s); the first photo of a run includes about a minute of model loading; depends on free RAM, so close Chrome |
 | Check made | Same three photos as the research gave LIKELY AI (+6.54), UNCLEAR (-3.06) and LIKELY REAL (-6.27) |
 
 Keep photos used this way as a fresh test: do not tune any cutoff on them.
 
+## Test page (upload one image, see AI / Unclear / Original)
+
+| Item | Value |
+|---|---|
+| Folder | `D:\Abd\Programming\image-detector-test-fe\` (plain HTML, not a git repo) |
+| Start | `start_backend.bat` (loads both models, about 80 s), then `start_frontend.bat`, open `http://localhost:8080` |
+| Backend settings | `IMAGE_PRELOAD=1`, `PRELOAD_MODELS=0` (humanizer models skipped), `CORS_ORIGINS=http://localhost:8080,http://127.0.0.1:8080` |
+| Shows | Label, combined score with cutoffs, probability and verdict of each model, seconds |
+| Limits | One image at a time (second request gets 429); no sign-in, no credits; HEIC not supported |
 ## Limits
 
 - 50 AI images: the catch rate has a range of about 10 points.

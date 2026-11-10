@@ -146,3 +146,42 @@ Styles: `academic` (default), `business`, `creative`, `casual`, `narrative`, `te
 **Styles and citations (2026-10-26):** only Gemini applies a style and only Gemini keeps a citation reliably, so Humarin, T5 and the rule-based engine run for the default style (`academic`) and a sentence **without** a citation only; a sentence with a citation always goes to Gemini alone (`alternatives` is `[]`, and if Gemini gives nothing usable it comes back unchanged with `failed: true` and a reason that does not name a model). For any other style only Gemini runs, so `alternatives` can only hold Gemini's second rewrite. The page shows the rewrites as "Recommended" (the main result) and "Option 1", "Option 2"…; `engine` and the scores are not shown to users.
 
 Note: these JSON bodies are the shapes the code produces ([service.py](backend/aidetector/service.py)), not captured from a live run.
+
+## Image detector (new routes, no credits, nothing saved)
+
+Code: `backend/imagedetector/service.py`, routes in `backend/app.py`. Test page: `image-detector-test-fe/` (outside the repo).
+
+| Call | Purpose |
+|---|---|
+| `POST /api/imagedetector/detect` | Check one image (form field `file`). Takes about 25 to 33 s on a laptop CPU |
+| `GET /api/imagedetector/status` | Model loading state |
+
+### POST /api/imagedetector/detect
+```json
+{
+  "success": true, "filename": "x.jpg",
+  "label": "Unclear", "band": "unclear", "score": -3.07,
+  "accuse_cutoff": -1.74, "clear_cutoff": -3.16,
+  "models": {
+    "smaug": {"probability": 0.0002, "verdict": "Original"},
+    "bombek1": {"probability": 0.915, "verdict": "AI"}
+  },
+  "seconds": 32.7
+}
+```
+`label` is `AI` (score above `accuse_cutoff`), `Unclear` (above `clear_cutoff`) or `Original`. `score` is the average of the two models' log-odds. Per-model `verdict` is `AI` at probability 0.5 or more.
+
+| Status | Meaning |
+|---|---|
+| 400 | No file or empty file |
+| 401 | Only when `IMAGE_DETECT_REQUIRE_AUTH=1` and not signed in |
+| 413 | Over the upload limit (`MAX_UPLOAD_MB`) |
+| 415 | HEIC/HEIF, unsupported type, or unreadable image |
+| 429 | `BUSY`: another image is being checked (one at a time) |
+| 503 | Image packages not installed |
+| 500 | Other error |
+
+### GET /api/imagedetector/status
+`{"success": true, "state": "idle|loading|ready|failed", "models_ready": false, "error": null, "require_auth": false, "accuse_cutoff": -1.74, "clear_cutoff": -3.16}`
+
+Settings (environment variables): `IMAGE_PRELOAD=1` (load models at start), `IMAGE_DETECT_REQUIRE_AUTH`, `MAX_CONCURRENT_IMAGE` (default 1), `IMAGE_ACCUSE_CUTOFF`, `IMAGE_CLEAR_CUTOFF`.
