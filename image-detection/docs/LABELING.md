@@ -2,6 +2,17 @@
 
 Code: `backend/imagedetector/service.py` (checks, label names), `combined.py` (score, bands), `detector.py` (Smaug), `bombek1.py` (Bombek1).
 
+## Method
+
+The combined score is the **average of the two models' log-odds** (equal weights). The cutoffs are read off the combined scores of real photos.
+
+| Part | Detail |
+|---|---|
+| Log-odds | `ln(p / (1 - p))`: 0.5 gives 0, lower probabilities give negative numbers |
+| Why log-odds, not probabilities | A model that is very sure (0.0001 or 0.9997) counts for more than one that only leans (0.3) |
+| Average | `(logit(p_smaug) + logit(p_bombek1)) / 2` |
+| Cutoffs | Sorted real-photo scores: 2% above -1.74, 5% above -3.16 (see below) |
+
 ## Steps
 
 | Step | What happens | Result if it fails |
