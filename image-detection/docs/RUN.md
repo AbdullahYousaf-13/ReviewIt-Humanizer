@@ -8,23 +8,16 @@ venv\Scripts\activate
 pip install -r imagedetector\requirements-bombek1.txt
 ```
 
-Start the backend (PowerShell):
+Run backend (wait about 80 s for the models), in one terminal:
 
 ```
-cd ReviewIt\backend
-venv\Scripts\activate
-$env:IMAGE_PRELOAD="1"
-python app.py
+D:\Abd\Programming\image-detector-test-fe\start_backend.bat
 ```
 
-Check an image (after `http://127.0.0.1:5000/api/imagedetector/status` says `ready`):
+Run frontend, in a second terminal:
 
 ```
-curl -X POST -F "file=@photo.jpg" http://127.0.0.1:5000/api/imagedetector/detect
+D:\Abd\Programming\image-detector-test-fe\start_frontend.bat
 ```
 
-Or check a folder of photos (put them in `backend\imagedetector\inbox\` first):
-
-```
-python -m imagedetector.check_folder
-```
+Open http://localhost:8080 and upload an image.
