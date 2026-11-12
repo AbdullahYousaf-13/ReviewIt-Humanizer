@@ -1,6 +1,6 @@
 # Model research: AI-generated image detectors
 
-Date: 3 Nov 2026, updated 5 Nov 2026. Results of testing: [TEST_RESULTS.md](TEST_RESULTS.md). Plan: [TEST_PLAN.md](TEST_PLAN.md).
+Date: 3 Nov 2026, updated 5 Nov 2026. Results of testing: [TEST_RESULTS.md](TEST_RESULTS.md). Plan: [TEST_PLAN.md](TEST_PLAN.md). All models on one page: [MODELS.md](../../MODELS.md).
 
 ## Constraints
 
@@ -16,7 +16,7 @@ Date: 3 Nov 2026, updated 5 Nov 2026. Results of testing: [TEST_RESULTS.md](TEST
 
 | Model | Hugging Face id | Parameters | Weights | Licence | Architecture |
 |---|---|---|---|---|---|
-| Smaug | `abacusai/Smaug-AI-Image-Detector` | 439M | 0.85 GB | Apache 2.0 | EmbeddingGemma-2 image encoder + linear classifier |
+| Smaug | `abacusai/Smaug-AI-Image-Detector` | 439M | 0.88 GB | Apache 2.0 | EmbeddingGemma-2 image encoder + linear classifier |
 | Community Forensics | `OwensLab/commfor-model-384` | 21.8M | 0.09 GB | MIT (code and weights) | ViT small, 384 px input |
 | Bombek1 | `Bombek1/ai-image-detector-siglip-dinov2` | 740M | 2.1 GB | MIT | SigLIP2-SO400M + DINOv2-Large, LoRA adapters, MLP head |
 

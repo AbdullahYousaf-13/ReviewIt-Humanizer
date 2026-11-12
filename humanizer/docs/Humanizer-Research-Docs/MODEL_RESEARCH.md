@@ -13,6 +13,16 @@ At the product's granularity (rewrite flagged sentences, reinsert), all of these
 
 None is reliable: paraphrasers can't be *constrained* to preserve facts (no prompts). Only LLM prompting can — see [COMMERCIAL_LLM_RESEARCH.md](COMMERCIAL_LLM_RESEARCH.md).
 
+### Model facts (checked 2026-11-12; all models on one page: [MODELS.md](../../../MODELS.md))
+| Model | Parameters | Weights | Licence |
+|---|---|---|---|
+| humarin/chatgpt_paraphraser_on_T5_base | 222.9M | 0.89 GB | OpenRAIL |
+| Vamsi/T5_Paraphrase_Paws (second tier in the app) | 222.9M | 0.89 GB | not stated |
+| tuner007/pegasus_paraphrase | 569M | 2.28 GB | Apache 2.0 |
+| eugenesiow/bart-paraphrase | 406M | 1.63 GB | Apache 2.0 |
+| Nubletz/bart-text-simplification | 406M | 1.63 GB | not stated |
+| followsci/bert-ai-text-detector (the detector) | 109.5M | 0.44 GB | MIT |
+
 ### Model notes
 - **humarin/chatgpt_paraphraser_on_T5_base** — conservative synonym swaps, keeps formal structure. On its own: ZeroGPT 100% → 100%.
 - **eugenesiow/bart-paraphrase** — even more conservative; returns sentences ~verbatim.
