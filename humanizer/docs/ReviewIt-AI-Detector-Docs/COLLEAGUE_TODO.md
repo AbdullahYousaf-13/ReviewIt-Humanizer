@@ -37,3 +37,9 @@ Backend and logic tasks that come out of the frontend changes. Frontend text and
 ## Blog content
 - Existing blog posts in the database still say Veritas and name a detector model. Edit titles, slugs and text.
 - `seedBlogs.js` has the same text.
+
+## SEO and deployment
+- Set `NEXT_PUBLIC_SITE_URL` in the production environment to the final domain (canonical links, sitemap, share images use it). The fallback `https://humoro.io` is a placeholder.
+- The blog list and blog posts are now fetched on the Next.js server. `NEXT_PUBLIC_NODE_API_URL` must be reachable from the server, not only from the browser.
+- Restart the Next.js server after pulling: `next.config.js` now sends a `noindex` header for the dashboard, admin, profile, login and signup pages.
+- After launch: verify the domain in Google Search Console and Bing Webmaster Tools and submit `/sitemap.xml`.
