@@ -19,6 +19,7 @@ Backend and logic tasks that come out of the frontend changes.
 ## Credits
 - Monthly reset is implemented (`services/creditResetService.js`). Confirm it behaves as intended: it uses a 30-day cycle from the last reset, not a calendar month.
 - Plan allowances are written in several places (`PLAN_LIMITS` in that file, `services/stripeService.js`, `frontend/store/index.ts`). Keep them in sync when plans change.
+
 ## Stripe
 - Rename the products and descriptions: "Veritas AI Pro" and "Veritas AI Unlimited" become Humoro Pro and Humoro Max.
 - Remove old claims from the descriptions: "Unlimited words", "Up to 50k words", "Up to 10k words", "2 layer humanization".
