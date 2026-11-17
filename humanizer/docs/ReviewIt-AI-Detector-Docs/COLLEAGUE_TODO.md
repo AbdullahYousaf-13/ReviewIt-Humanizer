@@ -43,3 +43,7 @@ Backend and logic tasks that come out of the frontend changes. Frontend text and
 - The blog list and blog posts are now fetched on the Next.js server. `NEXT_PUBLIC_NODE_API_URL` must be reachable from the server, not only from the browser.
 - Restart the Next.js server after pulling: `next.config.js` now sends a `noindex` header for the dashboard, admin, profile, login and signup pages.
 - After launch: verify the domain in Google Search Console and Bing Webmaster Tools and submit `/sitemap.xml`.
+
+## Social profiles
+- Provide the real social profile links (LinkedIn, X, GitHub or others). The four footer icons in `frontend/components/landing/footer.tsx` still go nowhere (`href="#"`).
+- When the links exist, add them as `sameAs` in the Organization data in `frontend/app/page.tsx`.
