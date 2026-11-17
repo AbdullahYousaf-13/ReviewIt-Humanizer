@@ -17,10 +17,8 @@ Backend and logic tasks that come out of the frontend changes.
 - Replace the placeholder support address: change `SITE.supportEmail` in `frontend/lib/site.ts`.
 
 ## Credits
-- Credits must reset monthly for every plan, including Hobby and annual plans (the site says "Credits reset monthly").
-- Current state: there is no scheduler. Credits are refilled only when Stripe sends a `subscription_cycle` invoice (`services/stripeService.js`, around line 173), so Hobby is never refilled and an annual plan is refilled once a year.
-- Hobby image check: confirm whether the 1 free check resets monthly or is one time.
-
+- Monthly reset is implemented (`services/creditResetService.js`). Confirm it behaves as intended: it uses a 30-day cycle from the last reset, not a calendar month.
+- Plan allowances are written in several places (`PLAN_LIMITS` in that file, `services/stripeService.js`, `frontend/store/index.ts`). Keep them in sync when plans change.
 ## Stripe
 - Rename the products and descriptions: "Veritas AI Pro" and "Veritas AI Unlimited" become Humoro Pro and Humoro Max.
 - Remove old claims from the descriptions: "Unlimited words", "Up to 50k words", "Up to 10k words", "2 layer humanization".
