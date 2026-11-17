@@ -2,6 +2,8 @@
 
 Backend and logic tasks that come out of the frontend changes. Frontend text and layout are done by Abdullah. Add new items at the bottom.
 
+Frontend changes are on branch `abdullah/frontend-updates` (a pull request is not open yet). Items below that mention frontend files refer to that branch. Last updated: 17 Nov 2026.
+
 ## Contact form
 - Build `POST /api/contact` in nodeBackend.
 - Body: `name`, `email`, `topic`, `message`, `website`.
