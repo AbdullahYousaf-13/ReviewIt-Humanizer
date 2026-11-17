@@ -38,6 +38,7 @@ Backend and logic tasks that come out of the frontend changes. Frontend text and
 - The real blog posts live in the database (seeded by `seedBlogs.js`, edited in the admin editor). They still say Veritas, and `seedBlogs.js` (around line 59) names a detector model ("BERT architecture") and describes internal features. Edit titles, slugs and text in the database and in `seedBlogs.js`.
 - Check the published posts for claims that have no source. Blog text now supports links written as `[text](https://...)`.
 - The sample articles in `frontend/lib/blogApi.ts` (shown only when the blog service returns nothing) are a separate set, already updated by Abdullah.
+
 ## SEO and deployment
 - Set `NEXT_PUBLIC_SITE_URL` in the production environment to the final domain (canonical links, sitemap, share images use it). The fallback `https://humoro.io` is a placeholder.
 - The blog list and blog posts are now fetched on the Next.js server. `NEXT_PUBLIC_NODE_API_URL` must be reachable from the server, not only from the browser.
