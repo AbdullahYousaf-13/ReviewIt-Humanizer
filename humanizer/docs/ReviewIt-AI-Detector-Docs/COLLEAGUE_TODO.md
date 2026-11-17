@@ -47,3 +47,12 @@ Backend and logic tasks that come out of the frontend changes. Frontend text and
 ## Social profiles
 - Provide the real social profile links (LinkedIn, X, GitHub or others). The four footer icons in `frontend/components/landing/footer.tsx` still go nowhere (`href="#"`).
 - When the links exist, add them as `sameAs` in the Organization data in `frontend/app/page.tsx`.
+
+## Blog: sourced claim and broken image
+- Published blog "How Turnitin Detects AI Writing in 2026" (and `seedBlogs.js`): replace the sentence "recent Stanford and MIT studies" with the checked version that cites Liang et al., 2023 (Stanford). Frontend `lib/blogApi.ts` has the exact text; blog posts now render `[text](https://...)` as links.
+- Blog "Navigating University AI Policies in 2026": the cover image address (an Unsplash photo) returns 404. Replace it in the database and in `seedBlogs.js` if it is stored there.
+
+## Logo (new kit)
+- Email template (`utils/emailService.js`): the sign-up code email shows only the word Humoro; add the new logo (needs a hosted image address).
+- Stripe: upload the logo and icon in the Stripe branding settings (checkout page and receipts).
+- Google sign-in: upload the logo in the Google Cloud OAuth consent screen.
