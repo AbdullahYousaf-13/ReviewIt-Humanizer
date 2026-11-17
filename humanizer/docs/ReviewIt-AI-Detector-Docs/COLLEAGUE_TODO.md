@@ -18,6 +18,7 @@ Backend and logic tasks that come out of the frontend changes. Frontend text and
 
 ## Credits
 - Credits must reset monthly for Hobby and for annual plans (the site says "Credits reset monthly").
+- Status checked on main (17 Nov 2026): not implemented. There is no scheduler. Credits are refilled only when Stripe sends a `subscription_cycle` invoice (`services/stripeService.js`, around line 173). Hobby is never refilled, and an annual plan gets one refill a year.
 - Hobby image check: confirm whether the 1 free check resets monthly or is one time.
 
 ## Stripe
