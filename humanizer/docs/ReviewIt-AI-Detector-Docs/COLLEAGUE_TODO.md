@@ -35,9 +35,9 @@ Backend and logic tasks that come out of the frontend changes. Frontend text and
 - Rename `veritas_token` and `veritas_user` in `frontend/lib/nodeApi.ts`. Everyone is signed out once.
 
 ## Blog content
-- Existing blog posts in the database still say Veritas and name a detector model. Edit titles, slugs and text.
-- `seedBlogs.js` has the same text.
-
+- The real blog posts live in the database (seeded by `seedBlogs.js`, edited in the admin editor). They still say Veritas, and `seedBlogs.js` (around line 59) names a detector model ("BERT architecture") and describes internal features. Edit titles, slugs and text in the database and in `seedBlogs.js`.
+- Check the published posts for claims that have no source. Blog text now supports links written as `[text](https://...)`.
+- The sample articles in `frontend/lib/blogApi.ts` (shown only when the blog service returns nothing) are a separate set, already updated by Abdullah.
 ## SEO and deployment
 - Set `NEXT_PUBLIC_SITE_URL` in the production environment to the final domain (canonical links, sitemap, share images use it). The fallback `https://humoro.io` is a placeholder.
 - The blog list and blog posts are now fetched on the Next.js server. `NEXT_PUBLIC_NODE_API_URL` must be reachable from the server, not only from the browser.
@@ -47,10 +47,6 @@ Backend and logic tasks that come out of the frontend changes. Frontend text and
 ## Social profiles
 - Provide the real social profile links (LinkedIn, X, GitHub or others). The four footer icons in `frontend/components/landing/footer.tsx` still go nowhere (`href="#"`).
 - When the links exist, add them as `sameAs` in the Organization data in `frontend/app/page.tsx`.
-
-## Blog: sourced claim and broken image
-- Published blog "How Turnitin Detects AI Writing in 2026" (and `seedBlogs.js`): replace the sentence "recent Stanford and MIT studies" with the checked version that cites Liang et al., 2023 (Stanford). Frontend `lib/blogApi.ts` has the exact text; blog posts now render `[text](https://...)` as links.
-- Blog "Navigating University AI Policies in 2026": the cover image address (an Unsplash photo) returns 404. Replace it in the database and in `seedBlogs.js` if it is stored there.
 
 ## Logo (new kit)
 - Email template (`utils/emailService.js`): the sign-up code email shows only the word Humoro; add the new logo (needs a hosted image address).
