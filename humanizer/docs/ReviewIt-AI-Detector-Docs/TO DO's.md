@@ -12,7 +12,7 @@ Backend and logic tasks that come out of the frontend changes.
 - Rate limit: a few messages per hour per person.
 
 ## Email
-- Verify the `humoro.io` domain with the email service (sender is `onboarding@resend.dev` now).
+- Verify the `humoro.io` domain and the sender address with Amazon SES (sign-up emails now go through SES; without AWS credentials the code is only printed in the terminal).
 - Create and monitor the support mailbox.
 - Replace the placeholder support address: change `SITE.supportEmail` in `frontend/lib/site.ts`.
 
@@ -21,15 +21,12 @@ Backend and logic tasks that come out of the frontend changes.
 - Plan allowances are written in several places (`PLAN_LIMITS` in that file, `services/stripeService.js`, `frontend/store/index.ts`). Keep them in sync when plans change.
 
 ## Stripe
-- Rename the products and descriptions: "Veritas AI Pro" and "Veritas AI Unlimited" become Humoro Pro and Humoro Max.
-- Remove old claims from the descriptions: "Unlimited words", "Up to 50k words", "Up to 10k words", "2 layer humanization".
-- Update the `app: 'veritas_ai'` metadata value if anything reads it.
+- Product names and the `app: 'humoro'` metadata are done (`utils/stripeInit.js`).
+- Remove old claims from the product descriptions in that file: "Unlimited words", "Up to 50k words", "Up to 10k words", "2 layer humanization", "Bypass AI detectors". Existing Stripe products keep the old text until their descriptions are updated.
 
 ## Rename Veritas to Humoro in nodeBackend
-- `utils/emailService.js`: sign-up code email text, sender name, subject.
-- `utils/stripeInit.js`, `server.js`, `middlewares/authMiddleware.js`, `models/blogModel.js`.
-- `controllers/admin/adminBlogController.js`, `seedBlogs.js`, `README.md`, `package.json`, `.env.example`.
-- `utils/generateToken.js`: the fallback secret text contains the old name (changing a secret signs everyone out).
+- Still to do: `package.json` (name and keyword), `README.md`, `seedBlogs.js` (text, admin name and email).
+- Secret text with the old name: `.env.example`, `README.md`, and the fallback secret in `middlewares/authMiddleware.js` and `utils/generateToken.js` (changing a secret signs everyone out).
 
 ## Browser storage keys
 - Rename `veritas_token` and `veritas_user` in `frontend/lib/nodeApi.ts`. Everyone is signed out once.
@@ -43,6 +40,22 @@ Backend and logic tasks that come out of the frontend changes.
 - The blog list and blog posts are fetched on the Next.js server, so `NEXT_PUBLIC_NODE_API_URL` must be reachable from the server, not only from the browser.
 - Restart the Next.js server after pulling: `next.config.js` now sends a `noindex` header for the dashboard, admin, profile, login and signup pages.
 - After launch: verify the domain in Google Search Console and Bing Webmaster Tools and submit `/sitemap.xml`.
+
+## API paths
+- The Python backend now answers every route on both `/api/...` and `/ai/api/...`. The frontend still calls `/api/...` (`frontend/lib/api.ts`).
+- Decide when to switch the frontend to `/ai/api/...`, then remove the old paths from `backend/app.py`.
+- Update the API docs (`API_FLOW.md`, `CODE_FLOW.md`, `PROJECT_WALKTHROUGH.md`, `IMAGE_API.md`) to list the new paths.
+- The tests that call the API with no sign-in (11 failing in `backend/tests`) need a signed-in test user.
+
+## Image Detector page
+- Check the licence and author of the two real example photos in `frontend/public/image-detector-examples/` (they come from Open Images) and add a credit line if one is required.
+- Keep the source of the 93% image accuracy figure on record.
+
+## Public claims to review
+- AI Detector page: "< 0.82%" false positive rate, "Most Reliable" heading, model version names, "Sub-1% False Positive Rate Guarantee".
+- Humanizer page: "Bypasses Turnitin AI & GPTZero", "Guaranteed Turnitin & GPTZero clean threshold", "100% Citation Safety".
+- Pricing: "Bypass AI detectors (Turnitin…)", "Advanced ML models".
+- Home FAQ: "typically reducing AI detection scores by 60-80%".
 
 ## Social profiles
 - Provide the real social profile links (LinkedIn, X, GitHub or others). The four footer icons in `frontend/components/landing/footer.tsx` still go nowhere (`href="#"`).
