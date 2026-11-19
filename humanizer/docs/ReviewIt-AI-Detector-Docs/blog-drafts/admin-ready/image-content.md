@@ -55,7 +55,7 @@ Looking closely is only part of the job. These steps give you more to go on.
 
 All of those steps take time and judgment, and the clues are getting harder to see. An image checker is a useful extra opinion.
 
-With Humoro's Image Detector, you upload a JPG, PNG, WEBP, BMP or TIFF file, up to 25 MB, and you get one of four verdicts:
+With Humoro's AI Image Detector, you upload a JPG, PNG, WEBP, BMP or TIFF file, up to 25 MB, and you get one of four verdicts:
 
 - **AI.** The image reads as AI-generated.
 - **More towards AI.** The result is not conclusive, but the image looks closer to AI-generated.
@@ -105,7 +105,7 @@ Many courses and journals now have their own rules about this. Read them early, 
 Yes. No detector is perfect. That is why the result is a signal to combine with your own checks, and why an honest "More towards" answer is better than a forced one.
 
 **What file types can I check?**
-Humoro's Image Detector accepts JPG, PNG, WEBP, BMP and TIFF files, up to 25 MB each.
+Humoro's AI Image Detector accepts JPG, PNG, WEBP, BMP and TIFF files, up to 25 MB each.
 
 **Are my images kept?**
 Images you check are discarded after the check.
