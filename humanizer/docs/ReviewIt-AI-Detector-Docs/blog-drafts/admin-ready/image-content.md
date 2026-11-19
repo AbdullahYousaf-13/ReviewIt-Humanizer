@@ -55,13 +55,14 @@ Looking closely is only part of the job. These steps give you more to go on.
 
 All of those steps take time and judgment, and the clues are getting harder to see. An image checker is a useful extra opinion.
 
-With Humoro's Image Detector, you upload a JPG, PNG, WEBP, BMP or TIFF file, up to 25 MB, and you get one of three verdicts:
+With Humoro's Image Detector, you upload a JPG, PNG, WEBP, BMP or TIFF file, up to 25 MB, and you get one of four verdicts:
 
 - **AI.** The image reads as AI-generated.
-- **Unclear.** The result is not strong enough either way.
+- **More towards AI.** The result is not conclusive, but the image looks closer to AI-generated.
+- **More towards Original.** The result is not conclusive, but the image looks closer to an original photograph.
 - **Real.** The image reads as an original photograph.
 
-The middle result matters. A tool that always gave a firm answer would sometimes be firmly wrong. When the evidence is mixed, saying so is more honest than guessing, and it tells you that this picture needs the other checks in this guide.
+The two "more towards" results matter. A tool that always gave a firm answer would sometimes be firmly wrong. When the evidence is mixed, saying which way it leans, without claiming certainty, is more honest than guessing, and it tells you that this picture needs the other checks in this guide.
 
 Images you check are discarded after the check, so you are not building up a library of your pictures on our side.
 
@@ -101,7 +102,7 @@ Many courses and journals now have their own rules about this. Read them early, 
 ## Questions people ask
 
 **Can an image checker be wrong?**
-Yes. No detector is perfect. That is why the result is a signal to combine with your own checks, and why an honest "Unclear" answer is better than a forced one.
+Yes. No detector is perfect. That is why the result is a signal to combine with your own checks, and why an honest "More towards" answer is better than a forced one.
 
 **What file types can I check?**
 Humoro's Image Detector accepts JPG, PNG, WEBP, BMP and TIFF files, up to 25 MB each.
@@ -135,7 +136,7 @@ Keep this list handy:
 2. Do hands, text and backgrounds hold up when I zoom in?
 3. Is the lighting consistent?
 4. Does a search show an earlier or different source?
-5. What does the image checker say, and is it Unclear?
+5. What does the image checker say, and is the result conclusive?
 6. Do all the signals agree? If not, treat the image as unverified.
 
 ## The bigger picture
