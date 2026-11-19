@@ -12,6 +12,7 @@ Paste each body from its content file into the editor. Cover image and publishin
 | Tags | AI detection, essays, academic writing |
 | Author name | Humoro Editorial Team |
 | Author role | Editorial Team |
+| Avatar photo URL | /brand/icons/icon-192.png |
 | Excerpt | A practical, step-by-step way to review your own essay for sentences that read as AI-written, and what to do when something is flagged. (135 of 350 characters) |
 | Cover image URL | /blog/cover-check-essay-for-ai.webp |
 | Body | paste the whole of `essay-content.md` |
@@ -27,6 +28,7 @@ Paste each body from its content file into the editor. Cover image and publishin
 | Tags | humanizer, writing style, academic writing |
 | Author name | Humoro Editorial Team |
 | Author role | Editorial Team |
+| Avatar photo URL | /brand/icons/icon-192.png |
 | Excerpt | If a draft feels flat or generic, the fix is not a thesaurus. Here is a practical way to rewrite it in your own voice while keeping your citations and meaning intact. (166 of 350 characters) |
 | Cover image URL | /blog/cover-keep-your-voice.webp |
 | Body | paste the whole of `voice-content.md` |
@@ -42,6 +44,7 @@ Paste each body from its content file into the editor. Cover image and publishin
 | Tags | AI images, image checking, media literacy |
 | Author name | Humoro Editorial Team |
 | Author role | Editorial Team |
+| Avatar photo URL | /brand/icons/icon-192.png |
 | Excerpt | Clues to look for, checks you can do in a minute, and why no single test is enough. A practical guide for students, researchers and anyone who shares pictures. (159 of 350 characters) |
 | Cover image URL | /blog/cover-check-image-for-ai.webp |
 | Body | paste the whole of `image-content.md` |
@@ -51,5 +54,6 @@ Paste each body from its content file into the editor. Cover image and publishin
 
 - Cover image: use the path in each table (files are in `frontend/public/blog/`). They only work once those files are on the site you are using.
 - The editor saves as Draft or Publish with its buttons. Posts appear on the blog page only when published.
+- Avatar: leave the stock photo out and use the Humoro icon. An empty avatar shows a letter circle, and the backend would fill it with the admin's own profile picture.
 - Do not paste the title into the body: the page already shows it as the heading.
 - The editor understands `##` and `###` headings, `>` quotes, `-` bullets, numbered lines, bold, italic, links and `---`. All three bodies use only those.
