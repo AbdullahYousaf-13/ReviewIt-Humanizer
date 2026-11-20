@@ -9,3 +9,11 @@ All three come from Pexels (free licence: https://www.pexels.com/license/). Cred
 | Tell if an image is AI-generated | `cover-check-image-for-ai.webp` | https://www.pexels.com/photo/magnifying-glass-on-blue-textile-4144768/ |
 
 Each was cropped to 16:9 and resized to 1600 x 900.
+
+## Best-of posts
+
+| Post | File in `frontend/public/blog/` | Source page |
+|---|---|---|
+| Best AI detector | `cover-best-ai-detector.webp` | https://www.pexels.com/photo/close-up-photo-of-a-person-using-a-pink-highlighter-7681064/ (Kaboompics) |
+| Best AI humanizer | `cover-best-ai-humanizer.webp` | https://www.pexels.com/photo/workplace-with-laptop-and-notepad-placed-near-coffee-cup-5668471/ |
+| Best AI humanizer for academics | `cover-best-ai-humanizer-for-academics.webp` | https://www.pexels.com/photo/notebook-and-books-on-wooden-desk-6550408/ |
