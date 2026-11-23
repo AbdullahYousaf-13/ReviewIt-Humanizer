@@ -12,12 +12,12 @@ Check this list before suggesting or writing any blog. Never repeat a topic, tit
 | 20 Nov 2026 | Best AI Detector: Why Humoro Checks Every Sentence | best-ai-detector | AI Detection | best AI detector |
 | 20 Nov 2026 | Best AI Humanizer: Why Humoro Rewrites Only What You Choose | best-ai-humanizer | Humanizer Tips | best AI humanizer |
 | 20 Nov 2026 | Best AI Humanizer for Academics: Citations, Voice, Control | best-ai-humanizer-for-academics | Humanizer Tips | best AI humanizer for academics |
+| 23 Nov 2026 (drafted) | Best AI Image Detector: Why Humoro Gives You a Clear Verdict | best-ai-image-detector | AI Detection | best AI image detector |
 
 ## Not written yet
 
 | Idea | Target phrase |
 |---|---|
-| Best AI Image Detector: Why Humoro Gives You a Clear Verdict | best AI image detector |
 | Why AI Detection Matters in Education: What It Can and Can't Do | why AI detection is necessary |
 | What Does an AI Humanizer Do? A Plain-English Guide | what does an AI humanizer do |
 | How to Read Your AI Detection Report: Highlights and Next Steps | AI detection report |

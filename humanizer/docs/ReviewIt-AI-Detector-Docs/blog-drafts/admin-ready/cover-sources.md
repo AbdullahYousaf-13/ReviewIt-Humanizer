@@ -17,3 +17,4 @@ Each was cropped to 16:9 and resized to 1600 x 900.
 | Best AI detector | `cover-best-ai-detector.webp` | https://www.pexels.com/photo/close-up-photo-of-a-person-using-a-pink-highlighter-7681064/ (Kaboompics) |
 | Best AI humanizer | `cover-best-ai-humanizer.webp` | https://www.pexels.com/photo/workplace-with-laptop-and-notepad-placed-near-coffee-cup-5668471/ |
 | Best AI humanizer for academics | `cover-best-ai-humanizer-for-academics.webp` | https://www.pexels.com/photo/notebook-and-books-on-wooden-desk-6550408/ |
+| Best AI image detector | `cover-best-ai-image-detector.webp` | https://www.pexels.com/photo/faceless-photographer-picking-photos-at-table-in-room-7014432/ (George Milton) |
