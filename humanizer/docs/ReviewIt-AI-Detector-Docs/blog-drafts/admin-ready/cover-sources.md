@@ -27,3 +27,11 @@ Pexels free licence. Cropped to 16:9 and resized to 1600 x 900.
 |---|---|---|
 | AI detector false positive | `cover-ai-detector-false-positive.webp` | https://www.pexels.com/photo/man-in-blue-plaid-button-up-t-shirt-writing-on-bond-paper-6209589/ (cottonbro) |
 | Turnitin vs Humoro | `cover-turnitin-vs-humoro.webp` | https://www.pexels.com/photo/gray-laptop-beside-white-printer-paper-8062289/ (N. Voitkevich) |
+
+## 25 Nov post
+
+Pexels free licence. Resized to 1600 x 900.
+
+| Post | File in `frontend/public/blog/` | Source page |
+|---|---|---|
+| AI humanizer styles | `cover-ai-humanizer-styles.webp` | https://www.pexels.com/photo/colorful-pens-and-stationaries-on-blue-and-yellow-surface-7054754/ (Kindel Media) |
