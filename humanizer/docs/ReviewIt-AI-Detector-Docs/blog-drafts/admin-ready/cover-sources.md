@@ -35,3 +35,11 @@ Pexels free licence. Resized to 1600 x 900.
 | Post | File in `frontend/public/blog/` | Source page |
 |---|---|---|
 | AI humanizer styles | `cover-ai-humanizer-styles.webp` | https://www.pexels.com/photo/colorful-pens-and-stationaries-on-blue-and-yellow-surface-7054754/ (Kindel Media) |
+
+## 26 Nov post
+
+Unsplash free licence. Cropped to 16:9 and resized to 1600 x 900.
+
+| Post | File in `frontend/public/blog/` | Source page |
+|---|---|---|
+| Why AI detection matters in education | `cover-why-ai-detection-matters-in-education.webp` | `photo-1515378960530-7c0da6231fb1` (Unsplash) |
