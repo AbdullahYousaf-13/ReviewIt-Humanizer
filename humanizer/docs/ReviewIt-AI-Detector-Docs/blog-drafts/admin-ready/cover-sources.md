@@ -43,3 +43,11 @@ Unsplash free licence. Cropped to 16:9 and resized to 1600 x 900.
 | Post | File in `frontend/public/blog/` | Source page |
 |---|---|---|
 | Why AI detection matters in education | `cover-why-ai-detection-matters-in-education.webp` | `photo-1515378960530-7c0da6231fb1` (Unsplash) |
+
+## 27 Nov post
+
+Pexels free licence. Portrait original cropped to 16:9 and resized to 1600 x 900.
+
+| Post | File in `frontend/public/blog/` | Source page |
+|---|---|---|
+| What does an AI humanizer do | `cover-what-does-an-ai-humanizer-do.webp` | https://www.pexels.com/photo/a-person-marking-a-composition-7968067/ (Ron Lach) |
