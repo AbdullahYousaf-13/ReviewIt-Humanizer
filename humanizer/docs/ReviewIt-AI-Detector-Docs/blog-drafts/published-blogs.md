@@ -17,12 +17,12 @@ Check this list before suggesting or writing any blog. Never repeat a topic, tit
 | 24 Nov 2026 (drafted) | Turnitin vs Humoro: Which AI Detector Fits You? | turnitin-vs-humoro | AI Detection | Turnitin vs Humoro |
 | 25 Nov 2026 (drafted) | AI Humanizer Styles: Which One Fits Your Writing? | ai-humanizer-styles | Humanizer Tips | AI humanizer styles |
 | 26 Nov 2026 (drafted) | Why AI Detection Matters in Education: What It Can and Can't Do | why-ai-detection-matters-in-education | Academic Integrity | why AI detection is necessary |
+| 27 Nov 2026 (drafted) | What Does an AI Humanizer Do? A Plain-English Guide | what-does-an-ai-humanizer-do | Humanizer Tips | what does an AI humanizer do |
 
 ## Not written yet
 
 | Idea | Target phrase |
 |---|---|
-| What Does an AI Humanizer Do? A Plain-English Guide | what does an AI humanizer do |
 | How to Read Your AI Detection Report: Highlights and Next Steps | AI detection report |
 | How to Disclose AI Use in Your Assignment | disclose AI use |
 | A Pre-Submission Checklist for Essays and Dissertations | essay checklist before submitting |
